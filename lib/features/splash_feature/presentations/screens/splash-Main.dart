@@ -19,13 +19,13 @@ class _SplashMainState extends State<SplashMain> {
       systemNavigationBarColor: ConstColor.appbarColor,
     ));
     Future.delayed(const Duration(seconds: 2), () async {
-      if (await SplashRepository().isConnect()) {
+      // if (await SplashRepository().isConnect()) {
         // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, Home.rn);
-      } else {
+      // } else {
         // ignore: use_build_context_synchronously
-        Navigator.pushReplacementNamed(context, SplashFailed.rn);
-      }
+        // Navigator.pushReplacementNamed(context, SplashFailed.rn);
+      // }
     });
     super.initState();
   }

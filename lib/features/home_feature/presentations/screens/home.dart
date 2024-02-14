@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
@@ -24,7 +25,11 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: ConstColor.appbarColor,
         centerTitle: true,
-        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+        leading: IconButton(onPressed: () {
+
+
+
+        }, icon: const Icon(Icons.search)),
         actions: [
           IconButton(
             onPressed: () {
@@ -42,6 +47,7 @@ class Home extends StatelessWidget {
               Stack(
                 children: [
                   CarouselSlider(
+
                     items: [
                       Container(
                         width: double.infinity,
@@ -65,6 +71,7 @@ class Home extends StatelessWidget {
                       ),
                     ],
                     options: CarouselOptions(
+                      
                       onPageChanged: (index, reason) {
                         BlocProvider.of<IndicatorIndexCubit>(context)
                             .changeIndicator(index);
@@ -72,18 +79,17 @@ class Home extends StatelessWidget {
                       autoPlay: true,
                       viewportFraction: 1,
                       autoPlayAnimationDuration: const Duration(seconds: 2),
+                  ), 
                     ),
-                  ),
                   Positioned(
-                      top: 190,
-                      left: 130,
-                      right: 130,
+                      top: EsaySize.height(context) * 0.324,
+                      left: EsaySize.width(context) /3,
+                      right: EsaySize.width(context) /3,
                       child: Container(
                         decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(10)),
                         alignment: Alignment.center,
-                        width: 200,
                         height: 30,
                         child: AnimatedSmoothIndicator(
                             effect: WormEffect(
@@ -95,11 +101,55 @@ class Home extends StatelessWidget {
                             activeIndex: state,
                             count: 4),
                       )),
+                         Center(
+                           child: Container(
+                        
+                                        margin: EdgeInsets.only(bottom: EsaySize.height(context) / 8),
+                                          width: double.infinity,
+                                          height: 50,
+                            child: ListView.builder( shrinkWrap: true,scrollDirection: Axis.horizontal, itemCount: 7,itemBuilder: (context, index) {
+                              
+                                          return  Container( margin: const EdgeInsets.all(10),width: 80,height: 50,     decoration: const BoxDecoration(color: Colors.redAccent, ),child: Text("index $index"),);
+                                          },),
+                                        
+                                      ),
+                         ),
+                         ElevatedButton(onPressed: ()async{
+  
+try {
+ 
+
+     final response = await Dio().get(
+      'https://alahwar-tv.com/api/news',
+      options: Options(
+      headers: {
+     'Access-Control-Allow-Origin': '*',
+    },
+      ),
+    );
+
+ 
+  if (response.statusCode == 200) {
+   
+    for (var news in response.data['news']) {
+      print('عنوان: ${news['title']}\nمحتوا: ${news['content']}\n');
+    }
+  } else {
+
+    print('خطا: ${response.statusCode}');
+  }
+} catch (e) {
+  print(e);
+}
+
+ 
+ 
+
+                         }, child: null)
                 ],
+                
               ),
-              Column(
-                children: [],
-              ),
+           
               BlocBuilder<DrawerCubit, DrawerState>(
                 buildWhen: (previous, current) {
                   if (previous.status == current.status) {
@@ -211,6 +261,8 @@ class Home extends StatelessWidget {
                   return const SizedBox();
                 },
               ),
+          
+         
             ],
           );
         },
@@ -218,3 +270,5 @@ class Home extends StatelessWidget {
     );
   }
 }
+
+
