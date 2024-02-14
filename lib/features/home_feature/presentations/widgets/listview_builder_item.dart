@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
 
 class ItemHome extends StatelessWidget {
-  const ItemHome({Key? key});
+  final String title;
+  final int time;
+  const ItemHome({Key? key, required this.title, required this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class ItemHome extends StatelessWidget {
       height: EsaySize.height(context) / 8.2,
       child: Stack(
         children: [
-          const Positioned(bottom: 5, left: 5, child: Text("21/5/1384")),
+          Positioned(bottom: 5, left: 5, child: Text(time.toString())),
           Positioned.fill(
             top: 5,
             right: 60,
@@ -29,8 +30,8 @@ class ItemHome extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(
                     right: EsaySize.width(context) / 11, top: 5),
-                child: const Text(
-                  "fdgfdklpfghfghfgjhukhhhhhhhhhhhhhhhhhhhhhhiuouioouiyoyiuiuhfgl;fdl;l;fdf'f'",
+                child: Text(
+                  title,
                   textDirection: TextDirection.rtl,
                 ),
               ),

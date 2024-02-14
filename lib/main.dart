@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/features/home_feature/presentations/bloc/cubit/news_home_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/drawer_cubit/drawer_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/indicatror_cubit/indicator_index_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +24,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => IndicatorIndexCubit(),
+        ),
+        BlocProvider(
+          create: (context) => NewsHomeCubit(),
         ),
       ],
       child: MaterialApp(

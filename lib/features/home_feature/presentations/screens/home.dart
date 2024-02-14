@@ -1,13 +1,15 @@
 import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
+import 'package:flutter_application_1/features/home_feature/presentations/bloc/cubit/news_home_cubit.dart';
+import 'package:flutter_application_1/features/home_feature/presentations/bloc/cubit/status_news.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/drawer_cubit/drawer_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/indicatror_cubit/indicator_index_cubit.dart';
+
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/drawer_widgets.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/listview_builder_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,41 +17,84 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../bloc/drawer_cubit/deawer_status.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   static String rn = "/home";
   const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    BlocProvider.of<NewsHomeCubit>(context).fetchData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appbar(context),
-      body: BlocBuilder<IndicatorIndexCubit, int>(
-        builder: (context, state) {
-          return Stack(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                height: EsaySize.height(context) / 3.8,
-                child: sliderImages(context, state),
-              ),
-              category(context),
-              Positioned.fill(
-                top: EsaySize.height(context) / 3.2,
-                bottom: 0,
-                left: 0,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 5, // تعداد آیتم‌ها
-                  itemBuilder: (context, index) {
-                    return ItemHome();
-                  },
-                ),
-              ),
-              costumDrawer(),
-            ],
-          );
-        },
+      body: Stack(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: EsaySize.height(context) / 3.8,
+            child: BlocBuilder<IndicatorIndexCubit, int>(
+              builder: (context, state) {
+                return sliderImages(context, state);
+              },
+            ),
+          ),
+          BlocBuilder<NewsHomeCubit, NewsHomeState>(
+            builder: (context, state) {
+              if (state.status.state == StateNewsHome.complate) {
+                return Container(
+                  margin: EdgeInsets.only(top: EsaySize.height(context) / 3.2),
+                  width: double.infinity,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: state.model!.news!.length,
+                    itemBuilder: (context, index) {
+                      var view = state.model!;
+
+                      return ItemHome(
+                        time: view.news![index].dateTime!,
+                        title: view.news![index].title!,
+                      );
+                    },
+                  ),
+                );
+              }
+
+              if (state.status.state == StateNewsHome.loading) {
+                return CircularProgressIndicator();
+              }
+              if (state.status.state == StateNewsHome.error) {
+                return Container(
+                  margin: EdgeInsets.only(top: EsaySize.height(context) / 3.2),
+                  width: double.infinity,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return ItemHome(
+                        time: index,
+                        title: state.status.erorr!,
+                      );
+                    },
+                  ),
+                );
+              }
+
+              return const SizedBox();
+            },
+          ),
+          category(context),
+          costumDrawer(),
+        ],
       ),
     );
   }
@@ -245,26 +290,6 @@ class Home extends StatelessWidget {
                 count: 4),
           ),
         ),
-        ElevatedButton(
-            onPressed: () async {
-              try {
-                final response = await Dio().get(
-                  'https://alahwar-tv.com/api/news',
-                  options: Options(
-                    headers: {
-                      'Access-Control-Allow-Origin': '*',
-                    },
-                  ),
-                );
-
-                if (response.statusCode == 200) {
-                  print(response.data);
-                }
-              } catch (e) {
-                print(e);
-              }
-            },
-            child: null)
       ],
     );
   }
