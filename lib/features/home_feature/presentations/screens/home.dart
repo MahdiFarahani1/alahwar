@@ -155,43 +155,49 @@ class _HomeState extends State<Home> {
 
   BlocBuilder<DrawerCubit, DrawerState> costumDrawer() {
     return BlocBuilder<DrawerCubit, DrawerState>(
-      buildWhen: (previous, current) {
-        if (previous.status == current.status) {
-          return false;
-        } else {
-          return true;
-        }
-      },
       builder: (context, state) {
         if (state.status is Open) {
           return Stack(
             children: [
-              GestureDetector(
-                onTap: () {
-                  BlocProvider.of<DrawerCubit>(context).openDrawer();
-                },
-                child: Container(
-                  color: Colors.white,
-                  width: EsaySize.width(context) / 1.5,
-                  height: double.infinity,
-                  alignment: Alignment.centerRight,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Image.asset(
+              Container(
+                color: Colors.white,
+                width: EsaySize.width(context) / 1.5,
+                height: double.infinity,
+                alignment: Alignment.centerRight,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<DrawerCubit>(context).openDrawer();
+                      },
+                      child: Image.asset(
                         "assets/images/oops.jpg",
                         fit: BoxFit.contain,
                       ),
-                      const Divider(
-                          color: Colors.black, thickness: 0.8, height: 2),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: DrawerWidgets.fullItems(context: context)),
-                    ],
-                  ),
-                ).animate().moveX(
-                    begin: EsaySize.width(context),
-                    end: EsaySize.width(context) / 3),
+                    ),
+                    const Divider(
+                      color: Colors.black,
+                      thickness: 0.8,
+                      height: 2,
+                    ),
+                  ],
+                ),
+              ).animate().moveX(
+                  begin: EsaySize.width(context),
+                  end: EsaySize.width(context) / 3),
+              Padding(
+                padding: EdgeInsets.only(top: EsaySize.height(context) / 3.8),
+                child: ListView(
+                        shrinkWrap: true,
+                        children: DrawerWidgets.fullItems(
+                          context: context,
+                          onpress: () {
+                            print("ali");
+                          },
+                        ))
+                    .animate()
+                    .moveX(begin: EsaySize.width(context) / 3, end: 0),
               ),
               Positioned(
                 top: 0,
@@ -216,6 +222,7 @@ class _HomeState extends State<Home> {
             ],
           );
         }
+
         if (state.status is Close) {
           return Container(
             color: Colors.white,
@@ -231,7 +238,12 @@ class _HomeState extends State<Home> {
                 const Divider(color: Colors.black, thickness: 0.8, height: 2),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: DrawerWidgets.fullItems(context: context),
+                  children: DrawerWidgets.fullItems(
+                    context: context,
+                    onpress: () {
+                      print("hi");
+                    },
+                  ),
                 ),
               ],
             ),
