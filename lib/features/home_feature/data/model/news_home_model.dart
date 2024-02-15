@@ -30,21 +30,23 @@ class News {
 
   News({this.id, this.categoryId, this.title, this.img, this.dateTime});
 
-  News.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    categoryId = json['category_id'];
-    title = json['title'];
-    img = json['img'];
-    dateTime = json['date_time'];
+  factory News.fromJson(Map<String, dynamic> json) {
+    return News(
+      id: json['id'],
+      categoryId: json['category_id'],
+      title: json['title'],
+      img: json['img'],
+      dateTime: json['date_time'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['category_id'] = categoryId;
-    data['title'] = title;
-    data['img'] = img;
-    data['date_time'] = dateTime;
-    return data;
+    return {
+      'id': id,
+      'category_id': categoryId,
+      'title': title,
+      'img': img,
+      'date_time': dateTime,
+    };
   }
 }

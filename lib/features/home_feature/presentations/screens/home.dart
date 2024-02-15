@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
+import 'package:flutter_application_1/features/home_feature/data/model/news_home_model.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/cubit/news_home_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/cubit/status_news.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/drawer_cubit/drawer_cubit.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_application_1/features/home_feature/presentations/bloc/i
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/drawer_widgets.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/listview_builder_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../bloc/drawer_cubit/deawer_status.dart';
@@ -56,13 +58,14 @@ class _HomeState extends State<Home> {
                   width: double.infinity,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: state.model!.news!.length,
+                    itemCount: 7,
                     itemBuilder: (context, index) {
-                      var view = state.model!;
+                      var view = state.status.data as List<News>;
 
                       return ItemHome(
-                        time: view.news![index].dateTime!,
-                        title: view.news![index].title!,
+                        time: view[index].dateTime!,
+                        title: view[index].title!,
+                        pathImages: view[index].img!,
                       );
                     },
                   ),
@@ -70,7 +73,13 @@ class _HomeState extends State<Home> {
               }
 
               if (state.status.state == StateNewsHome.loading) {
-                return CircularProgressIndicator();
+                return Center(
+                  child: SpinKitSpinningLines(
+                    color: ConstColor.appbarColor,
+                    lineWidth: 2,
+                    size: EsaySize.height(context) / 5.5,
+                  ),
+                );
               }
               if (state.status.state == StateNewsHome.error) {
                 return Container(
@@ -83,6 +92,7 @@ class _HomeState extends State<Home> {
                       return ItemHome(
                         time: index,
                         title: state.status.erorr!,
+                        pathImages: "",
                       );
                     },
                   ),

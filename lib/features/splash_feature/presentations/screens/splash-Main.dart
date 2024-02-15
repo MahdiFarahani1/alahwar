@@ -38,6 +38,7 @@ class _SplashMainState extends State<SplashMain> {
           body: Image.asset(
             "assets/images/splash.jpg",
             height: double.infinity,
+            width: double.infinity,
             fit: BoxFit.fitHeight,
           ),
         ),

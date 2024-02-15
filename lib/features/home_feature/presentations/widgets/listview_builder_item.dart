@@ -1,11 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ItemHome extends StatelessWidget {
   final String title;
   final int time;
-  const ItemHome({Key? key, required this.title, required this.time});
+  final String pathImages;
+
+  const ItemHome(
+      {Key? key,
+      required this.title,
+      required this.time,
+      required this.pathImages});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +49,6 @@ class ItemHome extends StatelessWidget {
             right: 0,
             child: Container(
               decoration: const BoxDecoration(
-                color: Colors.amber,
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(8),
                   topRight: Radius.circular(8),
@@ -49,6 +56,24 @@ class ItemHome extends StatelessWidget {
               ),
               width: (EsaySize.width(context) - 50) / 4.4,
               height: EsaySize.height(context) / 8.2,
+              child: CachedNetworkImage(
+                imageUrl: pathImages,
+                placeholder: (context, url) {
+                  return SpinKitRipple(
+                    itemBuilder: (context, index) {
+                      return DecoratedBox(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: ConstColor.appbarColor,
+                        ),
+                      );
+                    },
+                  );
+                },
+                errorWidget: (context, url, error) {
+                  return const Center(child: Icon(Icons.error));
+                },
+              ),
             ),
           ),
         ],
