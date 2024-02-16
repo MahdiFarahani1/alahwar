@@ -36,33 +36,33 @@ class DrawerWidgets {
   }
 
   static List<Widget> fullItems(
-      {required BuildContext context, required VoidCallback onpress}) {
+      {required BuildContext context, required List<VoidCallback> onpress}) {
     return [
       drawerItem(
           context: context,
           text: "item1",
           iconData: Icons.home,
-          onpress: onpress),
+          onpress: onpress[0]),
       drawerItem(
           context: context,
           text: "item2",
           iconData: Icons.tv,
-          onpress: onpress),
+          onpress: onpress[1]),
       drawerItem(
           context: context,
           text: "item3",
           iconData: Icons.star_border_outlined,
-          onpress: onpress),
+          onpress: onpress[2]),
       drawerItem(
           context: context,
           text: "item4",
           iconData: Icons.settings,
-          onpress: onpress),
+          onpress: onpress[3]),
       drawerItem(
           context: context,
           text: "item5",
           iconData: Icons.phone_android,
-          onpress: onpress),
+          onpress: onpress[4]),
     ];
   }
 }

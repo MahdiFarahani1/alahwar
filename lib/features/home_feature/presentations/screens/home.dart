@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
+import 'package:flutter_application_1/features/about_us_feature/presentations/screens/about_us_page.dart';
 import 'package:flutter_application_1/features/home_feature/data/model/news_home_model.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/cubit/news_home_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/cubit/status_news.dart';
@@ -192,9 +193,20 @@ class _HomeState extends State<Home> {
                         shrinkWrap: true,
                         children: DrawerWidgets.fullItems(
                           context: context,
-                          onpress: () {
-                            print("ali");
-                          },
+                          onpress: [
+                            () {
+                              print("a");
+                            },
+                            () {},
+                            () {},
+                            () {},
+                            () {
+                              Navigator.pushNamed(
+                                context,
+                                AboutUs.rn,
+                              );
+                            }
+                          ],
                         ))
                     .animate()
                     .moveX(begin: EsaySize.width(context) / 3, end: 0),
@@ -240,9 +252,7 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: DrawerWidgets.fullItems(
                     context: context,
-                    onpress: () {
-                      print("hi");
-                    },
+                    onpress: [() {}, () {}, () {}, () {}, () {}],
                   ),
                 ),
               ],

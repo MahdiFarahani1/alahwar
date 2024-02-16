@@ -3,6 +3,7 @@ import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/features/about_us_feature/widgets/widget_us.dart';
 
 class AboutUs extends StatelessWidget {
+  static String rn = "/aboutus";
   const AboutUs({super.key});
 
   @override
@@ -15,11 +16,19 @@ class AboutUs extends StatelessWidget {
       ),
       body: Column(
         children: [
-          const Text(
-            "sajjhdsjkhjfksdhjdsjlf;lska;ksakl;dasl;jkdakjdhjlasjldsasdadas",
+          const Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Text(
+              "sajjhdsjkhjfksdhjdsjlf;lskghjhgjhgkhjkhjgkjukhgjhgghghkghghkgkjhga;ksakl;dasl;jkdakjdhjlasjldsasdadas",
+            ),
           ),
-          Wrap(
-            children: BtnSocial.allbtn(),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: BtnSocial.allbtn(),
+            ),
           )
         ],
       ),
