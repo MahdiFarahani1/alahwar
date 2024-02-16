@@ -43,19 +43,75 @@ class _HomeState extends State<Home> {
       appBar: appbar(context),
       body: Stack(
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: EsaySize.height(context) / 3.8,
-            child: BlocBuilder<IndicatorIndexCubit, int>(
-              builder: (context, state) {
-                return sliderImages(context, state);
-              },
-            ),
-          ),
+          sliderImages(context),
           news(),
           category(context),
           costumDrawer(),
         ],
+      ),
+    );
+  }
+
+  SizedBox sliderImages(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: EsaySize.height(context) / 3.8,
+      child: BlocBuilder<IndicatorIndexCubit, int>(
+        builder: (context, state) {
+          return Stack(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: CarouselSlider(
+                  items: [
+                    Container(
+                      color: Colors.red,
+                    ),
+                    Container(
+                      color: Colors.purple,
+                    ),
+                    Container(
+                      color: Colors.blue,
+                    ),
+                    Container(
+                      color: Colors.green,
+                    ),
+                  ],
+                  options: CarouselOptions(
+                    aspectRatio: 16 / 9,
+                    onPageChanged: (index, reason) {
+                      BlocProvider.of<IndicatorIndexCubit>(context)
+                          .changeIndicator(index);
+                    },
+                    autoPlay: true,
+                    viewportFraction: 1,
+                    autoPlayAnimationDuration: const Duration(seconds: 2),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(10)),
+                  alignment: Alignment.center,
+                  height: 30,
+                  width: EsaySize.width(context) / 3.2,
+                  child: AnimatedSmoothIndicator(
+                      effect: WormEffect(
+                          dotWidth: 12,
+                          dotHeight: 12,
+                          dotColor: Colors.white,
+                          activeDotColor: ConstColor.appbarColor,
+                          type: WormType.thin),
+                      activeIndex: state,
+                      count: 4),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -275,62 +331,6 @@ class _HomeState extends State<Home> {
         }
         return const SizedBox();
       },
-    );
-  }
-
-  Stack sliderImages(BuildContext context, int state) {
-    return Stack(
-      children: [
-        SizedBox(
-          width: double.infinity,
-          child: CarouselSlider(
-            items: [
-              Container(
-                color: Colors.red,
-              ),
-              Container(
-                color: Colors.purple,
-              ),
-              Container(
-                color: Colors.blue,
-              ),
-              Container(
-                color: Colors.green,
-              ),
-            ],
-            options: CarouselOptions(
-              aspectRatio: 16 / 9,
-              onPageChanged: (index, reason) {
-                BlocProvider.of<IndicatorIndexCubit>(context)
-                    .changeIndicator(index);
-              },
-              autoPlay: true,
-              viewportFraction: 1,
-              autoPlayAnimationDuration: const Duration(seconds: 2),
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(10)),
-            alignment: Alignment.center,
-            height: 30,
-            width: EsaySize.width(context) / 3.2,
-            child: AnimatedSmoothIndicator(
-                effect: WormEffect(
-                    dotWidth: 12,
-                    dotHeight: 12,
-                    dotColor: Colors.white,
-                    activeDotColor: ConstColor.appbarColor,
-                    type: WormType.thin),
-                activeIndex: state,
-                count: 4),
-          ),
-        ),
-      ],
     );
   }
 }
