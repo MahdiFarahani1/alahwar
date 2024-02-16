@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
 import 'package:flutter_application_1/features/about_us_feature/presentations/screens/about_us_page.dart';
+import 'package:flutter_application_1/features/favorite_feature/presentations/screen/favorite.dart';
 import 'package:flutter_application_1/features/home_feature/data/model/news_home_model.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/cubit/news_home_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/cubit/status_news.dart';
@@ -51,62 +52,66 @@ class _HomeState extends State<Home> {
               },
             ),
           ),
-          BlocBuilder<NewsHomeCubit, NewsHomeState>(
-            builder: (context, state) {
-              if (state.status.state == StateNewsHome.complate) {
-                return Container(
-                  margin: EdgeInsets.only(top: EsaySize.height(context) / 3.2),
-                  width: double.infinity,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: 7,
-                    itemBuilder: (context, index) {
-                      var view = state.status.data as List<News>;
-
-                      return ItemHome(
-                        time: view[index].dateTime!,
-                        title: view[index].title!,
-                        pathImages: view[index].img!,
-                      );
-                    },
-                  ),
-                );
-              }
-
-              if (state.status.state == StateNewsHome.loading) {
-                return Center(
-                  child: SpinKitSpinningLines(
-                    color: ConstColor.appbarColor,
-                    lineWidth: 2,
-                    size: EsaySize.height(context) / 5.5,
-                  ),
-                );
-              }
-              if (state.status.state == StateNewsHome.error) {
-                return Container(
-                  margin: EdgeInsets.only(top: EsaySize.height(context) / 3.2),
-                  width: double.infinity,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return ItemHome(
-                        time: index,
-                        title: state.status.erorr!,
-                        pathImages: "",
-                      );
-                    },
-                  ),
-                );
-              }
-
-              return const SizedBox();
-            },
-          ),
+          news(),
           category(context),
           costumDrawer(),
         ],
       ),
+    );
+  }
+
+  BlocBuilder<NewsHomeCubit, NewsHomeState> news() {
+    return BlocBuilder<NewsHomeCubit, NewsHomeState>(
+      builder: (context, state) {
+        if (state.status.state == StateNewsHome.complate) {
+          var view = state.status.data as List<News>;
+
+          return Container(
+            margin: EdgeInsets.only(top: EsaySize.height(context) / 3.2),
+            width: double.infinity,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: view.length,
+              itemBuilder: (context, index) {
+                return ItemHome(
+                  time: view[index].dateTime!,
+                  title: view[index].title!,
+                  pathImages: view[index].img!,
+                );
+              },
+            ),
+          );
+        }
+
+        if (state.status.state == StateNewsHome.loading) {
+          return Center(
+            child: SpinKitSpinningLines(
+              color: ConstColor.appbarColor,
+              lineWidth: 2,
+              size: EsaySize.height(context) / 5.5,
+            ),
+          );
+        }
+        if (state.status.state == StateNewsHome.error) {
+          return Container(
+            margin: EdgeInsets.only(top: EsaySize.height(context) / 3.2),
+            width: double.infinity,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return ItemHome(
+                  time: index,
+                  title: state.status.erorr!,
+                  pathImages: "",
+                );
+              },
+            ),
+          );
+        }
+
+        return const SizedBox();
+      },
     );
   }
 
@@ -194,11 +199,14 @@ class _HomeState extends State<Home> {
                         children: DrawerWidgets.fullItems(
                           context: context,
                           onpress: [
+                            () {},
+                            () {},
                             () {
-                              print("a");
+                              Navigator.pushNamed(
+                                context,
+                                Favorite.rn,
+                              );
                             },
-                            () {},
-                            () {},
                             () {},
                             () {
                               Navigator.pushNamed(

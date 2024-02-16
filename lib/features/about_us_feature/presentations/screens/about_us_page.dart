@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/core/constans/const_colors.dart';
+import 'package:flutter_application_1/core/widgets/appbar_common.dart';
 import 'package:flutter_application_1/features/about_us_feature/widgets/widget_us.dart';
 
 class AboutUs extends StatelessWidget {
@@ -9,11 +9,7 @@ class AboutUs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: ConstColor.appbarColor,
-        title: const Text("AboutUs"),
-      ),
+      appBar: AppBarCommon.appBar("AboutUs"),
       body: Column(
         children: [
           const Padding(
