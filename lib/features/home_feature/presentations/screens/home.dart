@@ -10,6 +10,8 @@ import 'package:flutter_application_1/core/utils/esay_size.dart';
 import 'package:flutter_application_1/features/home_feature/data/model/news_home_model.dart';
 
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/drawer_cubit/drawer_cubit.dart';
+import 'package:flutter_application_1/features/home_feature/presentations/bloc/home_drawer_cubit/home_drawer_cubit.dart';
+import 'package:flutter_application_1/features/home_feature/presentations/bloc/home_drawer_cubit/home_drawer_status.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/indicatror_cubit/indicator_index_cubit.dart';
 
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/drawer_widgets.dart';
@@ -26,7 +28,7 @@ import '../utils/drawer_onpress.dart';
 class Home extends StatefulWidget {
   static String rn = "/home";
 
-   const Home({super.key});
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -41,19 +43,38 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: appbar(context),
-      body: Stack(
-        children: [
-          sliderImages(context),
-          news(),
-          category(context),
-          costumDrawer(),
-        ],
-      ),
-    );
+        backgroundColor: Colors.white,
+        appBar: appbar(context),
+        body: BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
+          builder: (context, state) {
+            if (state.status is LoadingHome) {
+              return Center(
+                child: CostumLoading.loadCube(context),
+              );
+            }
+
+            if (state.status is DrawerHome) {
+              return Stack(
+                children: [
+                  news(false),
+                  costumDrawer(),
+                ],
+              );
+            }
+            if (state.status is InitHome) {
+              return Stack(
+                children: [
+                  sliderImages(context),
+                  news(true),
+                  category(context),
+                  costumDrawer(),
+                ],
+              );
+            }
+            return const SizedBox();
+          },
+        ));
   }
 
   SizedBox sliderImages(BuildContext context) {
@@ -120,17 +141,17 @@ class _HomeState extends State<Home> {
     );
   }
 
-  BlocBuilder<NewsHomeCubit, NewsHomeState> news() {
+  BlocBuilder<NewsHomeCubit, NewsHomeState> news(bool ismargin) {
     return BlocBuilder<NewsHomeCubit, NewsHomeState>(
       builder: (context, state) {
         if (state.status.state == StateNewsHome.complate) {
           var view = state.status.data as List<News>;
           String baseUrl = "";
           return Container(
-            margin: EdgeInsets.only(top: EsaySize.height(context) / 3.2),
+            margin: EdgeInsets.only(
+                top: ismargin ? EsaySize.height(context) / 3.2 : 8),
             width: double.infinity,
             child: ListView.builder(
-              
               shrinkWrap: true,
               itemCount: view.length,
               itemBuilder: (context, index) {
@@ -146,7 +167,7 @@ class _HomeState extends State<Home> {
 
         if (state.status.state == StateNewsHome.loading) {
           return Center(
-            child:CostumLoading.loadCube(context),
+            child: CostumLoading.loadCube(context),
           );
         }
         if (state.status.state == StateNewsHome.error) {
@@ -176,12 +197,14 @@ class _HomeState extends State<Home> {
     return AppBar(
       backgroundColor: ConstColor.appbarColor,
       centerTitle: true,
-      leading: IconButton(onPressed: () {
-              Navigator.pushNamed(
-                                context,
-                                Search.rn,
-                              );
-      }, icon: const Icon(Icons.search)),
+      leading: IconButton(
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              Search.rn,
+            );
+          },
+          icon: const Icon(Icons.search)),
       actions: [
         IconButton(
           onPressed: () {
@@ -260,9 +283,7 @@ class _HomeState extends State<Home> {
                         shrinkWrap: true,
                         children: DrawerWidgets.fullItems(
                           context: context,
-                          onpress: OnPressDrawer.press(context)
-                     
-                          ,
+                          onpress: OnPressDrawer.press(context),
                         ))
                     .animate()
                     .moveX(begin: EsaySize.width(context) / 3, end: 0),

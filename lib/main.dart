@@ -29,12 +29,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => NewsHomeCubit(),
         ),
-   BlocProvider(
-          create: (context) =>  HomeDrawerCubit(),
+        BlocProvider(
+          create: (context) => HomeDrawerCubit(),
         ),
-
-
-       
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

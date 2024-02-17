@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/common/appbar.dart';
 
-
 import '../../../../core/common/loading.dart';
 
 class Mobasher extends StatelessWidget {
   static String rn = "/mobasher";
-  const Mobasher({ super.key });
+  const Mobasher({super.key});
 
   @override
   Widget build(BuildContext context) {

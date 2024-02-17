@@ -7,7 +7,11 @@ part 'home_drawer_state.dart';
 class HomeDrawerCubit extends Cubit<HomeDrawerState> {
   HomeDrawerCubit() : super(HomeDrawerState(status: InitHome()));
 
+  changeState() {
+    emit(HomeDrawerState(status: LoadingHome()));
 
-
-  
+    Future.delayed(const Duration(seconds: 1), () {
+      emit(HomeDrawerState(status: DrawerHome()));
+    });
+  }
 }
