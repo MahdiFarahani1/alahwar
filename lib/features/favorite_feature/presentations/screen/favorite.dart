@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/core/widgets/appbar_common.dart';
+
+import '../../../../core/common/appbar.dart';
 
 class Favorite extends StatelessWidget {
   static String rn = "/Favorite";

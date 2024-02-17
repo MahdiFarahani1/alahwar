@@ -10,7 +10,7 @@ class ItemHome extends StatelessWidget {
   final String pathImages;
 
   const ItemHome(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.time,
       required this.pathImages});

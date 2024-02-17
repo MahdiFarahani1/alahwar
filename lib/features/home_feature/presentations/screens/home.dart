@@ -3,27 +3,30 @@ import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
-import 'package:flutter_application_1/features/about_us_feature/presentations/screens/about_us_page.dart';
-import 'package:flutter_application_1/features/favorite_feature/presentations/screen/favorite.dart';
+
 import 'package:flutter_application_1/features/home_feature/data/model/news_home_model.dart';
-import 'package:flutter_application_1/features/home_feature/presentations/bloc/cubit/news_home_cubit.dart';
-import 'package:flutter_application_1/features/home_feature/presentations/bloc/cubit/status_news.dart';
+
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/drawer_cubit/drawer_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/indicatror_cubit/indicator_index_cubit.dart';
 
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/drawer_widgets.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/listview_builder_item.dart';
+import 'package:flutter_application_1/features/search_feature/presentations/screens/search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../bloc/drawer_cubit/deawer_status.dart';
+import '../bloc/news_cubit/news_home_cubit.dart';
+import '../bloc/news_cubit/status_news.dart';
+import '../utils/drawer_onpress.dart';
 
 class Home extends StatefulWidget {
   static String rn = "/home";
-  const Home({super.key});
+
+   const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -38,6 +41,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appbar(context),
@@ -121,18 +125,19 @@ class _HomeState extends State<Home> {
       builder: (context, state) {
         if (state.status.state == StateNewsHome.complate) {
           var view = state.status.data as List<News>;
-
+          String baseUrl = "";
           return Container(
             margin: EdgeInsets.only(top: EsaySize.height(context) / 3.2),
             width: double.infinity,
             child: ListView.builder(
+              
               shrinkWrap: true,
               itemCount: view.length,
               itemBuilder: (context, index) {
                 return ItemHome(
                   time: view[index].dateTime!,
                   title: view[index].title!,
-                  pathImages: view[index].img!,
+                  pathImages: "$baseUrl${view[index].img!}",
                 );
               },
             ),
@@ -141,11 +146,7 @@ class _HomeState extends State<Home> {
 
         if (state.status.state == StateNewsHome.loading) {
           return Center(
-            child: SpinKitSpinningLines(
-              color: ConstColor.appbarColor,
-              lineWidth: 2,
-              size: EsaySize.height(context) / 5.5,
-            ),
+            child:CostumLoading.loadCube(context),
           );
         }
         if (state.status.state == StateNewsHome.error) {
@@ -175,7 +176,12 @@ class _HomeState extends State<Home> {
     return AppBar(
       backgroundColor: ConstColor.appbarColor,
       centerTitle: true,
-      leading: IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+      leading: IconButton(onPressed: () {
+              Navigator.pushNamed(
+                                context,
+                                Search.rn,
+                              );
+      }, icon: const Icon(Icons.search)),
       actions: [
         IconButton(
           onPressed: () {
@@ -254,23 +260,9 @@ class _HomeState extends State<Home> {
                         shrinkWrap: true,
                         children: DrawerWidgets.fullItems(
                           context: context,
-                          onpress: [
-                            () {},
-                            () {},
-                            () {
-                              Navigator.pushNamed(
-                                context,
-                                Favorite.rn,
-                              );
-                            },
-                            () {},
-                            () {
-                              Navigator.pushNamed(
-                                context,
-                                AboutUs.rn,
-                              );
-                            }
-                          ],
+                          onpress: OnPressDrawer.press(context)
+                     
+                          ,
                         ))
                     .animate()
                     .moveX(begin: EsaySize.width(context) / 3, end: 0),

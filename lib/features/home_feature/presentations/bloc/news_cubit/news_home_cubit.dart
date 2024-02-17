@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 
 import 'package:flutter_application_1/features/home_feature/data/model/news_home_model.dart';
 import 'package:flutter_application_1/features/home_feature/data/repository/api_news_provider.dart';
-import 'package:flutter_application_1/features/home_feature/presentations/bloc/cubit/status_news.dart';
+import 'package:flutter_application_1/features/home_feature/presentations/bloc/news_cubit/status_news.dart';
 
 part 'news_home_state.dart';
 

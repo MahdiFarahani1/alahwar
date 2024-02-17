@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/core/widgets/appbar_common.dart';
 import 'package:flutter_application_1/features/about_us_feature/widgets/widget_us.dart';
+
+import '../../../../core/common/appbar.dart';
 
 class AboutUs extends StatelessWidget {
   static String rn = "/aboutus";
