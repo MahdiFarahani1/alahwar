@@ -37,7 +37,7 @@ class NewsHomeCubit extends Cubit<NewsHomeState> {
           status: StatusNewsHome(
               state: StateNewsHome.error,
               data: null,
-              erorr: "The server has a problem")));
+              erorr: "Your internet has a problem")));
     }
   }
 }

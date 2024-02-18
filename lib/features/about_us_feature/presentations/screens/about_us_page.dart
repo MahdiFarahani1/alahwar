@@ -24,7 +24,7 @@ class AboutUs extends StatelessWidget {
             padding: const EdgeInsets.all(12.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: BtnSocial.allbtn(),
+              children: Btn.allbtn(),
             ),
           )
         ],

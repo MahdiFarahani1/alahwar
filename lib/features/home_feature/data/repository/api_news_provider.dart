@@ -7,3 +7,4 @@ class ApiNewsProvider {
     return res;
   }
 }
+

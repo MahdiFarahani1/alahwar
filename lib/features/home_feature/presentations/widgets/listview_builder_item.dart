@@ -8,12 +8,12 @@ class ItemHome extends StatelessWidget {
   final String title;
   final int time;
   final String pathImages;
-
+final bool isErorr ;
   const ItemHome(
       {super.key,
       required this.title,
       required this.time,
-      required this.pathImages});
+      required this.pathImages,this.isErorr = false});
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class ItemHome extends StatelessWidget {
                   );
                 },
                 errorWidget: (context, url, error) {
-                  return const Center(child: Icon(Icons.error));
+                  return const  Center(child: Icon(Icons.error,));
                 },
               ),
             ),
@@ -81,3 +81,4 @@ class ItemHome extends StatelessWidget {
     );
   }
 }
+

@@ -81,63 +81,82 @@ class _HomeState extends State<Home> {
     return SizedBox(
       width: double.infinity,
       height: EsaySize.height(context) / 3.8,
-      child: BlocBuilder<IndicatorIndexCubit, int>(
+      child: BlocBuilder<NewsHomeCubit, NewsHomeState>(
         builder: (context, state) {
-          return Stack(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: CarouselSlider(
-                  items: [
-                    Container(
-                      color: Colors.red,
+          if (state.status.state == StateNewsHome.loading) {
+            return Center(child: CostumLoading.loadCube(context));
+          }
+          if (state.status.state ==StateNewsHome.complate) {
+             String baseUrl = "https://alahwar-tv.com/upload_list/medium/";
+             var view = state.status.data as List<News>;
+            return BlocBuilder<IndicatorIndexCubit, int>(
+              
+              builder: (context, state) {
+                return Stack(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: CarouselSlider.builder(
+                        itemCount: 4,
+                      itemBuilder: (context, index, realIndex) {
+                        return  Container(
+                          decoration:  BoxDecoration(
+                           color: Colors.red,
+      
+                            image: DecorationImage(
+                              fit: BoxFit.contain,
+                              
+                              image: NetworkImage(view[index].img!))
+                          ),
+                          width: double.infinity,
+                            child: Text("$baseUrl${view[index].img!}"),
+                          );
+                      },
+                        options: CarouselOptions(
+                          aspectRatio: 16 / 9,
+                          onPageChanged: (index, reason) {
+                            BlocProvider.of<IndicatorIndexCubit>(context)
+                                .changeIndicator(index);
+                          },
+                          autoPlay: true,
+                          viewportFraction: 1,
+                          autoPlayAnimationDuration: const Duration(seconds: 2),
+                        ),
+                      ),
                     ),
-                    Container(
-                      color: Colors.purple,
-                    ),
-                    Container(
-                      color: Colors.blue,
-                    ),
-                    Container(
-                      color: Colors.green,
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10)),
+                        alignment: Alignment.center,
+                        height: 30,
+                        width: EsaySize.width(context) / 3.2,
+                        child: AnimatedSmoothIndicator(
+                            effect: WormEffect(
+                                dotWidth: 12,
+                                dotHeight: 12,
+                                dotColor: Colors.white,
+                                activeDotColor: ConstColor.appbarColor,
+                                type: WormType.thin),
+                            activeIndex: state,
+                            count: 4),
+                      ),
                     ),
                   ],
-                  options: CarouselOptions(
-                    aspectRatio: 16 / 9,
-                    onPageChanged: (index, reason) {
-                      BlocProvider.of<IndicatorIndexCubit>(context)
-                          .changeIndicator(index);
-                    },
-                    autoPlay: true,
-                    viewportFraction: 1,
-                    autoPlayAnimationDuration: const Duration(seconds: 2),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(10)),
-                  alignment: Alignment.center,
-                  height: 30,
-                  width: EsaySize.width(context) / 3.2,
-                  child: AnimatedSmoothIndicator(
-                      effect: WormEffect(
-                          dotWidth: 12,
-                          dotHeight: 12,
-                          dotColor: Colors.white,
-                          activeDotColor: ConstColor.appbarColor,
-                          type: WormType.thin),
-                      activeIndex: state,
-                      count: 4),
-                ),
-              ),
-            ],
-          );
+                );
+              },
+            );
+          }
+          if (state.status.state ==StateNewsHome.error) {
+            return const Center(child: Icon(Icons.error_outline_outlined));
+          }
+          return const SizedBox();
         },
+      
       ),
+      
     );
   }
 
@@ -146,7 +165,7 @@ class _HomeState extends State<Home> {
       builder: (context, state) {
         if (state.status.state == StateNewsHome.complate) {
           var view = state.status.data as List<News>;
-          String baseUrl = "";
+          String baseUrl = "https://alahwar-tv.com/upload_list/medium/";
           return Container(
             margin: EdgeInsets.only(
                 top: ismargin ? EsaySize.height(context) / 3.2 : 8),
@@ -174,17 +193,11 @@ class _HomeState extends State<Home> {
           return Container(
             margin: EdgeInsets.only(top: EsaySize.height(context) / 3.2),
             width: double.infinity,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return ItemHome(
-                  time: index,
+            child: ItemHome(
+                  time: 404,
                   title: state.status.erorr!,
                   pathImages: "",
-                );
-              },
-            ),
+                ),
           );
         }
 
@@ -195,6 +208,7 @@ class _HomeState extends State<Home> {
 
   AppBar appbar(BuildContext context) {
     return AppBar(
+      
       backgroundColor: ConstColor.appbarColor,
       centerTitle: true,
       leading: IconButton(
