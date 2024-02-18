@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/features/about_us_feature/presentations/screens/about_us_page.dart';
 import 'package:flutter_application_1/features/favorite_feature/presentations/screen/favorite.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/screens/home.dart';
@@ -14,9 +14,8 @@ class RoutesApp {
     SplashFailed.rn: (p0) => const SplashFailed(),
     AboutUs.rn: (p0) => const AboutUs(),
     Favorite.rn: (p0) => const Favorite(),
-    Mobasher.rn :(p0) => const Mobasher(),
-    Search.rn :(p0) => const Search(),
-    NewsMainPage.rn :(p0) => const NewsMainPage()
-    
-      };
+    Mobasher.rn: (p0) => const Mobasher(),
+    Search.rn: (p0) => const Search(),
+    NewsMainPage.rn: (p0) => const NewsMainPage()
+  };
 }

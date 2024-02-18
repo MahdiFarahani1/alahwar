@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/click_news_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/drawer_cubit/drawer_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/indicatror_cubit/indicator_index_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +12,10 @@ import 'features/splash_feature/presentations/screens/splash-Main.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -31,6 +36,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => HomeDrawerCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ClickNewsCubit(),
         ),
       ],
       child: MaterialApp(

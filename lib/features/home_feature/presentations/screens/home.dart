@@ -6,20 +6,19 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
-
+import 'package:flutter_application_1/features/home_feature/repositories/format_date.dart';
 import 'package:flutter_application_1/features/home_feature/data/model/news_home_model.dart';
-
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/drawer_cubit/drawer_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/home_drawer_cubit/home_drawer_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/home_drawer_cubit/home_drawer_status.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/indicatror_cubit/indicator_index_cubit.dart';
 
+import 'package:flutter_application_1/features/home_feature/presentations/screens/news_page.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/drawer_widgets.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/listview_builder_item.dart';
 import 'package:flutter_application_1/features/search_feature/presentations/screens/search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import '../bloc/drawer_cubit/deawer_status.dart';
 import '../bloc/news_cubit/news_home_cubit.dart';
 import '../bloc/news_cubit/status_news.dart';
@@ -35,10 +34,16 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late ScrollController controller;
   @override
   void initState() {
-    BlocProvider.of<NewsHomeCubit>(context).fetchData();
+    BlocProvider.of<NewsHomeCubit>(context).fetchDataFristTime(0);
+    controller = ScrollController()..addListener(_scrollListener);
     super.initState();
+  }
+
+  void _scrollListener() {
+    BlocProvider.of<NewsHomeCubit>(context).loadMore(controller);
   }
 
   @override
@@ -84,13 +89,12 @@ class _HomeState extends State<Home> {
       child: BlocBuilder<NewsHomeCubit, NewsHomeState>(
         builder: (context, state) {
           if (state.status.state == StateNewsHome.loading) {
-            return Center(child: CostumLoading.loadCube(context));
+            return Center(child: CostumLoading.loadLine(context));
           }
-          if (state.status.state ==StateNewsHome.complate) {
-             String baseUrl = "https://alahwar-tv.com/upload_list/medium/";
-             var view = state.status.data as List<News>;
+          if (state.status.state == StateNewsHome.complate) {
+            String baseUrl = "https://alahwar-tv.com/upload_list/medium/";
+            var view = state.status.data as List<NewsGet>;
             return BlocBuilder<IndicatorIndexCubit, int>(
-              
               builder: (context, state) {
                 return Stack(
                   children: [
@@ -98,20 +102,24 @@ class _HomeState extends State<Home> {
                       width: double.infinity,
                       child: CarouselSlider.builder(
                         itemCount: 4,
-                      itemBuilder: (context, index, realIndex) {
-                        return  Container(
-                          decoration:  BoxDecoration(
-                           color: Colors.red,
-      
-                            image: DecorationImage(
-                              fit: BoxFit.contain,
-                              
-                              image: NetworkImage(view[index].img!))
-                          ),
-                          width: double.infinity,
-                            child: Text("$baseUrl${view[index].img!}"),
+                        itemBuilder: (context, index, realIndex) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, NewsMainPage.rn,
+                                  arguments:
+                                      view[(index + view.length) - 4].id!);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: ConstColor.bgColor,
+                                  image: DecorationImage(
+                                      fit: BoxFit.contain,
+                                      image: NetworkImage(
+                                          "$baseUrl${view[(index + view.length) - 4].img!}"))),
+                              width: double.infinity,
+                            ),
                           );
-                      },
+                        },
                         options: CarouselOptions(
                           aspectRatio: 16 / 9,
                           onPageChanged: (index, reason) {
@@ -149,14 +157,12 @@ class _HomeState extends State<Home> {
               },
             );
           }
-          if (state.status.state ==StateNewsHome.error) {
+          if (state.status.state == StateNewsHome.error) {
             return const Center(child: Icon(Icons.error_outline_outlined));
           }
           return const SizedBox();
         },
-      
       ),
-      
     );
   }
 
@@ -164,22 +170,49 @@ class _HomeState extends State<Home> {
     return BlocBuilder<NewsHomeCubit, NewsHomeState>(
       builder: (context, state) {
         if (state.status.state == StateNewsHome.complate) {
-          var view = state.status.data as List<News>;
+          var view = state.news;
+
           String baseUrl = "https://alahwar-tv.com/upload_list/medium/";
           return Container(
             margin: EdgeInsets.only(
                 top: ismargin ? EsaySize.height(context) / 3.2 : 8),
             width: double.infinity,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: view.length,
-              itemBuilder: (context, index) {
-                return ItemHome(
-                  time: view[index].dateTime!,
-                  title: view[index].title!,
-                  pathImages: "$baseUrl${view[index].img!}",
-                );
-              },
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    controller: controller,
+                    shrinkWrap: true,
+                    itemCount: view.length,
+                    itemBuilder: (context, index) {
+                      return ItemHome(
+                        time: FormatData.result(view[index].dateTime!),
+                        title: view[index].title!,
+                        pathImages: "$baseUrl${view[index].img!}",
+                        onTap: () {
+                          Navigator.pushNamed(context, NewsMainPage.rn,
+                              arguments: view[index].id);
+                        },
+                      );
+                    },
+                  ),
+                ),
+                if (state.isLoadMoreRunning == true)
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 40),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                if (state.hasNextPage == false)
+                  Container(
+                    padding: const EdgeInsets.only(top: 30, bottom: 40),
+                    color: Colors.amber,
+                    child: const Center(
+                      child: Text('You have fetched all of the content'),
+                    ),
+                  ),
+              ],
             ),
           );
         }
@@ -194,10 +227,10 @@ class _HomeState extends State<Home> {
             margin: EdgeInsets.only(top: EsaySize.height(context) / 3.2),
             width: double.infinity,
             child: ItemHome(
-                  time: 404,
-                  title: state.status.erorr!,
-                  pathImages: "",
-                ),
+              time: "404",
+              title: state.status.erorr!,
+              pathImages: "",
+            ),
           );
         }
 
@@ -208,7 +241,6 @@ class _HomeState extends State<Home> {
 
   AppBar appbar(BuildContext context) {
     return AppBar(
-      
       backgroundColor: ConstColor.appbarColor,
       centerTitle: true,
       leading: IconButton(
@@ -227,7 +259,7 @@ class _HomeState extends State<Home> {
           icon: const Icon(Icons.menu),
         ),
       ],
-      title: const Text("Alahvar"),
+      title: const Text("Alahwar"),
     );
   }
 

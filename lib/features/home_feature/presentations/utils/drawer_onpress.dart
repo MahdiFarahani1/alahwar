@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/home_drawer_cubit/home_drawer_cubit.dart';
-import 'package:flutter_application_1/features/home_feature/presentations/screens/news_page.dart';
 import 'package:flutter_application_1/features/mobasher_feature/presentations/screens/mobasher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,12 +27,7 @@ class OnPressDrawer {
           Favorite.rn,
         );
       },
-      () {
-          Navigator.pushNamed(
-          context,
-          NewsMainPage.rn,
-        );
-      },
+      () {},
       () {
         Navigator.pushNamed(
           context,

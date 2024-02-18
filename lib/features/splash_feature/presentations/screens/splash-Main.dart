@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/screens/home.dart';
+import 'package:flutter_application_1/features/splash_feature/presentations/screens/splash_failed.dart';
+import 'package:flutter_application_1/features/splash_feature/repositories/splash_repository.dart';
 
 class SplashMain extends StatefulWidget {
   const SplashMain({super.key});
@@ -17,13 +19,13 @@ class _SplashMainState extends State<SplashMain> {
       systemNavigationBarColor: ConstColor.appbarColor,
     ));
     Future.delayed(const Duration(seconds: 2), () async {
-      // if (await SplashRepository().isConnect()) {
-        //ignore: use_build_context_synchronously
+      if (await SplashRepository().isConnect()) {
+        //   ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, Home.rn);
-      // } else {
-        //ignore: use_build_context_synchronously
-        // Navigator.pushReplacementNamed(context, SplashFailed.rn);
-      // }
+      } else {
+        //  ignore: use_build_context_synchronously
+        Navigator.pushReplacementNamed(context, SplashFailed.rn);
+      }
     });
     super.initState();
   }

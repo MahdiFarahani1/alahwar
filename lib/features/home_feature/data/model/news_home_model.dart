@@ -1,13 +1,13 @@
 class NewsHomeModel {
-  List<News>? news;
+  List<NewsGet>? news;
 
   NewsHomeModel({this.news});
 
   NewsHomeModel.fromJson(Map<String, dynamic> json) {
     if (json['news'] != null) {
-      news = <News>[];
+      news = <NewsGet>[];
       json['news'].forEach((v) {
-        news!.add(News.fromJson(v));
+        news!.add(NewsGet.fromJson(v));
       });
     }
   }
@@ -21,17 +21,17 @@ class NewsHomeModel {
   }
 }
 
-class News {
+class NewsGet {
   int? id;
   int? categoryId;
   String? title;
   String? img;
   int? dateTime;
 
-  News({this.id, this.categoryId, this.title, this.img, this.dateTime});
+  NewsGet({this.id, this.categoryId, this.title, this.img, this.dateTime});
 
-  factory News.fromJson(Map<String, dynamic> json) {
-    return News(
+  factory NewsGet.fromJson(Map<String, dynamic> json) {
+    return NewsGet(
       id: json['id'],
       categoryId: json['category_id'],
       title: json['title'],
