@@ -1,21 +1,18 @@
-import 'dart:io';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class SplashRepository {
-  Future<bool> checkConnetion() async {
-    try {
-      final result = await InternetAddress.lookup("example.com");
-      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } on SocketException catch (_) {
+  Future<bool> checkConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      return true;
+    } else {
       return false;
     }
   }
 
   Future<bool> isConnect() async {
-    final isConnect = await SplashRepository().checkConnetion();
-    if (isConnect) {
-      return isConnect;
-    } else {
-      return isConnect;
-    }
+    final isConnect = await SplashRepository().checkConnection();
+    return isConnect;
   }
 }
