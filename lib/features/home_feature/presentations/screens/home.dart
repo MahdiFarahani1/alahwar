@@ -42,6 +42,12 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   void _scrollListener() {
     BlocProvider.of<NewsHomeCubit>(context).loadMore(controller);
   }
@@ -198,10 +204,10 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 if (state.isLoadMoreRunning == true)
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 40),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 40),
                     child: Center(
-                      child: CircularProgressIndicator(),
+                      child: CostumLoading.fadingCircle(context),
                     ),
                   ),
                 if (state.hasNextPage == false)

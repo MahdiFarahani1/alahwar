@@ -20,8 +20,9 @@ class NewsHomeCubit extends Cubit<NewsHomeState> {
       emit(state.copyWith(isLoadMoreRunning: true));
 
       try {
-        var res = await ApiNewsProvider().providerGet(state.start);
         state.start += 20;
+
+        var res = await ApiNewsProvider().providerGet(state.start);
 
         if (res.statusCode == 200) {
           List<dynamic> newsList = res.data['news'];
@@ -44,7 +45,7 @@ class NewsHomeCubit extends Cubit<NewsHomeState> {
     }
   }
 
-  fetchDataFristTime(int number) async {
+  void fetchDataFristTime(int number) async {
     emit(NewsHomeState(status: StatusNewsHome(state: StateNewsHome.loading)));
     try {
       var response = await ApiNewsProvider().providerGet(number);

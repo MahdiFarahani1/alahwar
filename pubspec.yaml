@@ -47,6 +47,7 @@ dependencies:
   flutter_cors: ^1.2.0
   getwidget: ^4.0.0
   font_awesome_flutter: ^10.7.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
