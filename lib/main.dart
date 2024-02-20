@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/click_news_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/drawer_cubit/drawer_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/indicatror_cubit/indicator_index_cubit.dart';
+import 'package:flutter_application_1/features/search_feature/presentations/bloc/search_cubit/search_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'config/app-routes.dart';
@@ -39,6 +40,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ClickNewsCubit(),
+        ),
+        BlocProvider(
+          create: (context) => SearchCubit(),
         ),
       ],
       child: MaterialApp(

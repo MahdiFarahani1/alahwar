@@ -1,26 +1,139 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/common/appbar.dart';
+import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
+import 'package:flutter_application_1/features/home_feature/presentations/screens/news_page.dart';
+import 'package:flutter_application_1/features/home_feature/presentations/widgets/listview_builder_item.dart';
+import 'package:flutter_application_1/features/home_feature/repositories/format_date.dart';
+import 'package:flutter_application_1/features/search_feature/presentations/bloc/search_cubit/search_cubit.dart';
+import 'package:flutter_application_1/features/search_feature/presentations/bloc/search_cubit/status.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Search extends StatelessWidget {
+class Search extends StatefulWidget {
   static String rn = "/Search";
   const Search({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBarCommon.appBar("Search"),
-        backgroundColor: Colors.grey.shade900,
-        body: SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            children: [dropDown(context), input(context), box(context)],
-          ),
-        ));
+  State<Search> createState() => _SearchState();
+}
+
+class _SearchState extends State<Search> {
+  late ScrollController controller;
+
+  final TextEditingController textEditingController = TextEditingController();
+  @override
+  void dispose() {
+    controller.dispose();
+
+    super.dispose();
   }
 
-  Container box(BuildContext context) {
+  @override
+  void initState() {
+    controller = ScrollController()..addListener(_scrollListener);
+
+    super.initState();
+  }
+
+  void _scrollListener() {
+    BlocProvider.of<SearchCubit>(context).loadMore(
+        controller: controller,
+        sctitle: 1,
+        sctxt: 0,
+        sw: textEditingController.text);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBarCommon.appBar("Search"),
+      backgroundColor: Colors.grey.shade900,
+      body: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: BlocBuilder<SearchCubit, SearchState>(
+            builder: (context, state) {
+              if (state.status is LoadingSearch) {
+                return Column(
+                  children: [
+                    dropDown(context),
+                    input(context),
+                    Expanded(
+                        child: Center(child: CostumLoading.loadCube(context))),
+                  ],
+                );
+              }
+              if (state.status is InitSearch) {
+                return Column(
+                  children: [
+                    dropDown(context),
+                    input(context),
+                  ],
+                );
+              }
+              if (state.status is ErrorSearch) {
+                return Column(
+                  children: [
+                    dropDown(context),
+                    input(context),
+                    box(context, "There is a problem with your internet"),
+                  ],
+                );
+              }
+              if (state.status is ComplateSearch) {
+                var view = state.news;
+
+                return Column(
+                  children: [
+                    dropDown(context),
+                    input(context),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: controller,
+                        itemCount: view.length,
+                        itemBuilder: (context, index) {
+                          String baseUrl =
+                              "https://alahwar-tv.com/upload_list/medium/";
+
+                          return ItemHome(
+                            time: FormatData.result(view[index].dateTime!),
+                            title: view[index].title!,
+                            pathImages: "$baseUrl${view[index].img!}",
+                            onTap: () {
+                              Navigator.pushNamed(context, NewsMainPage.rn,
+                                  arguments: view[index].id);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    if (state.isLoadMoreRunning)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 40),
+                        child: Center(
+                          child: CostumLoading.fadingCircle(context),
+                        ),
+                      ),
+                    if (!state.hasNextPage)
+                      Container(
+                        padding: const EdgeInsets.only(top: 30, bottom: 40),
+                        color: Colors.amber,
+                        child: const Center(
+                          child: Text('You have fetched all of the content'),
+                        ),
+                      ),
+                  ],
+                );
+              }
+
+              return Container();
+            },
+          )),
+    );
+  }
+
+  Container box(BuildContext context, String txt) {
     return Container(
       height: EsaySize.height(context) / 15,
       width: double.infinity,
@@ -28,7 +141,7 @@ class Search extends StatelessWidget {
       alignment: Alignment.center,
       color: Colors.white,
       child: const Text(
-        "gfklklhglhlg...",
+        "txt",
         style: TextStyle(color: Colors.redAccent),
       ),
     );
@@ -41,10 +154,26 @@ class Search extends StatelessWidget {
       height: EsaySize.height(context) / 15,
       color: Colors.white,
       child: Row(children: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-        const Expanded(
+        IconButton(
+            onPressed: () {
+              BlocProvider.of<SearchCubit>(context).search(
+                  sw: textEditingController.text,
+                  sctitle: 1,
+                  sctxt: 1,
+                  start: 0);
+            },
+            icon: const Icon(Icons.search)),
+        Expanded(
           child: TextField(
-            decoration: InputDecoration(
+            onSubmitted: (value) {
+              BlocProvider.of<SearchCubit>(context).search(
+                  sw: textEditingController.text,
+                  sctitle: 1,
+                  sctxt: 1,
+                  start: 0);
+            },
+            controller: textEditingController,
+            decoration: const InputDecoration(
               contentPadding: EdgeInsets.all(10),
               border: InputBorder.none,
             ),

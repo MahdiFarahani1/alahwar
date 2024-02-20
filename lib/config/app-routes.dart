@@ -15,7 +15,7 @@ class RoutesApp {
     AboutUs.rn: (p0) => const AboutUs(),
     Favorite.rn: (p0) => const Favorite(),
     Mobasher.rn: (p0) => const Mobasher(),
-    Search.rn: (p0) => const Search(),
+    Search.rn: (p0) => Search(),
     NewsMainPage.rn: (p0) => const NewsMainPage()
   };
 }
