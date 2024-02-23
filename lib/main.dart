@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/config/app_setup.dart';
 import 'package:flutter_application_1/config/app_theme.dart';
+import 'package:flutter_application_1/config/setupMain.dart';
 import 'package:flutter_application_1/features/favorite_feature/presentation/bloc/cubit/database_list_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/click_news_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/indicatror_cubit/indicator_index_cubit.dart';
@@ -15,7 +15,6 @@ import 'features/splash_feature/presentations/screens/splash-Main.dart';
 
 Future<void> main() async {
   await setUp();
-
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(const MyApp());
