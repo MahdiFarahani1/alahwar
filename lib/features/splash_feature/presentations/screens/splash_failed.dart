@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
+import 'package:flutter_application_1/features/favorite_feature/presentation/screen/favorite.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/screens/home.dart';
 import 'package:flutter_application_1/features/splash_feature/presentations/widgets/btn_lose_net.dart';
 import 'package:flutter_application_1/features/splash_feature/repositories/splash_repository.dart';
@@ -26,7 +27,7 @@ class SplashFailed extends StatelessWidget {
                 const Spacer(),
                 const Text("Your Connection Have Problem..."),
                 EsaySize.gap(10),
-                BtnSplash.btn(context, "item 1", () async {
+                BtnSplash.btn(context, "try again", () async {
                   if (await SplashRepository().isConnect()) {
                     // ignore: use_build_context_synchronously
                     Navigator.pushReplacementNamed(context, Home.rn);
@@ -42,9 +43,11 @@ class SplashFailed extends StatelessWidget {
                   }
                 }),
                 EsaySize.gap(10),
-                BtnSplash.btn(context, "item 3", () {}),
+                BtnSplash.btn(context, "favorite", () {
+                  Navigator.pushNamed(context, Favorite.rn);
+                }),
                 const Spacer(),
-                const Text("Alahor"),
+                //  const Text("Alahor"),
               ]),
         ),
       ),

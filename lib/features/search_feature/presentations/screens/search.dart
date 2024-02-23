@@ -57,7 +57,7 @@ class _SearchState extends State<Search> {
               if (state.status is LoadingSearch) {
                 return Column(
                   children: [
-                    dropDown(context),
+                    //  dropDown(context),
                     input(context),
                     Expanded(
                         child: Center(child: CostumLoading.loadCube(context))),
@@ -67,7 +67,7 @@ class _SearchState extends State<Search> {
               if (state.status is InitSearch) {
                 return Column(
                   children: [
-                    dropDown(context),
+                    //      dropDown(context),
                     input(context),
                   ],
                 );
@@ -75,7 +75,7 @@ class _SearchState extends State<Search> {
               if (state.status is ErrorSearch) {
                 return Column(
                   children: [
-                    dropDown(context),
+                    //   dropDown(context),
                     input(context),
                     box(context, "There is a problem with your internet"),
                   ],
@@ -86,7 +86,7 @@ class _SearchState extends State<Search> {
 
                 return Column(
                   children: [
-                    dropDown(context),
+                    //      dropDown(context),
                     input(context),
                     Expanded(
                       child: ListView.builder(

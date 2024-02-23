@@ -6,12 +6,13 @@ import 'package:flutter_application_1/core/common/gradient.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
-import 'package:flutter_application_1/features/favorite_feature/date/local/database.dart';
+
 import 'package:flutter_application_1/features/favorite_feature/presentation/bloc/cubit/database_list_cubit.dart';
+import 'package:flutter_application_1/features/favorite_feature/repository/operator_save.dart';
 import 'package:flutter_application_1/features/home_feature/data/model/click_news_model.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/click_news_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/status_click_news.dart';
-import 'package:flutter_application_1/features/home_feature/repositories/format_date.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -110,68 +111,22 @@ class NewsMainPage extends StatelessWidget {
                                           ? Icons.star
                                           : Icons.star_border,
                                       size: 15,
-                                      onTap: () async {
+                                      onTap: () {
                                         setState(
                                           () {
                                             isFavorite = !isFavorite;
                                             box.put('favorite_${view[0].id}',
                                                 isFavorite);
                                             if (isFavorite) {
-                                              if (!saveBox.values
-                                                  .contains(view[0].id)) {
-                                                saveBox.add(view[0].id);
-                                              }
-
-                                              box
-                                                  .put(
-                                                      view[0].id,
-                                                      ObjectDataBase(
-                                                          pathImage:
-                                                              '$baseUrl${view[0].img!}',
-                                                          title: view[0].title!,
-                                                          dateTime: FormatData
-                                                              .result(view[0]
-                                                                  .dateTime!)))
-                                                  .then((value) async {
-                                                BlocProvider.of<
-                                                            DatabaseListCubit>(
-                                                        context)
-                                                    .addList(view[0].id!);
-                                              });
+                                              OperatorSave.addDatabase(
+                                                  context: context, view: view);
                                             } else {
-                                              saveBox.values.forEach((value) {
-                                                if (value == view[0].id) {
-                                                  // Here you need to find the corresponding key and delete it
-                                                  var keyToRemove = saveBox.keys
-                                                      .firstWhere(
-                                                          (key) =>
-                                                              saveBox
-                                                                  .get(key) ==
-                                                              value,
-                                                          orElse: () => null);
-                                                  if (keyToRemove != null) {
-                                                    saveBox.delete(keyToRemove);
-                                                  }
-                                                }
-                                              });
-
-                                              box
-                                                  .delete(view[0].id)
-                                                  .then((value) {
-                                                BlocProvider.of<
-                                                            DatabaseListCubit>(
-                                                        context)
-                                                    .removeList(view[0].id!);
-                                              });
+                                              OperatorSave.deleteDatabsae(
+                                                  id: view[0].id!,
+                                                  context: context);
                                             }
                                           },
                                         );
-
-                                        print(
-                                            "-------------------------------------");
-
-                                        print(
-                                            "savebox lentgh: ${saveBox.length}");
                                       },
                                     );
                                   },

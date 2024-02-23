@@ -10,7 +10,7 @@ class DrawerWidgets {
   }) {
     return Container(
       alignment: Alignment.centerRight,
-      width: MediaQuery.of(context).size.width / 1.5 / 2,
+      width: MediaQuery.of(context).size.width,
       height: 40,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -40,27 +40,27 @@ class DrawerWidgets {
     return [
       drawerItem(
           context: context,
-          text: "item1",
+          text: "Home",
           iconData: Icons.home,
           onpress: onpress[0]),
       drawerItem(
           context: context,
-          text: "item2",
+          text: "Mobasher",
           iconData: Icons.tv,
           onpress: onpress[1]),
       drawerItem(
           context: context,
-          text: "item3",
+          text: "Favorites",
           iconData: Icons.star_border_outlined,
           onpress: onpress[2]),
       drawerItem(
           context: context,
-          text: "item4",
+          text: "Settings",
           iconData: Icons.settings,
           onpress: onpress[3]),
       drawerItem(
           context: context,
-          text: "item5",
+          text: "AboutUs",
           iconData: Icons.phone_android,
           onpress: onpress[4]),
     ];

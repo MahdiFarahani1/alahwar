@@ -1,14 +1,11 @@
-import 'dart:ui';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_application_1/core/common/gradient.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
 import 'package:flutter_application_1/features/home_feature/repositories/format_date.dart';
 import 'package:flutter_application_1/features/home_feature/data/model/news_home_model.dart';
-import 'package:flutter_application_1/features/home_feature/presentations/bloc/drawer_cubit/drawer_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/home_drawer_cubit/home_drawer_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/home_drawer_cubit/home_drawer_status.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/indicatror_cubit/indicator_index_cubit.dart';
@@ -19,7 +16,6 @@ import 'package:flutter_application_1/features/home_feature/presentations/widget
 import 'package:flutter_application_1/features/search_feature/presentations/screens/search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../bloc/drawer_cubit/deawer_status.dart';
 import '../bloc/news_cubit/news_home_cubit.dart';
 import '../bloc/news_cubit/status_news.dart';
 import '../utils/drawer_onpress.dart';
@@ -57,6 +53,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: appbar(context),
+        endDrawer: costumDrawer(),
         body: BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
           builder: (context, state) {
             if (state.status is LoadingHome) {
@@ -69,7 +66,6 @@ class _HomeState extends State<Home> {
               return Stack(
                 children: [
                   news(false),
-                  costumDrawer(),
                 ],
               );
             }
@@ -79,13 +75,50 @@ class _HomeState extends State<Home> {
                   sliderImages(context),
                   news(true),
                   category(context),
-                  costumDrawer(),
                 ],
               );
             }
             return const SizedBox();
           },
         ));
+  }
+
+  Builder costumDrawer() {
+    return Builder(builder: (context) {
+      var appBarHeight = Scaffold.of(context).appBarMaxHeight!;
+      return Container(
+        width: EsaySize.width(context) * 0.7,
+        margin: EdgeInsets.only(top: appBarHeight),
+        height: EsaySize.height(context) - appBarHeight,
+        decoration: BoxDecoration(gradient: CostumGradient.linear()),
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.bottomCenter,
+              width: EsaySize.width(context),
+              height: EsaySize.height(context) / 4,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.fitWidth,
+                      image: AssetImage("assets/images/oops.jpg"))),
+              child:
+                  const Divider(color: Colors.black, height: 2, thickness: 1.5),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              width: EsaySize.width(context),
+              child: SingleChildScrollView(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: DrawerWidgets.fullItems(
+                        context: context,
+                        onpress: OnPressDrawer.press(context))),
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   SizedBox sliderImages(BuildContext context) {
@@ -257,14 +290,6 @@ class _HomeState extends State<Home> {
             );
           },
           icon: const Icon(Icons.search)),
-      actions: [
-        IconButton(
-          onPressed: () {
-            BlocProvider.of<DrawerCubit>(context).openDrawer();
-          },
-          icon: const Icon(Icons.menu),
-        ),
-      ],
       title: const Text("Alahwar"),
     );
   }
@@ -293,109 +318,6 @@ class _HomeState extends State<Home> {
           );
         },
       ),
-    );
-  }
-
-  BlocBuilder<DrawerCubit, DrawerState> costumDrawer() {
-    return BlocBuilder<DrawerCubit, DrawerState>(
-      builder: (context, state) {
-        if (state.status is Open) {
-          return Stack(
-            children: [
-              Container(
-                color: Colors.white,
-                width: EsaySize.width(context) / 1.5,
-                height: double.infinity,
-                alignment: Alignment.centerRight,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        BlocProvider.of<DrawerCubit>(context).openDrawer();
-                      },
-                      child: Image.asset(
-                        "assets/images/oops.jpg",
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    const Divider(
-                      color: Colors.black,
-                      thickness: 0.8,
-                      height: 2,
-                    ),
-                  ],
-                ),
-              ).animate().moveX(
-                  begin: EsaySize.width(context),
-                  end: EsaySize.width(context) / 3),
-              Padding(
-                padding: EdgeInsets.only(top: EsaySize.height(context) / 3.8),
-                child: ListView(
-                        shrinkWrap: true,
-                        children: DrawerWidgets.fullItems(
-                          context: context,
-                          onpress: OnPressDrawer.press(context),
-                        ))
-                    .animate()
-                    .moveX(begin: EsaySize.width(context) / 3, end: 0),
-              ),
-              Positioned(
-                top: 0,
-                bottom: 0,
-                left: 0,
-                child: ClipRect(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 3.20, sigmaY: 3.2),
-                    child: GestureDetector(
-                      onTap: () {
-                        BlocProvider.of<DrawerCubit>(context).openDrawer();
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        width: EsaySize.width(context) / 3,
-                        height: EsaySize.height(context),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        }
-
-        if (state.status is Close) {
-          return Container(
-            color: Colors.white,
-            width: EsaySize.width(context) / 1.5,
-            height: EsaySize.height(context),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Image.asset(
-                  "assets/images/oops.jpg",
-                  fit: BoxFit.contain,
-                ),
-                const Divider(color: Colors.black, thickness: 0.8, height: 2),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: DrawerWidgets.fullItems(
-                    context: context,
-                    onpress: [() {}, () {}, () {}, () {}, () {}],
-                  ),
-                ),
-              ],
-            ),
-          ).animate().moveX(
-                begin: EsaySize.width(context) / 3,
-                end: EsaySize.width(context),
-              );
-        }
-        if (state.status is Init) {
-          return const SizedBox();
-        }
-        return const SizedBox();
-      },
     );
   }
 }
