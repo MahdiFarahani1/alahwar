@@ -49,6 +49,7 @@ class ItemHome extends StatelessWidget {
                       right: EsaySize.width(context) / 11, top: 5),
                   child: isSearch
                       ? TextHighlight(
+                          textStyle: Theme.of(context).textTheme.titleMedium,
                           text: title,
                           textDirection: TextDirection.rtl,
                           words: {
@@ -59,6 +60,7 @@ class ItemHome extends StatelessWidget {
                           },
                         )
                       : Text(
+                          style: Theme.of(context).textTheme.titleMedium,
                           title,
                           textDirection: TextDirection.rtl,
                         ),

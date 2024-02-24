@@ -4,6 +4,7 @@ import 'package:hive_flutter/adapters.dart';
 
 late Box box;
 late Box saveBox;
+
 Future<void> setUp() async {
   WidgetsFlutterBinding.ensureInitialized();
 

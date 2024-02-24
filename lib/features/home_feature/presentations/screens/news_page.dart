@@ -13,6 +13,7 @@ import 'package:flutter_application_1/features/home_feature/data/model/click_new
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/click_news_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/status_click_news.dart';
 import 'package:flutter_application_1/features/home_feature/repositories/format_html.dart';
+import 'package:flutter_application_1/features/settings_feature/presentation/bloc/theme_cubit/fontsize_cubit.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -72,8 +73,12 @@ class NewsMainPage extends StatelessWidget {
                 ),
                 EsaySize.gap(10),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(view[0].title!),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    textDirection: TextDirection.rtl,
+                    view[0].title!,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                 ),
                 Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -90,12 +95,29 @@ class NewsMainPage extends StatelessWidget {
                             Btn.btncircle(
                                 iconData: FontAwesomeIcons.plus,
                                 size: 10,
-                                onTap: () {}),
+                                onTap: () {
+                                  BlocProvider.of<ThemeCubit>(context)
+                                      .plusFontSize();
+                                  saveBox.put(
+                                      "fontsize",
+                                      BlocProvider.of<ThemeCubit>(context)
+                                          .state
+                                          .fontSize);
+                                }),
                             EsaySize.gap(5),
                             Btn.btncircle(
                                 iconData: FontAwesomeIcons.minus,
                                 size: 10,
-                                onTap: () {}),
+                                onTap: () {
+                                  print(Colors.black);
+                                  BlocProvider.of<ThemeCubit>(context)
+                                      .minesFontSize();
+                                  saveBox.put(
+                                      "fontsize",
+                                      BlocProvider.of<ThemeCubit>(context)
+                                          .state
+                                          .fontSize);
+                                }),
                           ],
                         ),
                         Row(
@@ -153,6 +175,8 @@ class NewsMainPage extends StatelessWidget {
                       padding: const EdgeInsets.all(11.0),
                       child: SingleChildScrollView(
                           child: Text(
+                              style: Theme.of(context).textTheme.bodyLarge,
+                              textDirection: TextDirection.rtl,
                               FormatHtml.parseHtmlString(view[0].content!))),
                     ),
                   ),

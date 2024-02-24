@@ -6,6 +6,7 @@ import 'package:flutter_application_1/features/favorite_feature/presentation/blo
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/click_news_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/indicatror_cubit/indicator_index_cubit.dart';
 import 'package:flutter_application_1/features/search_feature/presentations/bloc/search_cubit/search_cubit.dart';
+import 'package:flutter_application_1/features/settings_feature/presentation/bloc/theme_cubit/fontsize_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'config/app-routes.dart';
@@ -27,33 +28,43 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => IndicatorIndexCubit(),
-        ),
-        BlocProvider(
-          create: (context) => NewsHomeCubit(),
-        ),
-        BlocProvider(
-          create: (context) => HomeDrawerCubit(),
-        ),
-        BlocProvider(
-          create: (context) => ClickNewsCubit(),
-        ),
-        BlocProvider(
-          create: (context) => SearchCubit(),
-        ),
-        BlocProvider(
-          create: (context) => DatabaseListCubit(),
-        ),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: "/",
-        routes: RoutesApp.routes,
-        theme: AppTheme().themeData(context),
-        home: const SplashMain(),
-      ),
-    );
+        providers: [
+          BlocProvider(
+            create: (context) => ThemeCubit(),
+          ),
+          BlocProvider(
+            create: (context) => IndicatorIndexCubit(),
+          ),
+          BlocProvider(
+            create: (context) => NewsHomeCubit(),
+          ),
+          BlocProvider(
+            create: (context) => HomeDrawerCubit(),
+          ),
+          BlocProvider(
+            create: (context) => ClickNewsCubit(),
+          ),
+          BlocProvider(
+            create: (context) => SearchCubit(),
+          ),
+          BlocProvider(
+            create: (context) => DatabaseListCubit(),
+          ),
+        ],
+        child: BlocBuilder<ThemeCubit, ThemeState>(
+          builder: (context, state) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              initialRoute: "/",
+              routes: RoutesApp.routes,
+              theme: AppTheme().themeData(
+                  context: context,
+                  fontSize: state.fontSize,
+                  titleColor: Color(state.titleColor),
+                  contentColor: Color(state.contentColor)),
+              home: const SplashMain(),
+            );
+          },
+        ));
   }
 }
