@@ -24,14 +24,14 @@ class _SearchState extends State<Search> {
   @override
   void dispose() {
     controller.dispose();
-
     super.dispose();
   }
 
   @override
   void initState() {
     controller = ScrollController()..addListener(_scrollListener);
-
+    BlocProvider.of<SearchCubit>(context).initPage();
+    textEditingController.clear();
     super.initState();
   }
 
@@ -97,6 +97,8 @@ class _SearchState extends State<Search> {
                               "https://alahwar-tv.com/upload_list/medium/";
 
                           return ItemHome(
+                            isSearch: true,
+                            searchWord: textEditingController.text,
                             time: FormatData.result(view[index].dateTime!),
                             title: view[index].title!,
                             pathImages: "$baseUrl${view[index].img!}",

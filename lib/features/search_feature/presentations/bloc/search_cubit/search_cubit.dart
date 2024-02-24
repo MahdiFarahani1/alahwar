@@ -10,6 +10,10 @@ part 'search_state.dart';
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit() : super(SearchState(status: InitSearch()));
 
+  initPage() {
+    emit(SearchState(status: InitSearch()));
+  }
+
   Future<void> search(
       {required int start,
       required String sw,

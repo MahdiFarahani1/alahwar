@@ -12,6 +12,7 @@ import 'package:flutter_application_1/features/favorite_feature/repository/opera
 import 'package:flutter_application_1/features/home_feature/data/model/click_news_model.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/click_news_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/status_click_news.dart';
+import 'package:flutter_application_1/features/home_feature/repositories/format_html.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -150,8 +151,9 @@ class NewsMainPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12)),
                     child: Padding(
                       padding: const EdgeInsets.all(11.0),
-                      child:
-                          SingleChildScrollView(child: Text(view[0].content!)),
+                      child: SingleChildScrollView(
+                          child: Text(
+                              FormatHtml.parseHtmlString(view[0].content!))),
                     ),
                   ),
                 ),

@@ -3,19 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
+import 'package:highlight_text/highlight_text.dart';
 
 class ItemHome extends StatelessWidget {
   final String title;
   final String time;
   final String pathImages;
-
+  final bool isSearch;
   final VoidCallback? onTap;
-  const ItemHome(
-      {super.key,
-      required this.title,
-      required this.time,
-      required this.pathImages,
-      this.onTap});
+  final String? searchWord;
+  const ItemHome({
+    super.key,
+    required this.title,
+    required this.time,
+    required this.pathImages,
+    this.onTap,
+    this.isSearch = false,
+    this.searchWord,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +47,21 @@ class ItemHome extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(
                       right: EsaySize.width(context) / 11, top: 5),
-                  child: Text(
-                    title,
-                    textDirection: TextDirection.rtl,
-                  ),
+                  child: isSearch
+                      ? TextHighlight(
+                          text: title,
+                          textDirection: TextDirection.rtl,
+                          words: {
+                            searchWord!: HighlightedWord(
+                                textStyle: TextStyle(
+                                    color: ConstColor.objectColor,
+                                    fontWeight: FontWeight.bold))
+                          },
+                        )
+                      : Text(
+                          title,
+                          textDirection: TextDirection.rtl,
+                        ),
                 ),
               ),
             ),
