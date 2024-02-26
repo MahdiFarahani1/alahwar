@@ -1,13 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/setupMain.dart';
-import 'package:meta/meta.dart';
 
 part 'fontsize_state.dart';
 
 class ThemeCubit extends Cubit<ThemeState> {
   ThemeCubit()
-      : super(const ThemeState(fontSize: 19, titleColor: 50, contentColor: 50));
+      : super(ThemeState(fontSize: 19, titleColor: 50, contentColor: 50));
   Future<void> initialize() async {
     int savedFontSize = await saveBox.get("fontsize") ?? 19;
     int savedTitleColor = await saveBox.get("titleColor") ?? Colors.black.value;

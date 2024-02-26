@@ -7,6 +7,28 @@ class AppTheme {
       required Color titleColor,
       required Color contentColor}) {
     return ThemeData(
+      // sliderTheme: SliderThemeData(
+      //   trackHeight: 10.0,
+      //   trackShape: RoundedRectSliderTrackShape(),
+      //   activeTrackColor: Colors.purple.shade800,
+      //   inactiveTrackColor: Colors.purple.shade100,
+      //   thumbShape: RoundSliderThumbShape(
+      //     enabledThumbRadius: 14.0,
+      //     pressedElevation: 8.0,
+      //   ),
+      //   thumbColor: Colors.pinkAccent,
+      //   overlayColor: Colors.pink.withOpacity(0.2),
+      //   overlayShape: RoundSliderOverlayShape(overlayRadius: 32.0),
+      //   tickMarkShape: RoundSliderTickMarkShape(),
+      //   activeTickMarkColor: Colors.pinkAccent,
+      //   inactiveTickMarkColor: Colors.white,
+      //   valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+      //   valueIndicatorColor: Colors.black,
+      //   valueIndicatorTextStyle: TextStyle(
+      //     color: Colors.white,
+      //     fontSize: 20.0,
+      //   ),
+      // ),
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
       appBarTheme: appBarTheme(),
       useMaterial3: true,

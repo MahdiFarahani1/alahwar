@@ -38,71 +38,193 @@ class Setting extends StatelessWidget {
         decoration: BoxDecoration(gradient: CostumGradient.linear()),
         child: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              width: EsaySize.width(context),
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: ConstColor.objectColor, width: 4),
-                color: Colors.white,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 8),
-                    child: CircleAvatar(
-                      child: Icon(Icons.color_lens),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 30),
-                    child: BlocBuilder<ThemeCubit, ThemeState>(
-                      builder: (context, state) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            clickContainer(
-                              color: Color(state.titleColor),
-                              onPress: () {
-                                colorDialog(
-                                    colorsList: colorsList,
-                                    context: context,
-                                    isTitleMode: true);
-                              },
-                            ),
-                            clickContainer(
-                              color: Color(state.titleColor),
-                              onPress: () {
-                                colorDialog(
-                                    colorsList: colorsList,
-                                    context: context,
-                                    isTitleMode: false);
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 35, right: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Title"),
-                        Text("Description"),
-                      ],
-                    ),
-                  ),
-                  const SizedBox.shrink()
-                ],
-              ),
-            ),
+            boxFontFamily(context),
+            boxFontSize(context),
+            boxColor(context, colorsList),
+            boxAlarm(context)
           ],
         ),
       ),
+    );
+  }
+
+  Container boxAlarm(BuildContext context) {
+    return Container(
+      margin: symmetricMargin(),
+      decoration: decorationBorder(),
+      width: EsaySize.width(context),
+      height: EsaySize.height(context) / 8,
+      child: Column(
+        children: [
+          iconAvatar(Icons.alarm),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Checkbox(
+                  value: true,
+                  onChanged: (value) {},
+                ),
+                const Text(
+                  "بلابمامبلجالبمجانلبالبخحاانحخبنبل؟",
+                  textDirection: TextDirection.rtl,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Container boxFontFamily(BuildContext context) {
+    var _value = 4;
+    String _status = "mehdi";
+    return Container(
+      margin: symmetricMargin(),
+      width: EsaySize.width(context),
+      height: EsaySize.height(context) / 6,
+      decoration: decorationBorder(),
+      child: StatefulBuilder(
+        builder: (context, setState) {
+          return Column(
+            children: [
+              iconAvatar(Icons.font_download_rounded),
+              Slider(
+                min: 0,
+                max: 6,
+                value: _value.toDouble(),
+                divisions: 7,
+                onChanged: (value) {
+                  setState(() {
+                    _value = value.toInt();
+                    _status = "mehdi $_value";
+                  });
+                },
+                activeColor: Colors.blue,
+                inactiveColor: Colors.grey,
+              ),
+              Text(_status)
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Container boxColor(BuildContext context, List<int> colorsList) {
+    return Container(
+      margin: symmetricMargin(),
+      width: EsaySize.width(context),
+      height: EsaySize.height(context) / 6,
+      decoration: decorationBorder(),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          iconAvatar(Icons.color_lens),
+          Padding(
+            padding: const EdgeInsets.only(left: 30, right: 30),
+            child: BlocBuilder<ThemeCubit, ThemeState>(
+              builder: (context, state) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    clickContainer(
+                      color: state.titleColor,
+                      onPress: () {
+                        colorDialog(
+                            colorsList: colorsList,
+                            context: context,
+                            isTitleMode: true);
+                      },
+                    ),
+                    clickContainer(
+                      color: state.contentColor,
+                      onPress: () {
+                        colorDialog(
+                            colorsList: colorsList,
+                            context: context,
+                            isTitleMode: false);
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 35, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Title"),
+                Text("Description"),
+              ],
+            ),
+          ),
+          const SizedBox.shrink()
+        ],
+      ),
+    );
+  }
+
+  Container boxFontSize(BuildContext context) {
+    return Container(
+      margin: symmetricMargin(),
+      width: EsaySize.width(context),
+      height: EsaySize.height(context) / 8,
+      decoration: decorationBorder(),
+      child: Column(
+        children: [
+          iconAvatar(Icons.text_fields),
+          BlocBuilder<ThemeCubit, ThemeState>(
+            builder: (context, state) {
+              return StatefulBuilder(
+                builder: (context, setState) {
+                  return Expanded(
+                    child: Slider(
+                      label: state.fontSize.toString(),
+                      divisions: 10,
+                      min: 15,
+                      max: 25,
+                      value: state.fontSize.toDouble(),
+                      onChanged: (value) {
+                        setState(
+                          () {
+                            state.fontSize = value.toInt();
+                          },
+                        );
+                      },
+                      activeColor: Colors.blue,
+                      inactiveColor: Colors.grey,
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding iconAvatar(IconData iconData) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: CircleAvatar(
+        child: Icon(iconData),
+      ),
+    );
+  }
+
+  EdgeInsets symmetricMargin() =>
+      const EdgeInsets.symmetric(horizontal: 15, vertical: 15);
+
+  BoxDecoration decorationBorder() {
+    return BoxDecoration(
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(color: ConstColor.objectColor, width: 4),
+      color: Colors.white,
     );
   }
 
@@ -162,12 +284,12 @@ class Setting extends StatelessWidget {
   }
 
   GestureDetector clickContainer(
-      {required Color color, required VoidCallback onPress}) {
+      {required int color, required VoidCallback onPress}) {
     return GestureDetector(
         onTap: onPress,
         child: Container(
           decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(8)),
+              color: Color(color), borderRadius: BorderRadius.circular(8)),
           width: 40,
           height: 40,
         ));

@@ -52,6 +52,7 @@ dependencies:
   hive_flutter: ^1.1.0
   html: ^0.15.4
   highlight_text: ^1.7.0
+  syncfusion_flutter_sliders: ^24.2.7
   
   
   

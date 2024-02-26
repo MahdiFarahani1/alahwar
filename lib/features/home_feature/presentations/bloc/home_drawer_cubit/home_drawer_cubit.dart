@@ -14,4 +14,11 @@ class HomeDrawerCubit extends Cubit<HomeDrawerState> {
       emit(HomeDrawerState(status: DrawerHome()));
     });
   }
+
+  reBiuldHome() {
+    emit(HomeDrawerState(status: LoadingHome()));
+    Future.delayed(const Duration(seconds: 1), () {
+      emit(HomeDrawerState(status: InitHome()));
+    });
+  }
 }

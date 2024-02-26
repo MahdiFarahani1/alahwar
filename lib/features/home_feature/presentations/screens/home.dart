@@ -20,6 +20,22 @@ import '../bloc/news_cubit/news_home_cubit.dart';
 import '../bloc/news_cubit/status_news.dart';
 import '../utils/drawer_onpress.dart';
 
+List<String> categotyList = [
+  "رياضة",
+  "منوعات محلية وعالمية",
+  "العراق والعالم",
+  "ذي قار",
+  "اقتصاد",
+  "ثقافة وفن",
+  "محافظ",
+  "جميع الأخبار"
+];
+
+final isSelect = List.generate(
+  categotyList.length,
+  (index) => false,
+);
+
 class Home extends StatefulWidget {
   static String rn = "/home";
 
@@ -302,22 +318,63 @@ class _HomeState extends State<Home> {
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: 7,
+        itemCount: categotyList.length,
         itemBuilder: (context, index) {
-          return Container(
-            alignment: Alignment.center,
-            margin: const EdgeInsets.all(10),
-            width: 80,
-            height: 50,
-            decoration: BoxDecoration(
-              border: Border.all(color: ConstColor.objectColor, width: 1),
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-            ),
-            child: Text("index $index"),
-          );
+          return categotyItem(index, isSelect, categotyList);
         },
       ),
     );
+  }
+
+  Widget categotyItem(
+      int index, List<bool> isSelect, List<String> categoryList) {
+    return StatefulBuilder(builder: (context, setstate) {
+      return GestureDetector(
+        onTap: () {
+          List<bool> updatedList = List.generate(
+            categoryList.length,
+            (i) => (i == index),
+          );
+          for (int i = 0; i < updatedList.length; i++) {
+            updatedList[i] = (i == index);
+          }
+
+          setstate(() {
+            isSelect.clear();
+            isSelect.addAll(updatedList);
+          });
+          BlocProvider.of<HomeDrawerCubit>(context).reBiuldHome();
+
+          print("========================================");
+          isSelect.forEach(
+            (element) {
+              print(element);
+            },
+          );
+        },
+        child: Container(
+          alignment: Alignment.center,
+          margin: const EdgeInsets.all(10),
+          width: 80,
+          height: 50,
+          decoration: BoxDecoration(
+            border: Border.all(color: ConstColor.objectColor, width: 1),
+            borderRadius: BorderRadius.circular(10),
+            color: isSelect[index] ? Colors.redAccent : Colors.white,
+          ),
+          child: FittedBox(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 3.0),
+              child: Text(
+                categoryList[index],
+                style: TextStyle(
+                  color: isSelect[index] ? Colors.white : Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    });
   }
 }

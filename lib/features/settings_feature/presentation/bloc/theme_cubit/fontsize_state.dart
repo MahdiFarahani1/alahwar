@@ -1,11 +1,10 @@
 part of 'fontsize_cubit.dart';
 
-@immutable
 class ThemeState {
-  final int fontSize;
+  int fontSize;
   final int titleColor;
   final int contentColor;
-  const ThemeState(
+  ThemeState(
       {required this.titleColor,
       required this.contentColor,
       required this.fontSize});
