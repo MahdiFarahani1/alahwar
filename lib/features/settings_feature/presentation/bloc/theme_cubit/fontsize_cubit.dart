@@ -39,4 +39,8 @@ class ThemeCubit extends Cubit<ThemeState> {
       emit(state.copyWith(fontSize: fontSize));
     }
   }
+
+  settingFontSize(int size) {
+    emit(state.copyWith(fontSize: size));
+  }
 }

@@ -53,6 +53,7 @@ dependencies:
   html: ^0.15.4
   highlight_text: ^1.7.0
   syncfusion_flutter_sliders: ^24.2.7
+  share_plus: ^7.2.2
   
   
   

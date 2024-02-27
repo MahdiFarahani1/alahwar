@@ -13,7 +13,7 @@ class NewsHomeCubit extends Cubit<NewsHomeState> {
       : super(NewsHomeState(
             status: StatusNewsHome(state: StateNewsHome.loading)));
 
-  void loadMore(ScrollController controller) async {
+  void loadMore(ScrollController controller, int catId) async {
     if (state.hasNextPage == true &&
         state.isLoadMoreRunning == false &&
         controller.position.extentAfter < 300) {
@@ -22,7 +22,7 @@ class NewsHomeCubit extends Cubit<NewsHomeState> {
       try {
         state.start += 20;
 
-        var res = await ApiNewsProvider().providerGet(state.start);
+        var res = await ApiNewsProvider().providerGet(state.start, catId);
 
         if (res.statusCode == 200) {
           List<dynamic> newsList = res.data['news'];
@@ -30,10 +30,11 @@ class NewsHomeCubit extends Cubit<NewsHomeState> {
               newsList.map((json) => NewsGet.fromJson(json)).toList();
           List<NewsGet> updatedNewsList = List.from(state.news)
             ..addAll(newsModel);
-
-          emit(state.copyWith(news: updatedNewsList));
-        } else {
-          emit(state.copyWith(hasNextPage: false));
+          if (newsList.isEmpty) {
+            emit(state.copyWith(hasNextPage: false));
+          } else {
+            emit(state.copyWith(news: updatedNewsList));
+          }
         }
       } catch (err) {
         if (kDebugMode) {
@@ -45,10 +46,10 @@ class NewsHomeCubit extends Cubit<NewsHomeState> {
     }
   }
 
-  void fetchDataFristTime(int number) async {
+  void fetchDataFristTime(int number, int catId) async {
     emit(NewsHomeState(status: StatusNewsHome(state: StateNewsHome.loading)));
     try {
-      var response = await ApiNewsProvider().providerGet(number);
+      var response = await ApiNewsProvider().providerGet(number, catId);
 
       if (response.statusCode == 200) {
         List<dynamic> newsList = response.data['news'];

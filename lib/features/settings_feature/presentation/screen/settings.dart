@@ -192,8 +192,11 @@ class Setting extends StatelessWidget {
                         setState(
                           () {
                             state.fontSize = value.toInt();
+                            BlocProvider.of<ThemeCubit>(context)
+                                .settingFontSize(value.toInt());
                           },
                         );
+                        saveBox.put("fontsize", state.fontSize);
                       },
                       activeColor: Colors.blue,
                       inactiveColor: Colors.grey,

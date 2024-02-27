@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/common/gradient.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
+
 import 'package:flutter_application_1/features/home_feature/repositories/format_date.dart';
 import 'package:flutter_application_1/features/home_feature/data/model/news_home_model.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/home_drawer_cubit/home_drawer_cubit.dart';
@@ -20,21 +22,22 @@ import '../bloc/news_cubit/news_home_cubit.dart';
 import '../bloc/news_cubit/status_news.dart';
 import '../utils/drawer_onpress.dart';
 
-List<String> categotyList = [
-  "رياضة",
-  "منوعات محلية وعالمية",
-  "العراق والعالم",
-  "ذي قار",
-  "اقتصاد",
-  "ثقافة وفن",
-  "محافظ",
-  "جميع الأخبار"
-];
+Map<int, String> categotyMap = {
+  18: "رياضة",
+  19: "منوعات محلية وعالمية",
+  20: "العراق والعالم",
+  23: "ذي قار",
+  25: "اقتصاد",
+  26: "ثقافة وفن",
+  27: "محافظ",
+  0: "جميع الأخبار"
+};
 
 final isSelect = List.generate(
-  categotyList.length,
-  (index) => false,
+  categotyMap.length,
+  (index) => index == 7 ? true : false,
 );
+int categoryID = 0;
 
 class Home extends StatefulWidget {
   static String rn = "/home";
@@ -49,7 +52,7 @@ class _HomeState extends State<Home> {
   late ScrollController controller;
   @override
   void initState() {
-    BlocProvider.of<NewsHomeCubit>(context).fetchDataFristTime(0);
+    BlocProvider.of<NewsHomeCubit>(context).fetchDataFristTime(0, 0);
     controller = ScrollController()..addListener(_scrollListener);
     super.initState();
   }
@@ -61,7 +64,7 @@ class _HomeState extends State<Home> {
   }
 
   void _scrollListener() {
-    BlocProvider.of<NewsHomeCubit>(context).loadMore(controller);
+    BlocProvider.of<NewsHomeCubit>(context).loadMore(controller, categoryID);
   }
 
   @override
@@ -158,6 +161,8 @@ class _HomeState extends State<Home> {
                       child: CarouselSlider.builder(
                         itemCount: 4,
                         itemBuilder: (context, index, realIndex) {
+                          int actualIndex =
+                              (index + view.length - 4) % view.length;
                           return GestureDetector(
                             onTap: () {
                               Navigator.pushNamed(context, NewsMainPage.rn,
@@ -165,13 +170,20 @@ class _HomeState extends State<Home> {
                                       view[(index + view.length) - 4].id!);
                             },
                             child: Container(
-                              decoration: BoxDecoration(
-                                  color: ConstColor.bgColor,
-                                  image: DecorationImage(
-                                      fit: BoxFit.contain,
-                                      image: NetworkImage(
-                                          "$baseUrl${view[(index + view.length) - 4].img!}"))),
                               width: double.infinity,
+                              color: ConstColor.bgColor,
+                              child: CachedNetworkImage(
+                                fit: BoxFit.contain,
+                                errorWidget: (context, url, error) {
+                                  return const Icon(Icons.error);
+                                },
+                                imageUrl: "$baseUrl${view[actualIndex].img}",
+                                placeholder: (context, url) {
+                                  return Center(
+                                    child: CostumLoading.fadingCircle(context),
+                                  );
+                                },
+                              ),
                             ),
                           );
                         },
@@ -259,14 +271,7 @@ class _HomeState extends State<Home> {
                       child: CostumLoading.fadingCircle(context),
                     ),
                   ),
-                if (state.hasNextPage == false)
-                  Container(
-                    padding: const EdgeInsets.only(top: 30, bottom: 40),
-                    color: Colors.amber,
-                    child: const Center(
-                      child: Text('You have fetched all of the content'),
-                    ),
-                  ),
+                if (state.hasNextPage == false) const SizedBox.shrink(),
               ],
             ),
           );
@@ -310,7 +315,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Container category(BuildContext context) {
+  Widget category(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: EsaySize.height(context) / 3.8),
       width: double.infinity,
@@ -318,63 +323,62 @@ class _HomeState extends State<Home> {
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: categotyList.length,
+        itemCount: categotyMap.length,
         itemBuilder: (context, index) {
-          return categotyItem(index, isSelect, categotyList);
+          return categotyItem(
+            index,
+            isSelect,
+            categotyMap.values.toList(),
+          );
         },
       ),
     );
   }
+}
 
-  Widget categotyItem(
-      int index, List<bool> isSelect, List<String> categoryList) {
-    return StatefulBuilder(builder: (context, setstate) {
-      return GestureDetector(
-        onTap: () {
-          List<bool> updatedList = List.generate(
-            categoryList.length,
-            (i) => (i == index),
-          );
-          for (int i = 0; i < updatedList.length; i++) {
-            updatedList[i] = (i == index);
-          }
+Widget categotyItem(int index, List<bool> isSelect, List<String> categoryList) {
+  return BlocBuilder<NewsHomeCubit, NewsHomeState>(builder: (context, state) {
+    return GestureDetector(
+      onTap: () {
+        int categoryId = categotyMap.keys.toList()[index];
+        categoryID = categoryId;
 
-          setstate(() {
-            isSelect.clear();
-            isSelect.addAll(updatedList);
-          });
-          BlocProvider.of<HomeDrawerCubit>(context).reBiuldHome();
+        List<bool> updatedList = List.generate(
+          categoryList.length,
+          (i) => (i == index),
+        );
+        for (int i = 0; i < updatedList.length; i++) {
+          updatedList[i] = (i == index);
+        }
 
-          print("========================================");
-          isSelect.forEach(
-            (element) {
-              print(element);
-            },
-          );
-        },
-        child: Container(
-          alignment: Alignment.center,
-          margin: const EdgeInsets.all(10),
-          width: 80,
-          height: 50,
-          decoration: BoxDecoration(
-            border: Border.all(color: ConstColor.objectColor, width: 1),
-            borderRadius: BorderRadius.circular(10),
-            color: isSelect[index] ? Colors.redAccent : Colors.white,
-          ),
-          child: FittedBox(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3.0),
-              child: Text(
-                categoryList[index],
-                style: TextStyle(
-                  color: isSelect[index] ? Colors.white : Colors.black,
-                ),
+        isSelect.clear();
+        isSelect.addAll(updatedList);
+
+        BlocProvider.of<NewsHomeCubit>(context)
+            .fetchDataFristTime(0, categoryId);
+      },
+      child: Container(
+        alignment: Alignment.center,
+        margin: const EdgeInsets.all(10),
+        width: 80,
+        height: 50,
+        decoration: BoxDecoration(
+          border: Border.all(color: ConstColor.objectColor, width: 1),
+          borderRadius: BorderRadius.circular(10),
+          color: isSelect[index] ? Colors.redAccent : Colors.white,
+        ),
+        child: FittedBox(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 3.0),
+            child: Text(
+              categoryList[index],
+              style: TextStyle(
+                color: isSelect[index] ? Colors.white : Colors.black,
               ),
             ),
           ),
         ),
-      );
-    });
-  }
+      ),
+    );
+  });
 }

@@ -18,11 +18,16 @@ class SearchCubit extends Cubit<SearchState> {
       {required int start,
       required String sw,
       required int sctitle,
-      required int sctxt}) async {
+      required int sctxt,
+      required int categoryID}) async {
     emit(SearchState(status: LoadingSearch()));
     try {
-      var response = await ApiSearchProvider()
-          .providerGet(sw: sw, sctitle: sctitle, sctxt: sctxt, start: start);
+      var response = await ApiSearchProvider().providerGet(
+          sw: sw,
+          sctitle: sctitle,
+          sctxt: sctxt,
+          start: start,
+          categoryId: categoryID);
 
       if (response.statusCode == 200) {
         List<dynamic> newsList = response.data['news'];
@@ -38,12 +43,12 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
-  void loadMore({
-    required ScrollController controller,
-    required int sctitle,
-    required int sctxt,
-    required String sw,
-  }) async {
+  void loadMore(
+      {required ScrollController controller,
+      required int sctitle,
+      required int sctxt,
+      required String sw,
+      required int categoryID}) async {
     if (state.hasNextPage == true &&
         state.isLoadMoreRunning == false &&
         controller.position.extentAfter < 300) {
@@ -53,7 +58,11 @@ class SearchCubit extends Cubit<SearchState> {
         state.start += 20;
 
         var res = await ApiSearchProvider().providerGet(
-            start: state.start, sw: sw, sctitle: sctitle, sctxt: sctxt);
+            start: state.start,
+            sw: sw,
+            sctitle: sctitle,
+            sctxt: sctxt,
+            categoryId: categoryID);
 
         if (res.statusCode == 200) {
           List<dynamic> newsList = res.data['news'];
@@ -61,10 +70,11 @@ class SearchCubit extends Cubit<SearchState> {
               newsList.map((json) => NewsGet.fromJson(json)).toList();
           List<NewsGet> updatedNewsList = List.from(state.news)
             ..addAll(newsModel);
-
-          emit(state.copyWith(news: updatedNewsList));
-        } else {
-          emit(state.copyWith(hasNextPage: false));
+          if (newsModel.isEmpty) {
+            emit(state.copyWith(hasNextPage: false));
+          } else {
+            emit(state.copyWith(news: updatedNewsList));
+          }
         }
       } catch (err) {
         if (kDebugMode) {

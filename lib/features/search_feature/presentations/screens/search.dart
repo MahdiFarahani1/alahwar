@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/common/appbar.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
+import 'package:flutter_application_1/features/home_feature/presentations/screens/home.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/screens/news_page.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/listview_builder_item.dart';
 import 'package:flutter_application_1/features/home_feature/repositories/format_date.dart';
@@ -18,6 +19,9 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  int categoryID = 0;
+  bool titleBool = true;
+  bool contentBool = true;
   late ScrollController controller;
 
   final TextEditingController textEditingController = TextEditingController();
@@ -38,9 +42,10 @@ class _SearchState extends State<Search> {
   void _scrollListener() {
     BlocProvider.of<SearchCubit>(context).loadMore(
         controller: controller,
-        sctitle: 1,
-        sctxt: 0,
-        sw: textEditingController.text);
+        sctitle: titleBool ? 1 : 0,
+        sctxt: contentBool ? 1 : 0,
+        sw: textEditingController.text,
+        categoryID: categoryID);
   }
 
   @override
@@ -57,7 +62,7 @@ class _SearchState extends State<Search> {
               if (state.status is LoadingSearch) {
                 return Column(
                   children: [
-                    //  dropDown(context),
+                    dropDown(context),
                     input(context),
                     Expanded(
                         child: Center(child: CostumLoading.loadCube(context))),
@@ -67,7 +72,7 @@ class _SearchState extends State<Search> {
               if (state.status is InitSearch) {
                 return Column(
                   children: [
-                    //      dropDown(context),
+                    dropDown(context),
                     input(context),
                   ],
                 );
@@ -75,7 +80,7 @@ class _SearchState extends State<Search> {
               if (state.status is ErrorSearch) {
                 return Column(
                   children: [
-                    //   dropDown(context),
+                    dropDown(context),
                     input(context),
                     box(context, "There is a problem with your internet"),
                   ],
@@ -86,7 +91,7 @@ class _SearchState extends State<Search> {
 
                 return Column(
                   children: [
-                    //      dropDown(context),
+                    dropDown(context),
                     input(context),
                     Expanded(
                       child: ListView.builder(
@@ -117,14 +122,7 @@ class _SearchState extends State<Search> {
                           child: CostumLoading.fadingCircle(context),
                         ),
                       ),
-                    if (!state.hasNextPage)
-                      Container(
-                        padding: const EdgeInsets.only(top: 30, bottom: 40),
-                        color: Colors.amber,
-                        child: const Center(
-                          child: Text('You have fetched all of the content'),
-                        ),
-                      ),
+                    if (!state.hasNextPage) const SizedBox.shrink(),
                   ],
                 );
               }
@@ -143,7 +141,7 @@ class _SearchState extends State<Search> {
       alignment: Alignment.center,
       color: Colors.white,
       child: const Text(
-        "txt",
+        "Error",
         style: TextStyle(color: Colors.redAccent),
       ),
     );
@@ -160,9 +158,10 @@ class _SearchState extends State<Search> {
             onPressed: () {
               BlocProvider.of<SearchCubit>(context).search(
                   sw: textEditingController.text,
-                  sctitle: 1,
-                  sctxt: 1,
-                  start: 0);
+                  sctitle: titleBool ? 1 : 0,
+                  sctxt: contentBool ? 1 : 0,
+                  start: 0,
+                  categoryID: categoryID);
             },
             icon: const Icon(Icons.search)),
         Expanded(
@@ -170,8 +169,9 @@ class _SearchState extends State<Search> {
             onSubmitted: (value) {
               BlocProvider.of<SearchCubit>(context).search(
                   sw: textEditingController.text,
-                  sctitle: 1,
-                  sctxt: 1,
+                  categoryID: categoryID,
+                  sctitle: titleBool ? 1 : 0,
+                  sctxt: contentBool ? 1 : 0,
                   start: 0);
             },
             controller: textEditingController,
@@ -188,37 +188,58 @@ class _SearchState extends State<Search> {
   Padding dropDown(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(3.0),
-      child: Container(
-        color: Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            EsaySize.safeGap(EsaySize.width(context) / 2),
-            Expanded(
-              child: Container(
+      child: StatefulBuilder(builder: (context, setState) {
+        return Container(
+          color: Colors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              EsaySize.safeGap(EsaySize.width(context) / 2),
+              Container(
                 height: EsaySize.height(context) / 15,
                 color: Colors.white,
-                child: DropdownButton<String>(
-                  value: "item1",
-                  items: const [
+                child: DropdownButton<int>(
+                  value: categoryID,
+                  items: [
                     DropdownMenuItem(
-                      value: 'item1',
-                      child: Text('آیتم 1'),
+                      value: 18,
+                      child: Text(categotyMap[18]!),
                     ),
                     DropdownMenuItem(
-                      value: 'item2',
-                      child: Text('آیتم 2'),
+                      value: 19,
+                      child: FittedBox(child: Text(categotyMap[19]!)),
                     ),
                     DropdownMenuItem(
-                      value: 'item3',
-                      child: Text('آیتم 3'),
+                      value: 20,
+                      child: Text(categotyMap[20]!),
                     ),
                     DropdownMenuItem(
-                      value: 'item4',
-                      child: Text('آیتم 4'),
+                      value: 23,
+                      child: Text(categotyMap[23]!),
+                    ),
+                    DropdownMenuItem(
+                      value: 25,
+                      child: Text(categotyMap[25]!),
+                    ),
+                    DropdownMenuItem(
+                      value: 26,
+                      child: Text(categotyMap[26]!),
+                    ),
+                    DropdownMenuItem(
+                      value: 27,
+                      child: Text(categotyMap[27]!),
+                    ),
+                    DropdownMenuItem(
+                      value: 0,
+                      child: Text(categotyMap[0]!),
                     ),
                   ],
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    categoryID = value!;
+                    setState(
+                      () {},
+                    );
+                  },
                   dropdownColor: Colors.white,
                   underline: Container(
                     height: 1,
@@ -226,24 +247,37 @@ class _SearchState extends State<Search> {
                   ),
                 ),
               ),
-            ),
-            const Spacer(),
-            Container(
-                color: Colors.white,
-                child: Row(
-                  children: [
-                    checkBox("cads", context),
-                    EsaySize.gap(3),
-                    checkBox("sadsa", context),
-                  ],
-                )),
-          ],
-        ),
-      ),
+              const Spacer(),
+              Container(
+                  color: Colors.white,
+                  child: Row(
+                    children: [
+                      checkBox("النص", context, (val) {
+                        setState(
+                          () {
+                            contentBool = val!;
+                          },
+                        );
+                      }, contentBool),
+                      EsaySize.gap(3),
+                      checkBox("العنوان", context, (val) {
+                        setState(
+                          () {
+                            titleBool = val!;
+                          },
+                        );
+                      }, titleBool),
+                    ],
+                  )),
+            ],
+          ),
+        );
+      }),
     );
   }
 
-  Container checkBox(String txt, BuildContext context) {
+  Container checkBox(
+      String txt, BuildContext context, Function(bool?)? onChanged, bool val) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey.withOpacity(0.5),
@@ -251,8 +285,8 @@ class _SearchState extends State<Search> {
       height: EsaySize.height(context) / 15,
       child: Row(children: [
         Checkbox(
-          value: true,
-          onChanged: (value) {},
+          value: val,
+          onChanged: onChanged,
         ),
         EsaySize.gap(5),
         Padding(

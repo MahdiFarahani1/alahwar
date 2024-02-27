@@ -17,6 +17,7 @@ import 'package:flutter_application_1/features/settings_feature/presentation/blo
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../about_us_feature/widgets/widget_us.dart';
 
@@ -109,7 +110,6 @@ class NewsMainPage extends StatelessWidget {
                                 iconData: FontAwesomeIcons.minus,
                                 size: 10,
                                 onTap: () {
-                                  print(Colors.black);
                                   BlocProvider.of<ThemeCubit>(context)
                                       .minesFontSize();
                                   saveBox.put(
@@ -160,7 +160,14 @@ class NewsMainPage extends StatelessWidget {
                             Btn.btncircle(
                                 iconData: FontAwesomeIcons.share,
                                 size: 15,
-                                onTap: () {}),
+                                onTap: () {
+                                  String shareTitle =
+                                      view[0].title!.replaceAll(" ", "-");
+
+                                  Share.share(
+                                      "https://alahwar-tv.com/news/$shareTitle",
+                                      subject: "send news");
+                                }),
                           ],
                         ),
                       ],
