@@ -31,50 +31,53 @@ class _FavoriteState extends State<Favorite> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade900,
-      appBar: AppBarCommon.appBar(" قایمة المفضلة"),
-      body: BlocBuilder<DatabaseListCubit, DatabaseListState>(
-        builder: (context, state) {
-          if (state.dataBaseList.isEmpty) {
-            return SizedBox(
-              child: Container(
-                width: EsaySize.width(context),
-                height: 80,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(gradient: CostumGradient.linear()),
-                margin: const EdgeInsets.all(10),
-                child: const Text(
-                  "لا توجد بیانات تمت اضافتها للمفضلة",
-                  style: TextStyle(
-                      color: Colors.redAccent,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: Colors.grey.shade900,
+        appBar: AppBarCommon.appBar(" قایمة المفضلة"),
+        body: BlocBuilder<DatabaseListCubit, DatabaseListState>(
+          builder: (context, state) {
+            if (state.dataBaseList.isEmpty) {
+              return SizedBox(
+                child: Container(
+                  width: EsaySize.width(context),
+                  height: 80,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(gradient: CostumGradient.linear()),
+                  margin: const EdgeInsets.all(10),
+                  child: const Text(
+                    "لا توجد بیانات تمت اضافتها للمفضلة",
+                    style: TextStyle(
+                        color: Colors.redAccent,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-            );
-          } else {
-            return ListView.builder(
-              itemCount: state.dataBaseList.length,
-              itemBuilder: (context, index) {
-                var save = box.get(state.dataBaseList[index]);
-                if (save != null && save is ObjectDataBase) {
-                  return ItemHome(
-                    title: save.title,
-                    time: save.dateTime,
-                    pathImages: save.pathImage,
-                    onTap: () {
-                      Navigator.pushNamed(context, NewsMainPage.rn,
-                          arguments: state.dataBaseList[index]);
-                    },
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              },
-            );
-          }
-        },
+              );
+            } else {
+              return ListView.builder(
+                itemCount: state.dataBaseList.length,
+                itemBuilder: (context, index) {
+                  var save = box.get(state.dataBaseList[index]);
+                  if (save != null && save is ObjectDataBase) {
+                    return ItemHome(
+                      title: save.title,
+                      time: save.dateTime,
+                      pathImages: save.pathImage,
+                      onTap: () {
+                        Navigator.pushNamed(context, NewsMainPage.rn,
+                            arguments: state.dataBaseList[index]);
+                      },
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
+              );
+            }
+          },
+        ),
       ),
     );
   }
