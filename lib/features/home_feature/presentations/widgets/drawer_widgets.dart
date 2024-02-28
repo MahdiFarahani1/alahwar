@@ -21,7 +21,10 @@ class DrawerWidgets {
               },
               child: Text(
                 text,
-                style: const TextStyle(color: Colors.black),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
               )),
           EsaySize.safeGap(2),
           IconButton(
@@ -40,27 +43,27 @@ class DrawerWidgets {
     return [
       drawerItem(
           context: context,
-          text: "Home",
+          text: "الصفحة الرئيسية",
           iconData: Icons.home,
           onpress: onpress[0]),
       drawerItem(
           context: context,
-          text: "Mobasher",
+          text: "البث المباشر",
           iconData: Icons.tv,
           onpress: onpress[1]),
       drawerItem(
           context: context,
-          text: "Favorites",
+          text: "المفضلة",
           iconData: Icons.star_border_outlined,
           onpress: onpress[2]),
       drawerItem(
           context: context,
-          text: "Settings",
+          text: "الاعدادات",
           iconData: Icons.settings,
           onpress: onpress[3]),
       drawerItem(
           context: context,
-          text: "AboutUs",
+          text: "حول التطبیق",
           iconData: Icons.phone_android,
           onpress: onpress[4]),
     ];

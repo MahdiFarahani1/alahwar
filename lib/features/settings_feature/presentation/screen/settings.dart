@@ -30,19 +30,22 @@ class Setting extends StatelessWidget {
       Colors.blueGrey.value,
       Colors.lightBlue.shade200.value
     ];
-    return Scaffold(
-      appBar: AppBarCommon.appBar("Setting"),
-      body: Container(
-        width: EsaySize.width(context),
-        height: EsaySize.height(context),
-        decoration: BoxDecoration(gradient: CostumGradient.linear()),
-        child: Column(
-          children: [
-            boxFontFamily(context),
-            boxFontSize(context),
-            boxColor(context, colorsList),
-            boxAlarm(context)
-          ],
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBarCommon.appBar("الاعدادات"),
+        body: Container(
+          width: EsaySize.width(context),
+          height: EsaySize.height(context),
+          decoration: BoxDecoration(gradient: CostumGradient.linear()),
+          child: Column(
+            children: [
+              boxFontFamily(context),
+              boxFontSize(context),
+              boxColor(context, colorsList),
+              boxAlarm(context)
+            ],
+          ),
         ),
       ),
     );
@@ -61,13 +64,14 @@ class Setting extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Text(
+                  "تفعیل الاشعارات فی التطبیق ؟",
+                  textDirection: TextDirection.rtl,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 Checkbox(
                   value: true,
                   onChanged: (value) {},
-                ),
-                const Text(
-                  "بلابمامبلجالبمجانلبالبخحاانحخبنبل؟",
-                  textDirection: TextDirection.rtl,
                 ),
               ],
             ),
@@ -153,12 +157,12 @@ class Setting extends StatelessWidget {
             ),
           ),
           const Padding(
-            padding: EdgeInsets.only(left: 35, right: 20),
+            padding: EdgeInsets.only(left: 35, right: 30),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Title"),
-                Text("Description"),
+                Text("العنوان"),
+                Text("النص"),
               ],
             ),
           ),

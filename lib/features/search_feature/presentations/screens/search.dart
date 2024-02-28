@@ -4,7 +4,7 @@ import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/screens/home.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/screens/news_page.dart';
-import 'package:flutter_application_1/features/home_feature/presentations/widgets/listview_builder_item.dart';
+import 'package:flutter_application_1/features/home_feature/presentations/widgets/item_news.dart';
 import 'package:flutter_application_1/features/home_feature/repositories/format_date.dart';
 import 'package:flutter_application_1/features/search_feature/presentations/bloc/search_cubit/search_cubit.dart';
 import 'package:flutter_application_1/features/search_feature/presentations/bloc/search_cubit/status.dart';
@@ -25,6 +25,7 @@ class _SearchState extends State<Search> {
   late ScrollController controller;
 
   final TextEditingController textEditingController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   @override
   void dispose() {
     controller.dispose();
@@ -48,11 +49,24 @@ class _SearchState extends State<Search> {
         categoryID: categoryID);
   }
 
+  void _validateForm() {
+    if (formKey.currentState!.validate()) {
+      BlocProvider.of<SearchCubit>(context).search(
+          sw: textEditingController.text,
+          categoryID: categoryID,
+          sctitle: titleBool ? 1 : 0,
+          sctxt: contentBool ? 1 : 0,
+          start: 0);
+    } else {
+      BlocProvider.of<SearchCubit>(context).initPage();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBarCommon.appBar("Search"),
+      appBar: AppBarCommon.appBar("البحث"),
       backgroundColor: Colors.grey.shade900,
       body: SizedBox(
           width: double.infinity,
@@ -122,7 +136,7 @@ class _SearchState extends State<Search> {
                           child: CostumLoading.fadingCircle(context),
                         ),
                       ),
-                    if (!state.hasNextPage) const SizedBox.shrink(),
+                    if (!state.hasNextPage) const SizedBox(),
                   ],
                 );
               }
@@ -156,28 +170,27 @@ class _SearchState extends State<Search> {
       child: Row(children: [
         IconButton(
             onPressed: () {
-              BlocProvider.of<SearchCubit>(context).search(
-                  sw: textEditingController.text,
-                  sctitle: titleBool ? 1 : 0,
-                  sctxt: contentBool ? 1 : 0,
-                  start: 0,
-                  categoryID: categoryID);
+              _validateForm();
             },
             icon: const Icon(Icons.search)),
         Expanded(
-          child: TextField(
-            onSubmitted: (value) {
-              BlocProvider.of<SearchCubit>(context).search(
-                  sw: textEditingController.text,
-                  categoryID: categoryID,
-                  sctitle: titleBool ? 1 : 0,
-                  sctxt: contentBool ? 1 : 0,
-                  start: 0);
-            },
-            controller: textEditingController,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.all(10),
-              border: InputBorder.none,
+          child: Form(
+            key: formKey,
+            child: TextFormField(
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "";
+                }
+                return null;
+              },
+              onFieldSubmitted: (value) {
+                _validateForm();
+              },
+              controller: textEditingController,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.all(10),
+                border: InputBorder.none,
+              ),
             ),
           ),
         )

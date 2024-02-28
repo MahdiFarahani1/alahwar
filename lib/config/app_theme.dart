@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/core/constans/const_colors.dart';
 
 class AppTheme {
   ThemeData themeData(
@@ -29,6 +30,7 @@ class AppTheme {
       //     fontSize: 20.0,
       //   ),
       // ),
+      popupMenuTheme: const PopupMenuThemeData(color: Colors.amber),
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
       appBarTheme: appBarTheme(),
       useMaterial3: true,
@@ -41,7 +43,7 @@ class AppTheme {
         ),
         titleMedium: TextStyle(
           fontFamily: "Salamat",
-          fontSize: 21,
+          fontSize: 19,
           fontWeight: FontWeight.w500,
           color: titleColor,
         ),
@@ -50,9 +52,10 @@ class AppTheme {
   }
 
   AppBarTheme appBarTheme() {
-    return const AppBarTheme(
+    return AppBarTheme(
+      iconTheme: IconThemeData(color: ConstColor.iconAppbarColor),
       titleTextStyle: TextStyle(
-        color: Colors.white,
+        color: ConstColor.iconAppbarColor,
         fontSize: 24,
         fontWeight: FontWeight.bold,
       ),

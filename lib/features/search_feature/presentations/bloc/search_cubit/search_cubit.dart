@@ -66,13 +66,14 @@ class SearchCubit extends Cubit<SearchState> {
 
         if (res.statusCode == 200) {
           List<dynamic> newsList = res.data['news'];
-          List<NewsGet> newsModel =
-              newsList.map((json) => NewsGet.fromJson(json)).toList();
-          List<NewsGet> updatedNewsList = List.from(state.news)
-            ..addAll(newsModel);
-          if (newsModel.isEmpty) {
+          if (newsList.isEmpty) {
             emit(state.copyWith(hasNextPage: false));
           } else {
+            List<NewsGet> newsModel =
+                newsList.map((json) => NewsGet.fromJson(json)).toList();
+            List<NewsGet> updatedNewsList = List.from(state.news)
+              ..addAll(newsModel);
+
             emit(state.copyWith(news: updatedNewsList));
           }
         }

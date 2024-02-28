@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/core/common/gradient.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
@@ -14,7 +13,7 @@ import 'package:flutter_application_1/features/home_feature/presentations/bloc/i
 
 import 'package:flutter_application_1/features/home_feature/presentations/screens/news_page.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/drawer_widgets.dart';
-import 'package:flutter_application_1/features/home_feature/presentations/widgets/listview_builder_item.dart';
+import 'package:flutter_application_1/features/home_feature/presentations/widgets/item_news.dart';
 import 'package:flutter_application_1/features/search_feature/presentations/screens/search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -109,7 +108,7 @@ class _HomeState extends State<Home> {
         width: EsaySize.width(context) * 0.7,
         margin: EdgeInsets.only(top: appBarHeight),
         height: EsaySize.height(context) - appBarHeight,
-        decoration: BoxDecoration(gradient: CostumGradient.linear()),
+        decoration: const BoxDecoration(color: Colors.white),
         child: Column(
           children: [
             Container(
@@ -172,17 +171,50 @@ class _HomeState extends State<Home> {
                             child: Container(
                               width: double.infinity,
                               color: ConstColor.bgColor,
-                              child: CachedNetworkImage(
-                                fit: BoxFit.contain,
-                                errorWidget: (context, url, error) {
-                                  return const Icon(Icons.error);
-                                },
-                                imageUrl: "$baseUrl${view[actualIndex].img}",
-                                placeholder: (context, url) {
-                                  return Center(
-                                    child: CostumLoading.fadingCircle(context),
-                                  );
-                                },
+                              child: Stack(
+                                children: [
+                                  CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    height: EsaySize.height(context),
+                                    width: EsaySize.width(context),
+                                    errorWidget: (context, url, error) {
+                                      return const Icon(Icons.error);
+                                    },
+                                    imageUrl:
+                                        "$baseUrl${view[actualIndex].img}",
+                                    placeholder: (context, url) {
+                                      return Center(
+                                        child:
+                                            CostumLoading.fadingCircle(context),
+                                      );
+                                    },
+                                  ),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: IgnorePointer(
+                                      child: Container(
+                                        width: EsaySize.width(context),
+                                        height: EsaySize.height(context) / 9,
+                                        color:
+                                            Colors.transparent.withOpacity(0.3),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            maxLines: 2,
+                                            textAlign: TextAlign.center,
+                                            view[actualIndex].title!,
+                                            textDirection: TextDirection.rtl,
+                                            style: const TextStyle(
+                                                fontSize: 19,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                                fontFamily: "Salamat"),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           );
@@ -203,7 +235,7 @@ class _HomeState extends State<Home> {
                       alignment: Alignment.bottomCenter,
                       child: Container(
                         decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black,
                             borderRadius: BorderRadius.circular(10)),
                         alignment: Alignment.center,
                         height: 30,
@@ -311,7 +343,7 @@ class _HomeState extends State<Home> {
             );
           },
           icon: const Icon(Icons.search)),
-      title: const Text("Alahwar"),
+      title: const Text("الاهوار"),
     );
   }
 

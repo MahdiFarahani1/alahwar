@@ -9,25 +9,29 @@ class AboutUs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarCommon.appBar("AboutUs"),
-      body: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Text(
-              "sajjhdsjkhjfksdhjdsjlf;lskghjhgjhgkhjkhjgkjukhgjhgghghkghghkgkjhga;ksakl;dasl;jkdakjdhjlasjldsasdadas",
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBarCommon.appBar("حول التطبیق"),
+        body: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Text(
+                "اذاعة وتلفزیون الاهوار - مؤسسة اٍعلامیة عراقیة هادفة تبث برامجها من جنوب العراق - ذی قار",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-          const Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: Btn.allbtn(),
-            ),
-          )
-        ],
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: Btn.allbtn(),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

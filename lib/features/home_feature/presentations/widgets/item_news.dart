@@ -34,13 +34,15 @@ class ItemHome extends StatelessWidget {
         ),
         margin: const EdgeInsets.all(10),
         width: EsaySize.width(context) - 50,
-        height: EsaySize.height(context) / 8.2,
+        height: title.length <= 80
+            ? EsaySize.height(context) / 9.5
+            : EsaySize.height(context) / 7,
         child: Stack(
           children: [
             Positioned(bottom: 5, left: 5, child: Text(time.toString())),
             Positioned.fill(
               top: 5,
-              right: 60,
+              right: EsaySize.width(context) / 5.5,
               left: 5,
               child: Align(
                 alignment: Alignment.topRight,
@@ -68,6 +70,9 @@ class ItemHome extends StatelessWidget {
               ),
             ),
             Positioned(
+              top: title.length <= 80
+                  ? (EsaySize.height(context) / 9.5) / 8
+                  : (EsaySize.height(context) / 7) / 5,
               right: 0,
               child: Container(
                 decoration: const BoxDecoration(
@@ -76,9 +81,10 @@ class ItemHome extends StatelessWidget {
                     topRight: Radius.circular(8),
                   ),
                 ),
-                width: (EsaySize.width(context) - 50) / 4.4,
-                height: EsaySize.height(context) / 8.2,
+                width: EsaySize.width(context) / 4,
+                height: EsaySize.height(context) / 12.5,
                 child: CachedNetworkImage(
+                  fit: BoxFit.cover,
                   imageUrl: pathImages,
                   placeholder: (context, url) {
                     return CostumLoading.loadCircle(context);

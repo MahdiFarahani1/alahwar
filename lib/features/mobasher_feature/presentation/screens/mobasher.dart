@@ -9,11 +9,14 @@ class Mobasher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarCommon.appBar("Mobasher"),
-      backgroundColor: Colors.grey.shade900,
-      body: Center(
-        child: CostumLoading.loadCube(context),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBarCommon.appBar("البث المباشر"),
+        backgroundColor: Colors.grey.shade900,
+        body: Center(
+          child: CostumLoading.loadCube(context),
+        ),
       ),
     );
   }

@@ -6,9 +6,9 @@ part 'fontsize_state.dart';
 
 class ThemeCubit extends Cubit<ThemeState> {
   ThemeCubit()
-      : super(ThemeState(fontSize: 19, titleColor: 50, contentColor: 50));
+      : super(ThemeState(fontSize: 21, titleColor: 50, contentColor: 50));
   Future<void> initialize() async {
-    int savedFontSize = await saveBox.get("fontsize") ?? 19;
+    int savedFontSize = await saveBox.get("fontsize") ?? 21;
     int savedTitleColor = await saveBox.get("titleColor") ?? Colors.black.value;
     int savedContentColor =
         await saveBox.get("contentColor") ?? Colors.black.value;
