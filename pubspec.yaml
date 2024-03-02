@@ -54,6 +54,9 @@ dependencies:
   highlight_text: ^1.7.0
   syncfusion_flutter_sliders: ^24.2.7
   share_plus: ^7.2.2
+  url_launcher: ^6.2.5
+  firebase_core: ^2.25.5
+  firebase_messaging: ^14.7.17
   
   
   
@@ -101,11 +104,18 @@ flutter:
         - asset: assets/fonts/Salamat.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+    - family: Arabic
+      fonts:
+        - asset: assets/fonts/Al-Jazeera-Arabic-Regular.ttf
+        - asset: assets/fonts/Al-Jazeera-Arabic-Bold.ttf
+          weight: 600
+
+    - family: Vazir
+      fonts:
+        - asset: assets/fonts/Vazir.ttf
+        - asset: assets/fonts/Vazir-Bold.ttf
+          weight: 600
+          
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -4,6 +4,7 @@ import 'package:flutter_application_1/core/common/appbar.dart';
 import 'package:flutter_application_1/core/common/gradient.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
+import 'package:flutter_application_1/features/settings_feature/presentation/bloc/alert_cubit/alert_cubit_cubit.dart';
 import 'package:flutter_application_1/features/settings_feature/presentation/bloc/theme_cubit/fontsize_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -69,9 +70,16 @@ class Setting extends StatelessWidget {
                   textDirection: TextDirection.rtl,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Checkbox(
-                  value: true,
-                  onChanged: (value) {},
+                BlocBuilder<AlertCubit, bool>(
+                  builder: (context, state) {
+                    return Checkbox(
+                      value: state,
+                      onChanged: (value) {
+                        BlocProvider.of<AlertCubit>(context)
+                            .changeAlertState(value!);
+                      },
+                    );
+                  },
                 ),
               ],
             ),
@@ -82,8 +90,9 @@ class Setting extends StatelessWidget {
   }
 
   Container boxFontFamily(BuildContext context) {
-    var _value = 4;
-    String _status = "mehdi";
+    double valueSlider = saveBox.get("fontvalue") ?? 0;
+    String fontFamiliy = saveBox.get("fontfamily") ?? "Salamat";
+    double fontSize = saveBox.get("fontsizetitle") ?? 19;
     return Container(
       margin: symmetricMargin(),
       width: EsaySize.width(context),
@@ -96,19 +105,42 @@ class Setting extends StatelessWidget {
               iconAvatar(Icons.font_download_rounded),
               Slider(
                 min: 0,
-                max: 6,
-                value: _value.toDouble(),
-                divisions: 7,
-                onChanged: (value) {
+                max: 2,
+                value: valueSlider,
+                divisions: 2,
+                onChanged: (value) async {
                   setState(() {
-                    _value = value.toInt();
-                    _status = "mehdi $_value";
+                    valueSlider = value;
+                    switch (valueSlider) {
+                      case 0.0:
+                        fontFamiliy = "Salamat";
+                        fontSize = 19;
+
+                        break;
+                      case 1.0:
+                        fontFamiliy = "Arabic";
+                        fontSize = 15;
+                        break;
+                      case 2.0:
+                        fontFamiliy = "Vazir";
+                        fontSize = 15;
+                        break;
+                      default:
+                    }
+                    BlocProvider.of<ThemeCubit>(context)
+                        .changeFontFamily(fontFamiliy, fontSize);
                   });
+                  await saveBox.put("fontvalue", valueSlider);
+                  await saveBox.put("fontfamily", fontFamiliy);
+                  await saveBox.put("fontsizetitle", fontSize);
                 },
-                activeColor: Colors.blue,
-                inactiveColor: Colors.grey,
               ),
-              Text(_status)
+              Expanded(
+                child: Text(
+                  "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ",
+                  style: TextStyle(fontFamily: fontFamiliy, fontSize: fontSize),
+                ),
+              )
             ],
           );
         },
@@ -186,24 +218,32 @@ class Setting extends StatelessWidget {
               return StatefulBuilder(
                 builder: (context, setState) {
                   return Expanded(
-                    child: Slider(
-                      label: state.fontSize.toString(),
-                      divisions: 10,
-                      min: 15,
-                      max: 25,
-                      value: state.fontSize.toDouble(),
-                      onChanged: (value) {
-                        setState(
-                          () {
-                            state.fontSize = value.toInt();
-                            BlocProvider.of<ThemeCubit>(context)
-                                .settingFontSize(value.toInt());
-                          },
-                        );
-                        saveBox.put("fontsize", state.fontSize);
-                      },
-                      activeColor: Colors.blue,
-                      inactiveColor: Colors.grey,
+                    child: SliderTheme(
+                      data: SliderThemeData(
+                        activeTrackColor: Colors.blue,
+                        inactiveTrackColor:
+                            const Color.fromRGBO(158, 158, 158, 1),
+                        thumbColor: ConstColor.objectColor,
+                        inactiveTickMarkColor: Colors.grey,
+                        activeTickMarkColor: Colors.transparent,
+                      ),
+                      child: Slider(
+                        label: state.fontSize.toString(),
+                        divisions: 10,
+                        min: 15,
+                        max: 25,
+                        value: state.fontSize.toDouble(),
+                        onChanged: (value) {
+                          setState(
+                            () {
+                              state.fontSize = value.toInt();
+                              BlocProvider.of<ThemeCubit>(context)
+                                  .settingFontSize(value.toInt());
+                            },
+                          );
+                          saveBox.put("fontsize", state.fontSize);
+                        },
+                      ),
                     ),
                   );
                 },

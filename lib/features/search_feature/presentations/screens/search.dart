@@ -64,86 +64,90 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBarCommon.appBar("البحث"),
-      backgroundColor: Colors.grey.shade900,
-      body: SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: BlocBuilder<SearchCubit, SearchState>(
-            builder: (context, state) {
-              if (state.status is LoadingSearch) {
-                return Column(
-                  children: [
-                    dropDown(context),
-                    input(context),
-                    Expanded(
-                        child: Center(child: CostumLoading.loadCube(context))),
-                  ],
-                );
-              }
-              if (state.status is InitSearch) {
-                return Column(
-                  children: [
-                    dropDown(context),
-                    input(context),
-                  ],
-                );
-              }
-              if (state.status is ErrorSearch) {
-                return Column(
-                  children: [
-                    dropDown(context),
-                    input(context),
-                    box(context, "There is a problem with your internet"),
-                  ],
-                );
-              }
-              if (state.status is ComplateSearch) {
-                var view = state.news;
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBarCommon.appBar("البحث"),
+        backgroundColor: Colors.grey.shade900,
+        body: SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: BlocBuilder<SearchCubit, SearchState>(
+              builder: (context, state) {
+                if (state.status is LoadingSearch) {
+                  return Column(
+                    children: [
+                      dropDown(context),
+                      input(context),
+                      Expanded(
+                          child:
+                              Center(child: CostumLoading.loadCube(context))),
+                    ],
+                  );
+                }
+                if (state.status is InitSearch) {
+                  return Column(
+                    children: [
+                      dropDown(context),
+                      input(context),
+                    ],
+                  );
+                }
+                if (state.status is ErrorSearch) {
+                  return Column(
+                    children: [
+                      dropDown(context),
+                      input(context),
+                      box(context, "There is a problem with your internet"),
+                    ],
+                  );
+                }
+                if (state.status is ComplateSearch) {
+                  var view = state.news;
 
-                return Column(
-                  children: [
-                    dropDown(context),
-                    input(context),
-                    Expanded(
-                      child: ListView.builder(
-                        controller: controller,
-                        itemCount: view.length,
-                        itemBuilder: (context, index) {
-                          String baseUrl =
-                              "https://alahwar-tv.com/upload_list/medium/";
+                  return Column(
+                    children: [
+                      dropDown(context),
+                      input(context),
+                      Expanded(
+                        child: ListView.builder(
+                          controller: controller,
+                          itemCount: view.length,
+                          itemBuilder: (context, index) {
+                            String baseUrl =
+                                "https://alahwar-tv.com/upload_list/medium/";
 
-                          return ItemHome(
-                            isSearch: true,
-                            searchWord: textEditingController.text,
-                            time: FormatData.result(view[index].dateTime!),
-                            title: view[index].title!,
-                            pathImages: "$baseUrl${view[index].img!}",
-                            onTap: () {
-                              Navigator.pushNamed(context, NewsMainPage.rn,
-                                  arguments: view[index].id);
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                    if (state.isLoadMoreRunning)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 40),
-                        child: Center(
-                          child: CostumLoading.fadingCircle(context),
+                            return ItemHome(
+                              isSearch: true,
+                              searchWord: textEditingController.text,
+                              time: FormatData.result(view[index].dateTime!),
+                              title: view[index].title!,
+                              pathImages: "$baseUrl${view[index].img!}",
+                              onTap: () {
+                                Navigator.pushNamed(context, NewsMainPage.rn,
+                                    arguments: view[index].id);
+                              },
+                            );
+                          },
                         ),
                       ),
-                    if (!state.hasNextPage) const SizedBox(),
-                  ],
-                );
-              }
+                      if (state.isLoadMoreRunning)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 40),
+                          child: Center(
+                            child: CostumLoading.fadingCircle(context),
+                          ),
+                        ),
+                      if (!state.hasNextPage) const SizedBox(),
+                    ],
+                  );
+                }
 
-              return Container();
-            },
-          )),
+                return Container();
+              },
+            )),
+      ),
     );
   }
 
@@ -168,11 +172,6 @@ class _SearchState extends State<Search> {
       height: EsaySize.height(context) / 15,
       color: Colors.white,
       child: Row(children: [
-        IconButton(
-            onPressed: () {
-              _validateForm();
-            },
-            icon: const Icon(Icons.search)),
         Expanded(
           child: Form(
             key: formKey,
@@ -193,7 +192,12 @@ class _SearchState extends State<Search> {
               ),
             ),
           ),
-        )
+        ),
+        IconButton(
+            onPressed: () {
+              _validateForm();
+            },
+            icon: const Icon(Icons.search)),
       ]),
     );
   }
@@ -207,7 +211,28 @@ class _SearchState extends State<Search> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              EsaySize.safeGap(EsaySize.width(context) / 2),
+              Container(
+                  color: Colors.white,
+                  child: Row(
+                    children: [
+                      checkBox("النص", context, (val) {
+                        setState(
+                          () {
+                            contentBool = val!;
+                          },
+                        );
+                      }, contentBool),
+                      EsaySize.gap(3),
+                      checkBox("العنوان", context, (val) {
+                        setState(
+                          () {
+                            titleBool = val!;
+                          },
+                        );
+                      }, titleBool),
+                    ],
+                  )),
+              const Spacer(),
               Container(
                 height: EsaySize.height(context) / 15,
                 color: Colors.white,
@@ -260,28 +285,6 @@ class _SearchState extends State<Search> {
                   ),
                 ),
               ),
-              const Spacer(),
-              Container(
-                  color: Colors.white,
-                  child: Row(
-                    children: [
-                      checkBox("النص", context, (val) {
-                        setState(
-                          () {
-                            contentBool = val!;
-                          },
-                        );
-                      }, contentBool),
-                      EsaySize.gap(3),
-                      checkBox("العنوان", context, (val) {
-                        setState(
-                          () {
-                            titleBool = val!;
-                          },
-                        );
-                      }, titleBool),
-                    ],
-                  )),
             ],
           ),
         );
@@ -297,14 +300,14 @@ class _SearchState extends State<Search> {
       ),
       height: EsaySize.height(context) / 15,
       child: Row(children: [
-        Checkbox(
-          value: val,
-          onChanged: onChanged,
-        ),
-        EsaySize.gap(5),
         Padding(
           padding: const EdgeInsets.only(right: 5),
           child: Text(txt),
+        ),
+        EsaySize.gap(5),
+        Checkbox(
+          value: val,
+          onChanged: onChanged,
         ),
       ]),
     );

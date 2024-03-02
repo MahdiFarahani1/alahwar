@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "295475604369",
+    "project_id": "alahwar",
+    "storage_bucket": "alahwar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:295475604369:android:63b6aa12f1dd75a350c830",
+        "android_client_info": {
+          "package_name": "com.alahwar.pr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA492wcft3OF7q7rXQlquiCU6bhXdNuiPA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
