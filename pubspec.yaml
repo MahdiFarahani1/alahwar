@@ -57,6 +57,7 @@ dependencies:
   url_launcher: ^6.2.5
   firebase_core: ^2.25.5
   firebase_messaging: ^14.7.17
+  get_storage: ^2.1.1
   
   
   

@@ -13,7 +13,7 @@ import 'package:flutter_application_1/features/home_feature/data/model/click_new
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/click_news_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/status_click_news.dart';
 import 'package:flutter_application_1/features/home_feature/repositories/format_html.dart';
-import 'package:flutter_application_1/features/settings_feature/presentation/bloc/theme_cubit/fontsize_cubit.dart';
+import 'package:flutter_application_1/features/settings_feature/presentation/bloc/theme_cubit/theme_cubit.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -149,11 +149,11 @@ class NewsMainPage extends StatelessWidget {
                                               box.put('favorite_${view[0].id}',
                                                   isFavorite);
                                               if (isFavorite) {
-                                                OperatorSave.addDatabase(
+                                                OperatorDatabase.addDatabase(
                                                     context: context,
                                                     view: view);
                                               } else {
-                                                OperatorSave.deleteDatabsae(
+                                                OperatorDatabase.deleteDatabsae(
                                                     id: view[0].id!,
                                                     context: context);
                                               }

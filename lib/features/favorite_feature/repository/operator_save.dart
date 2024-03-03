@@ -6,7 +6,7 @@ import 'package:flutter_application_1/features/home_feature/data/model/click_new
 import 'package:flutter_application_1/features/home_feature/repositories/format_date.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class OperatorSave {
+class OperatorDatabase {
   static addDatabase(
       {required BuildContext context, required List<NewsPost> view}) {
     const String baseUrl = "https://alahwar-tv.com/upload_list/medium/";

@@ -1,4 +1,4 @@
-part of 'fontsize_cubit.dart';
+part of 'theme_cubit.dart';
 
 class ThemeState {
   int fontSize;

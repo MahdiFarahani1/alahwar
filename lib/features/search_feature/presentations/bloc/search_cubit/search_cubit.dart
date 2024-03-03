@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/home_feature/data/model/news_home_model.dart';
-import 'package:flutter_application_1/features/search_feature/data/repository/provider.dart';
+import 'package:flutter_application_1/features/search_feature/repository/provider.dart';
 import 'package:flutter_application_1/features/search_feature/presentations/bloc/search_cubit/status.dart';
 
 part 'search_state.dart';

@@ -5,7 +5,7 @@ import 'package:flutter_application_1/core/common/gradient.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
 import 'package:flutter_application_1/features/settings_feature/presentation/bloc/alert_cubit/alert_cubit_cubit.dart';
-import 'package:flutter_application_1/features/settings_feature/presentation/bloc/theme_cubit/fontsize_cubit.dart';
+import 'package:flutter_application_1/features/settings_feature/presentation/bloc/theme_cubit/theme_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Setting extends StatelessWidget {
@@ -77,6 +77,7 @@ class Setting extends StatelessWidget {
                       onChanged: (value) {
                         BlocProvider.of<AlertCubit>(context)
                             .changeAlertState(value!);
+                        saveBox.put("alert", value);
                       },
                     );
                   },

@@ -21,11 +21,10 @@ class DatabaseListCubit extends Cubit<DatabaseListState> {
   Future<void> loadSavedItems() async {
     List<int> loadList = [];
 
+    loadList = saveBox.values.whereType<int>().toList();
     for (var element in saveBox.values) {
-      loadList.add(element);
+      print(element);
     }
-
-    // Update the state with the loaded list
     emit(state.copyWith(dataBaseList: loadList));
   }
 }

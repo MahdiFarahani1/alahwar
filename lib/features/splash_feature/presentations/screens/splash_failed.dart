@@ -14,6 +14,7 @@ class SplashFailed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String tryAgain = "! لیس لدیک اتصال بالانترنت حالیا، حاول مجددا ";
     return SafeArea(
       child: Scaffold(
         backgroundColor: ConstColor.bgColor,
@@ -25,9 +26,12 @@ class SplashFailed extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Spacer(),
-                const Text("Your Connection Have Problem..."),
+                Text(
+                  tryAgain,
+                  style: splashStyle(color: Colors.black, fontsize: 17),
+                ),
                 EsaySize.gap(10),
-                BtnSplash.btn(context, "try again", () async {
+                BtnSplash.btn(context, "المحاولة مرة أخرى", () async {
                   if (await SplashRepository().isConnect()) {
                     // ignore: use_build_context_synchronously
                     Navigator.pushReplacementNamed(context, Home.rn);
@@ -35,22 +39,33 @@ class SplashFailed extends StatelessWidget {
                     showTopSnackBar(
                       // ignore: use_build_context_synchronously
                       Overlay.of(context),
-                      const CustomSnackBar.error(
-                        message:
-                            "Something went wrong. Please check your credentials and try again",
+                      CustomSnackBar.error(
+                        message: tryAgain,
                       ),
                     );
                   }
-                }),
+                }, splashStyle()),
                 EsaySize.gap(10),
-                BtnSplash.btn(context, "favorite", () {
+                BtnSplash.btn(context, "الاخبار المحفوظة (المفضلة)", () {
                   Navigator.pushNamed(context, Favorite.rn);
-                }),
+                }, splashStyle()),
                 const Spacer(),
-                //  const Text("Alahor"),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Text(
+                    "الاهوار",
+                    style: splashStyle(
+                        color: ConstColor.objectColor, fontsize: 23),
+                  ),
+                ),
               ]),
         ),
       ),
     );
+  }
+
+  TextStyle splashStyle({Color? color = Colors.white, double? fontsize = 20}) {
+    return TextStyle(
+        fontWeight: FontWeight.bold, fontSize: fontsize, color: color);
   }
 }
