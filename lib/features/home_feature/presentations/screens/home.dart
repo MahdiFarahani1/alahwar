@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
@@ -142,7 +143,7 @@ class _HomeState extends State<Home> {
   SizedBox sliderImages(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: EsaySize.height(context) / 3.8,
+      height: EsaySize.height(context) / 3.3,
       child: BlocBuilder<NewsHomeCubit, NewsHomeState>(
         builder: (context, state) {
           if (state.status.state == StateNewsHome.loading) {
@@ -153,7 +154,7 @@ class _HomeState extends State<Home> {
             var view = state.status.data as List<NewsGet>;
             return BlocBuilder<IndicatorIndexCubit, int>(
               builder: (context, state) {
-                return Stack(
+                return Column(
                   children: [
                     SizedBox(
                       width: double.infinity,
@@ -194,14 +195,17 @@ class _HomeState extends State<Home> {
                                     child: IgnorePointer(
                                       child: Container(
                                         width: EsaySize.width(context),
-                                        height: EsaySize.height(context) / 9,
-                                        color:
-                                            Colors.transparent.withOpacity(0.3),
+                                        height: EsaySize.height(context) / 12,
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(colors: [
+                                          Colors.blue.shade900,
+                                          Colors.green.shade900.withOpacity(0.9)
+                                        ])),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
                                             maxLines: 2,
-                                            textAlign: TextAlign.center,
+                                            textAlign: TextAlign.right,
                                             view[actualIndex].title!,
                                             textDirection: TextDirection.rtl,
                                             style: const TextStyle(
@@ -231,22 +235,18 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
+                    Expanded(
                       child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(10)),
                         alignment: Alignment.center,
-                        height: 30,
+                        height: 25,
                         width: EsaySize.width(context) / 3.2,
                         child: AnimatedSmoothIndicator(
-                            effect: WormEffect(
-                                dotWidth: 12,
-                                dotHeight: 12,
-                                dotColor: Colors.white,
-                                activeDotColor: ConstColor.appbarColor,
-                                type: WormType.thin),
+                            effect: ExpandingDotsEffect(
+                              dotWidth: 12,
+                              dotHeight: 3,
+                              dotColor: Colors.grey,
+                              activeDotColor: ConstColor.appbarColor,
+                            ),
                             activeIndex: state,
                             count: 4),
                       ),
@@ -274,7 +274,7 @@ class _HomeState extends State<Home> {
           String baseUrl = "https://alahwar-tv.com/upload_list/medium/";
           return Container(
             margin: EdgeInsets.only(
-                top: ismargin ? EsaySize.height(context) / 3.2 : 8),
+                top: ismargin ? EsaySize.height(context) / 2.7 : 8),
             width: double.infinity,
             child: Column(
               children: [
@@ -284,7 +284,7 @@ class _HomeState extends State<Home> {
                     shrinkWrap: true,
                     itemCount: view.length,
                     itemBuilder: (context, index) {
-                      return ItemHome(
+                      return ItemNews(
                         time: FormatData.result(view[index].dateTime!),
                         title: view[index].title!,
                         pathImages: "$baseUrl${view[index].img!}",
@@ -318,7 +318,7 @@ class _HomeState extends State<Home> {
           return Container(
             margin: EdgeInsets.only(top: EsaySize.height(context) / 3.2),
             width: double.infinity,
-            child: ItemHome(
+            child: ItemNews(
               time: "404",
               title: state.status.erorr!,
               pathImages: "",
@@ -349,20 +349,24 @@ class _HomeState extends State<Home> {
 
   Widget category(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: EsaySize.height(context) / 3.8),
+      margin: EdgeInsets.only(top: EsaySize.height(context) / 3.3),
       width: double.infinity,
-      height: 50,
-      child: ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: categotyMap.length,
-        itemBuilder: (context, index) {
-          return categotyItem(
-            index,
-            isSelect,
-            categotyMap.values.toList(),
-          );
-        },
+      color: ConstColor.greyWithShade,
+      height: 40,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: categotyMap.length,
+          itemBuilder: (context, index) {
+            return categotyItem(
+              index,
+              isSelect,
+              categotyMap.values.toList(),
+            );
+          },
+        ),
       ),
     );
   }
@@ -391,22 +395,18 @@ Widget categotyItem(int index, List<bool> isSelect, List<String> categoryList) {
       },
       child: Container(
         alignment: Alignment.center,
-        margin: const EdgeInsets.all(10),
-        width: 80,
-        height: 50,
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
         decoration: BoxDecoration(
-          border: Border.all(color: ConstColor.objectColor, width: 1),
-          borderRadius: BorderRadius.circular(10),
-          color: isSelect[index] ? Colors.redAccent : Colors.white,
+          borderRadius: BorderRadius.circular(6),
+          color:
+              isSelect[index] ? ConstColor.appbarColor : Colors.grey.shade300,
         ),
-        child: FittedBox(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 3.0),
-            child: Text(
-              categoryList[index],
-              style: TextStyle(
-                color: isSelect[index] ? Colors.white : Colors.black,
-              ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Text(
+            categoryList[index],
+            style: TextStyle(
+              color: isSelect[index] ? Colors.white : Colors.black,
             ),
           ),
         ),

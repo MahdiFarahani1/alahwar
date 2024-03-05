@@ -118,7 +118,7 @@ class _SearchState extends State<Search> {
                             String baseUrl =
                                 "https://alahwar-tv.com/upload_list/medium/";
 
-                            return ItemHome(
+                            return ItemNews(
                               isSearch: true,
                               searchWord: textEditingController.text,
                               time: FormatData.result(view[index].dateTime!),

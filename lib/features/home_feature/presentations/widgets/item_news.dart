@@ -5,14 +5,14 @@ import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
 import 'package:highlight_text/highlight_text.dart';
 
-class ItemHome extends StatelessWidget {
+class ItemNews extends StatelessWidget {
   final String title;
   final String time;
   final String pathImages;
   final bool isSearch;
   final VoidCallback? onTap;
   final String? searchWord;
-  const ItemHome({
+  const ItemNews({
     super.key,
     required this.title,
     required this.time,
@@ -29,17 +29,34 @@ class ItemHome extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(8)),
-          border: Border.all(color: ConstColor.appbarColor),
-          color: Colors.white,
+          color: ConstColor.greyWithShade,
         ),
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         width: EsaySize.width(context) - 50,
         height: title.length <= 80
             ? EsaySize.height(context) / 9.5
             : EsaySize.height(context) / 7,
         child: Stack(
           children: [
-            Positioned(bottom: 5, left: 5, child: Text(time.toString())),
+            Container(
+              alignment: Alignment.center,
+              width: 85,
+              height: 40,
+              margin: EdgeInsets.only(
+                  top: title.length <= 80
+                      ? EsaySize.height(context) / 12.5
+                      : EsaySize.height(context) / 8.5),
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
+                  color: ConstColor.appbarColor),
+              child: Text(
+                time.toString().replaceAll("/", "-"),
+                style: const TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            ),
             Positioned.fill(
               top: 5,
               right: EsaySize.width(context) / 5.5,

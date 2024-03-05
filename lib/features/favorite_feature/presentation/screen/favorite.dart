@@ -61,7 +61,7 @@ class _FavoriteState extends State<Favorite> {
                 itemBuilder: (context, index) {
                   var save = box.get(state.dataBaseList[index]);
                   if (save != null && save is ObjectDataBase) {
-                    return ItemHome(
+                    return ItemNews(
                       title: save.title,
                       time: save.dateTime,
                       pathImages: save.pathImage,
