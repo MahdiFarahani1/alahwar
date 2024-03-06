@@ -34,11 +34,11 @@ class Setting extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBarCommon.appBar("الاعدادات"),
+        appBar: AppBarCommon.appBar("الاعدادات", context),
         body: Container(
           width: EsaySize.width(context),
           height: EsaySize.height(context),
-          decoration: BoxDecoration(gradient: CostumGradient.linear()),
+          decoration: BoxDecoration(gradient: CostumGradient.linearBlue()),
           child: Column(
             children: [
               boxFontFamily(context),

@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/core/common/divider.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
+import 'package:flutter_application_1/core/constans/const_searchbtn.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
 
 import 'package:flutter_application_1/features/home_feature/repositories/format_date.dart';
@@ -15,8 +19,8 @@ import 'package:flutter_application_1/features/home_feature/presentations/bloc/i
 import 'package:flutter_application_1/features/home_feature/presentations/screens/news_page.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/drawer_widgets.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/item_news.dart';
-import 'package:flutter_application_1/features/search_feature/presentations/screens/search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../bloc/news_cubit/news_home_cubit.dart';
 import '../bloc/news_cubit/status_news.dart';
@@ -77,7 +81,7 @@ class _HomeState extends State<Home> {
           builder: (context, state) {
             if (state.status is LoadingHome) {
               return Center(
-                child: CostumLoading.loadCube(context),
+                child: CostumLoading.fadingCircle(context),
               );
             }
 
@@ -102,42 +106,63 @@ class _HomeState extends State<Home> {
         ));
   }
 
-  Builder costumDrawer() {
-    return Builder(builder: (context) {
-      var appBarHeight = Scaffold.of(context).appBarMaxHeight!;
-      return Container(
-        width: EsaySize.width(context) * 0.7,
-        margin: EdgeInsets.only(top: appBarHeight),
-        height: EsaySize.height(context) - appBarHeight,
-        decoration: const BoxDecoration(color: Colors.white),
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.bottomCenter,
-              width: EsaySize.width(context),
-              height: EsaySize.height(context) / 4,
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.fitWidth,
-                      image: AssetImage("assets/images/oops.jpg"))),
-              child:
-                  const Divider(color: Colors.black, height: 2, thickness: 1.5),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              width: EsaySize.width(context),
-              child: SingleChildScrollView(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: DrawerWidgets.fullItems(
-                        context: context,
-                        onpress: OnPressDrawer.press(context))),
+  Widget costumDrawer() {
+    return SafeArea(
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
+        child: Container(
+          width: EsaySize.width(context) * 0.7,
+          height: EsaySize.height(context),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+          ),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(
+                      FontAwesomeIcons.xmark,
+                      size: 20,
+                    )),
               ),
-            ),
-          ],
+              EsaySize.gap(35),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 30),
+                alignment: Alignment.bottomCenter,
+                width: EsaySize.width(context),
+                height: EsaySize.height(context) / 6,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fitWidth,
+                    image: AssetImage("assets/images/logo-big.jpg"),
+                  ),
+                ),
+              ),
+              CostumDivider.div(),
+              EsaySize.safeGap(30),
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: DrawerWidgets.text.length,
+                itemBuilder: (context, index) {
+                  return DrawerWidgets.drawerItem(
+                      index: index,
+                      context: context,
+                      text: DrawerWidgets.text[index],
+                      iconData: DrawerWidgets.iconData[index],
+                      onpress: OnPressDrawer.press(context)[index]);
+                },
+              ),
+            ],
+          ),
         ),
-      );
-    });
+      ),
+    );
   }
 
   SizedBox sliderImages(BuildContext context) {
@@ -170,25 +195,29 @@ class _HomeState extends State<Home> {
                                       view[(index + view.length) - 4].id!);
                             },
                             child: Container(
+                              margin: const EdgeInsets.only(
+                                  top: 8, left: 3, right: 3),
                               width: double.infinity,
-                              color: ConstColor.bgColor,
                               child: Stack(
                                 children: [
-                                  CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    height: EsaySize.height(context),
-                                    width: EsaySize.width(context),
-                                    errorWidget: (context, url, error) {
-                                      return const Icon(Icons.error);
-                                    },
-                                    imageUrl:
-                                        "$baseUrl${view[actualIndex].img}",
-                                    placeholder: (context, url) {
-                                      return Center(
-                                        child:
-                                            CostumLoading.fadingCircle(context),
-                                      );
-                                    },
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      height: EsaySize.height(context),
+                                      width: EsaySize.width(context),
+                                      errorWidget: (context, url, error) {
+                                        return const Icon(Icons.error);
+                                      },
+                                      imageUrl:
+                                          "$baseUrl${view[actualIndex].img}",
+                                      placeholder: (context, url) {
+                                        return Center(
+                                          child: CostumLoading.fadingCircle(
+                                              context),
+                                        );
+                                      },
+                                    ),
                                   ),
                                   Align(
                                     alignment: Alignment.bottomCenter,
@@ -196,11 +225,15 @@ class _HomeState extends State<Home> {
                                       child: Container(
                                         width: EsaySize.width(context),
                                         height: EsaySize.height(context) / 12,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(12),
+                                                bottomRight:
+                                                    Radius.circular(12)),
                                             gradient: LinearGradient(colors: [
-                                          Colors.blue.shade900,
-                                          Colors.green.shade900.withOpacity(0.9)
-                                        ])),
+                                              Color.fromRGBO(16, 154, 211, 0.7),
+                                              Color.fromRGBO(136, 94, 37, 0.7)
+                                            ])),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
@@ -224,13 +257,13 @@ class _HomeState extends State<Home> {
                           );
                         },
                         options: CarouselOptions(
+                          viewportFraction: 0.9,
                           aspectRatio: 16 / 9,
                           onPageChanged: (index, reason) {
                             BlocProvider.of<IndicatorIndexCubit>(context)
                                 .changeIndicator(index);
                           },
                           autoPlay: true,
-                          viewportFraction: 1,
                           autoPlayAnimationDuration: const Duration(seconds: 2),
                         ),
                       ),
@@ -244,8 +277,8 @@ class _HomeState extends State<Home> {
                             effect: ExpandingDotsEffect(
                               dotWidth: 12,
                               dotHeight: 3,
-                              dotColor: Colors.grey,
-                              activeDotColor: ConstColor.appbarColor,
+                              dotColor: ConstColor.dividerColor,
+                              activeDotColor: ConstColor.baseColor,
                             ),
                             activeIndex: state,
                             count: 4),
@@ -311,7 +344,7 @@ class _HomeState extends State<Home> {
 
         if (state.status.state == StateNewsHome.loading) {
           return Center(
-            child: CostumLoading.loadCube(context),
+            child: CostumLoading.fadingCircle(context),
           );
         }
         if (state.status.state == StateNewsHome.error) {
@@ -333,41 +366,47 @@ class _HomeState extends State<Home> {
 
   AppBar appbar(BuildContext context) {
     return AppBar(
-      backgroundColor: ConstColor.appbarColor,
+      backgroundColor: Colors.white,
       centerTitle: true,
-      leading: IconButton(
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              Search.rn,
-            );
-          },
-          icon: const Icon(Icons.search)),
-      title: const Text("الاهوار"),
+      leading: SearchFeature.add(context),
+      title: Image.asset("assets/images/logo.png"),
     );
   }
 
   Widget category(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: EsaySize.height(context) / 3.3),
-      width: double.infinity,
-      color: ConstColor.greyWithShade,
-      height: 40,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: categotyMap.length,
-          itemBuilder: (context, index) {
-            return categotyItem(
-              index,
-              isSelect,
-              categotyMap.values.toList(),
-            );
-          },
-        ),
-      ),
+    return BlocBuilder<NewsHomeCubit, NewsHomeState>(
+      builder: (context, state) {
+        if (state.status.state == StateNewsHome.complate) {
+          return Container(
+            margin: EdgeInsets.only(top: EsaySize.height(context) / 3.3),
+            width: double.infinity,
+            color: ConstColor.greyWithShade,
+            height: 40,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: categotyMap.length,
+                itemBuilder: (context, index) {
+                  return categotyItem(
+                    index,
+                    isSelect,
+                    categotyMap.values.toList(),
+                  );
+                },
+              ),
+            ),
+          );
+        }
+        if (state.status.state == StateNewsHome.loading) {
+          return const SizedBox.shrink();
+        }
+        if (state.status.state == StateNewsHome.error) {
+          return const SizedBox.shrink();
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 }
@@ -398,8 +437,7 @@ Widget categotyItem(int index, List<bool> isSelect, List<String> categoryList) {
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
-          color:
-              isSelect[index] ? ConstColor.appbarColor : Colors.grey.shade300,
+          color: isSelect[index] ? ConstColor.baseColor : Colors.grey.shade300,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),

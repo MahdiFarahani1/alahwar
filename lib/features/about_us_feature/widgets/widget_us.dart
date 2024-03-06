@@ -10,11 +10,6 @@ class Btn {
       {required IconData iconData, required VoidCallback onPress}) {
     return GFIconButton(
       onPressed: onPress,
-      shape: GFIconButtonShape.circle,
-      boxShadow: BoxShadow(
-          offset: const Offset(2, 2),
-          color: ConstColor.bgColor,
-          spreadRadius: 2),
       alignment: Alignment.center,
       icon: Icon(
         iconData,
@@ -44,7 +39,7 @@ class Btn {
   static List<Widget> allbtn() {
     return [
       Btn.btnSocial(
-        iconData: FontAwesomeIcons.w,
+        iconData: FontAwesomeIcons.earthAmericas,
         onPress: () {
           AboutRepository.launchUrl(AboutRepository.urlSite);
         },
@@ -79,7 +74,7 @@ class Btn {
       ),
       EsaySize.gap(10),
       Btn.btnSocial(
-        iconData: FontAwesomeIcons.twitter,
+        iconData: FontAwesomeIcons.xTwitter,
         onPress: () {
           AboutRepository.launchUrl(AboutRepository.urlTwitter);
         },

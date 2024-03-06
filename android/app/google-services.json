@@ -1,26 +1,80 @@
 {
   "project_info": {
-    "project_number": "295475604369",
-    "project_id": "alahwar",
-    "storage_bucket": "alahwar.appspot.com"
+    "project_number": "57143280985",
+    "firebase_url": "https://alahwartv-cfc28.firebaseio.com",
+    "project_id": "alahwartv-cfc28",
+    "storage_bucket": "alahwartv-cfc28.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:295475604369:android:63b6aa12f1dd75a350c830",
+        "mobilesdk_app_id": "1:57143280985:android:065886be53c4f1fb",
         "android_client_info": {
-          "package_name": "com.alahwar.pr"
+          "package_name": "com.dijlah.alahwar"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "57143280985-0dus9vq5fn32kmlcc2fk9bmg4pc85r79.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyA492wcft3OF7q7rXQlquiCU6bhXdNuiPA"
+          "current_key": "AIzaSyCfvRGjQ4vv610S3_baF0JwIZaIHzUkZPQ"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "57143280985-0dus9vq5fn32kmlcc2fk9bmg4pc85r79.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "57143280985-s6qb05atbr0g11p3fge4kgvhst1qmpus.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dijlah.alahwar"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57143280985:android:15906724441e0659feb848",
+        "android_client_info": {
+          "package_name": "com.dijlah.alahwartv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "57143280985-0dus9vq5fn32kmlcc2fk9bmg4pc85r79.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfvRGjQ4vv610S3_baF0JwIZaIHzUkZPQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "57143280985-0dus9vq5fn32kmlcc2fk9bmg4pc85r79.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "57143280985-s6qb05atbr0g11p3fge4kgvhst1qmpus.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dijlah.alahwar"
+              }
+            }
+          ]
         }
       }
     }

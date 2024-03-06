@@ -33,25 +33,20 @@ class ItemNews extends StatelessWidget {
         ),
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         width: EsaySize.width(context) - 50,
-        height: title.length <= 80
-            ? EsaySize.height(context) / 9.5
-            : EsaySize.height(context) / 7,
+        height: EsaySize.height(context) / 9.5,
         child: Stack(
           children: [
             Container(
               alignment: Alignment.center,
               width: 85,
               height: 40,
-              margin: EdgeInsets.only(
-                  top: title.length <= 80
-                      ? EsaySize.height(context) / 12.5
-                      : EsaySize.height(context) / 8.5),
+              margin: EdgeInsets.only(top: EsaySize.height(context) / 12.5),
               decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
                   ),
-                  color: ConstColor.appbarColor),
+                  color: ConstColor.baseColor),
               child: Text(
                 time.toString().replaceAll("/", "-"),
                 style: const TextStyle(color: Colors.white, fontSize: 12),
@@ -78,40 +73,47 @@ class ItemNews extends StatelessWidget {
                                     fontWeight: FontWeight.bold))
                           },
                         )
-                      : Text(
-                          style: Theme.of(context).textTheme.titleMedium,
-                          title,
-                          textDirection: TextDirection.rtl,
-                        ),
+                      : Builder(builder: (context) {
+                          String? updateTitle;
+                          if (title.length > 70) {
+                            String subTitle = title.substring(0, 70);
+                            updateTitle = subTitle;
+                            updateTitle += "...";
+                          }
+
+                          return Text(
+                            style: Theme.of(context).textTheme.titleMedium,
+                            title.length <= 70 ? title : updateTitle!,
+                            textDirection: TextDirection.rtl,
+                          );
+                        }),
                 ),
               ),
             ),
             Positioned(
-              top: title.length <= 80
-                  ? (EsaySize.height(context) / 9.5) / 8
-                  : (EsaySize.height(context) / 7) / 5,
+              top: 0,
               right: 0,
-              child: Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
+              child: SizedBox(
+                width: EsaySize.width(context) / 4,
+                height: EsaySize.height(context) / 9.5,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
                     bottomRight: Radius.circular(8),
                     topRight: Radius.circular(8),
                   ),
-                ),
-                width: EsaySize.width(context) / 4,
-                height: EsaySize.height(context) / 12.5,
-                child: CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  imageUrl: pathImages,
-                  placeholder: (context, url) {
-                    return CostumLoading.loadCircle(context);
-                  },
-                  errorWidget: (context, url, error) {
-                    return const Center(
-                        child: Icon(
-                      Icons.error,
-                    ));
-                  },
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: pathImages,
+                    placeholder: (context, url) {
+                      return CostumLoading.loadCircle(context);
+                    },
+                    errorWidget: (context, url, error) {
+                      return const Center(
+                          child: Icon(
+                        Icons.error,
+                      ));
+                    },
+                  ),
                 ),
               ),
             ),

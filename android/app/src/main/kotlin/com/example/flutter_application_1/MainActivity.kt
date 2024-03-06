@@ -1,4 +1,4 @@
-package com.alahwar.pr
+package com.dijlah.alahwartv
 
 import io.flutter.embedding.android.FlutterActivity
 

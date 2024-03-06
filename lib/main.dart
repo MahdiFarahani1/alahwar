@@ -5,6 +5,7 @@ import 'package:flutter_application_1/config/setupMain.dart';
 import 'package:flutter_application_1/features/favorite_feature/presentation/bloc/cubit/database_list_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/click_news_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/indicatror_cubit/indicator_index_cubit.dart';
+import 'package:flutter_application_1/features/home_feature/presentations/bloc/select_drawer/select_drawer_cubit.dart';
 import 'package:flutter_application_1/features/search_feature/presentations/bloc/search_cubit/search_cubit.dart';
 import 'package:flutter_application_1/features/settings_feature/presentation/bloc/alert_cubit/alert_cubit_cubit.dart';
 import 'package:flutter_application_1/features/settings_feature/presentation/bloc/theme_cubit/theme_cubit.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => AlertCubit(),
+          ),
+          BlocProvider(
+            create: (context) => SelectDrawerCubit(),
           ),
         ],
         child: BlocBuilder<ThemeCubit, ThemeState>(

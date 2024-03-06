@@ -68,7 +68,7 @@ class _SearchState extends State<Search> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBarCommon.appBar("البحث"),
+        appBar: AppBarCommon.appBar("البحث", context, isSearchPage: true),
         backgroundColor: Colors.grey.shade900,
         body: SizedBox(
             width: double.infinity,
@@ -81,8 +81,8 @@ class _SearchState extends State<Search> {
                       dropDown(context),
                       input(context),
                       Expanded(
-                          child:
-                              Center(child: CostumLoading.loadCube(context))),
+                          child: Center(
+                              child: CostumLoading.fadingCircle(context))),
                     ],
                   );
                 }

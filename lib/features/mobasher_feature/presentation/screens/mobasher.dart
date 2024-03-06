@@ -12,10 +12,10 @@ class Mobasher extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBarCommon.appBar("البث المباشر"),
+        appBar: AppBarCommon.appBar("البث المباشر", context),
         backgroundColor: Colors.grey.shade900,
         body: Center(
-          child: CostumLoading.loadCube(context),
+          child: CostumLoading.fadingCircle(context),
         ),
       ),
     );

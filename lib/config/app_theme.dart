@@ -39,10 +39,10 @@ class AppTheme {
   }
 
   AppBarTheme appBarTheme() {
-    return AppBarTheme(
-      iconTheme: IconThemeData(color: ConstColor.iconAppbarColor),
+    return const AppBarTheme(
+      iconTheme: IconThemeData(color: Colors.black),
       titleTextStyle: TextStyle(
-        color: ConstColor.iconAppbarColor,
+        color: Colors.black,
         fontSize: 24,
         fontWeight: FontWeight.bold,
       ),

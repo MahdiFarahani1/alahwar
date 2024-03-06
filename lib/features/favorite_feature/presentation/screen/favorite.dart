@@ -35,7 +35,7 @@ class _FavoriteState extends State<Favorite> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: Colors.grey.shade900,
-        appBar: AppBarCommon.appBar(" قایمة المفضلة"),
+        appBar: AppBarCommon.appBar(" قایمة المفضلة", context),
         body: BlocBuilder<DatabaseListCubit, DatabaseListState>(
           builder: (context, state) {
             if (state.dataBaseList.isEmpty) {
@@ -44,7 +44,8 @@ class _FavoriteState extends State<Favorite> {
                   width: EsaySize.width(context),
                   height: 80,
                   alignment: Alignment.center,
-                  decoration: BoxDecoration(gradient: CostumGradient.linear()),
+                  decoration:
+                      BoxDecoration(gradient: CostumGradient.linearBlue()),
                   margin: const EdgeInsets.all(10),
                   child: const Text(
                     "لا توجد بیانات تمت اضافتها للمفضلة",
