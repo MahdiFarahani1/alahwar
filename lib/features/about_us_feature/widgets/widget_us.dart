@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
 import 'package:flutter_application_1/features/about_us_feature/repository/aboutus_repository.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -26,13 +25,11 @@ class Btn {
       size: size,
       iconSize: size,
       onPressed: onTap,
-      shape: GFIconButtonShape.circle,
-      boxShadow: BoxShadow(
-          offset: const Offset(2, 2),
-          color: ConstColor.bgColor,
-          spreadRadius: 2),
+      shape: GFIconButtonShape.square,
       alignment: Alignment.center,
       icon: Icon(iconData),
+      borderShape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
     );
   }
 

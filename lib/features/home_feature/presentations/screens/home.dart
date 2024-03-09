@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/core/common/divider.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
@@ -369,7 +367,12 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.white,
       centerTitle: true,
       leading: SearchFeature.add(context),
-      title: Image.asset("assets/images/logo.png"),
+      title: GestureDetector(
+        onTap: () {
+          BlocProvider.of<HomeDrawerCubit>(context).reBiuldHome();
+        },
+        child: Image.asset("assets/images/logo.png"),
+      ),
     );
   }
 

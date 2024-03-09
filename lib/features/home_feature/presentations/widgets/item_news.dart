@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
+import 'package:flutter_application_1/core/extensions/string_ex.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
 import 'package:highlight_text/highlight_text.dart';
 
@@ -40,7 +41,9 @@ class ItemNews extends StatelessWidget {
               alignment: Alignment.center,
               width: 85,
               height: 40,
-              margin: EdgeInsets.only(top: EsaySize.height(context) / 12.5),
+              margin: EdgeInsets.only(
+                  top: EsaySize.height(context) / 12.5,
+                  right: EsaySize.width(context) * 0.75),
               decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(8),
@@ -64,7 +67,7 @@ class ItemNews extends StatelessWidget {
                   child: isSearch
                       ? TextHighlight(
                           textStyle: Theme.of(context).textTheme.titleMedium,
-                          text: title,
+                          text: title.titleFormatter(),
                           textDirection: TextDirection.rtl,
                           words: {
                             searchWord!: HighlightedWord(
@@ -73,20 +76,21 @@ class ItemNews extends StatelessWidget {
                                     fontWeight: FontWeight.bold))
                           },
                         )
-                      : Builder(builder: (context) {
-                          String? updateTitle;
-                          if (title.length > 70) {
-                            String subTitle = title.substring(0, 70);
-                            updateTitle = subTitle;
-                            updateTitle += "...";
-                          }
-
-                          return Text(
-                            style: Theme.of(context).textTheme.titleMedium,
-                            title.length <= 70 ? title : updateTitle!,
-                            textDirection: TextDirection.rtl,
-                          );
-                        }),
+                      : Text(
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(
+                                  fontSize: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium!
+                                              .fontFamily ==
+                                          "Salamat"
+                                      ? 18
+                                      : 15),
+                          title.length <= 70 ? title : title.titleFormatter(),
+                          textDirection: TextDirection.rtl,
+                        ),
                 ),
               ),
             ),

@@ -7,15 +7,13 @@ import 'package:flutter_application_1/features/search_feature/presentations/scre
 import 'package:flutter_application_1/features/settings_feature/presentation/screen/settings.dart';
 import 'package:flutter_application_1/features/splash_feature/presentations/screens/splash_failed.dart';
 
-import '../features/mobasher_feature/presentation/screens/mobasher.dart';
-
 class RoutesApp {
   static Map<String, Widget Function(BuildContext)> routes = {
     Home.rn: (p0) => const Home(),
     SplashFailed.rn: (p0) => const SplashFailed(),
     AboutUs.rn: (p0) => const AboutUs(),
     Favorite.rn: (p0) => const Favorite(),
-    Mobasher.rn: (p0) => const Mobasher(),
+//    Mobasher.rn: (p0) => const Mobasher(),
     Search.rn: (p0) => const Search(),
     NewsMainPage.rn: (p0) => const NewsMainPage(),
     Setting.rn: (p0) => const Setting(),

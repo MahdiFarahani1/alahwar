@@ -64,7 +64,6 @@ class DrawerWidgets {
 
   static List<String> text = [
     "الصفحة الرئيسية",
-    "البث المباشر",
     "المفضلة",
     "الاعدادات",
     "حول التطبیق"
@@ -72,7 +71,6 @@ class DrawerWidgets {
 
   static List<IconData> iconData = [
     Icons.home,
-    Icons.tv,
     Icons.star_border_outlined,
     Icons.settings,
     Icons.phone_android,

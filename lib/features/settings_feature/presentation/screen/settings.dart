@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_application_1/config/setupMain.dart';
 import 'package:flutter_application_1/core/common/appbar.dart';
-import 'package:flutter_application_1/core/common/gradient.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
+import 'package:flutter_application_1/core/extensions/widget_ex.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
 import 'package:flutter_application_1/features/settings_feature/presentation/bloc/alert_cubit/alert_cubit_cubit.dart';
 import 'package:flutter_application_1/features/settings_feature/presentation/bloc/theme_cubit/theme_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Setting extends StatelessWidget {
   static String rn = "/setting";
@@ -14,6 +16,7 @@ class Setting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool switchTheme = saveBox.get("switchTheme") ?? false;
     List<int> colorsList = [
       Colors.red.value,
       Colors.black.value,
@@ -38,16 +41,70 @@ class Setting extends StatelessWidget {
         body: Container(
           width: EsaySize.width(context),
           height: EsaySize.height(context),
-          decoration: BoxDecoration(gradient: CostumGradient.linearBlue()),
-          child: Column(
-            children: [
-              boxFontFamily(context),
-              boxFontSize(context),
-              boxColor(context, colorsList),
-              boxAlarm(context)
-            ],
+          color: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                boxFontFamily(context),
+                boxFontSize(context),
+                boxColor(context, colorsList),
+                boxTheme(context, switchTheme),
+                boxAlarm(context)
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  Container boxTheme(BuildContext context, bool switchTheme) {
+    return Container(
+      height: EsaySize.height(context) / 6,
+      margin: symmetricMargin(),
+      width: EsaySize.width(context),
+      decoration: decorationBorder(),
+      child: Column(
+        children: [
+          iconAvatar(FontAwesomeIcons.palette),
+          Expanded(
+            child: StatefulBuilder(builder: (context, setState) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("").withStyle(
+                      text: "مظلم",
+                      fontsize: 15,
+                      textDecoration: !switchTheme
+                          ? TextDecoration.underline
+                          : TextDecoration.none),
+                  EsaySize.gap(8),
+                  Switch(
+                    activeColor: ConstColor.baseColor,
+                    inactiveThumbColor: Colors.black,
+                    inactiveTrackColor: Colors.grey.shade700,
+                    value: switchTheme,
+                    onChanged: (value) async {
+                      switchTheme = value;
+
+                      setState(
+                        () {},
+                      );
+                      await saveBox.put("switchTheme", value);
+                    },
+                  ),
+                  EsaySize.gap(8),
+                  const Text("").withStyle(
+                      text: "ساطع",
+                      fontsize: 15,
+                      textDecoration: switchTheme
+                          ? TextDecoration.underline
+                          : TextDecoration.none),
+                ],
+              );
+            }),
+          ),
+        ],
       ),
     );
   }
@@ -68,7 +125,7 @@ class Setting extends StatelessWidget {
                 const Text(
                   "تفعیل الاشعارات فی التطبیق ؟",
                   textDirection: TextDirection.rtl,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                 ),
                 BlocBuilder<AlertCubit, bool>(
                   builder: (context, state) {
@@ -115,16 +172,16 @@ class Setting extends StatelessWidget {
                     switch (valueSlider) {
                       case 0.0:
                         fontFamiliy = "Salamat";
-                        fontSize = 19;
+                        fontSize = 23;
 
                         break;
                       case 1.0:
                         fontFamiliy = "Arabic";
-                        fontSize = 15;
+                        fontSize = 18;
                         break;
                       case 2.0:
                         fontFamiliy = "Vazir";
-                        fontSize = 15;
+                        fontSize = 18;
                         break;
                       default:
                     }
@@ -158,7 +215,7 @@ class Setting extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          iconAvatar(Icons.color_lens),
+          iconAvatar(FontAwesomeIcons.brush),
           Padding(
             padding: const EdgeInsets.only(left: 30, right: 30),
             child: BlocBuilder<ThemeCubit, ThemeState>(
@@ -222,6 +279,7 @@ class Setting extends StatelessWidget {
                     child: SliderTheme(
                       data: SliderThemeData(
                         activeTrackColor: Colors.blue,
+                        trackHeight: 1,
                         inactiveTrackColor:
                             const Color.fromRGBO(158, 158, 158, 1),
                         thumbColor: ConstColor.objectColor,
@@ -271,8 +329,8 @@ class Setting extends StatelessWidget {
   BoxDecoration decorationBorder() {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: ConstColor.objectColor, width: 4),
-      color: Colors.white,
+      border: Border.all(color: ConstColor.objectColor, width: 1),
+      color: ConstColor.greyWithShade,
     );
   }
 
@@ -285,7 +343,11 @@ class Setting extends StatelessWidget {
         int? col;
 
         return AlertDialog(
-          title: const Text("Choose a color"),
+          title: const Text(
+            "اختيار اللون",
+            textDirection: TextDirection.rtl,
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          ),
           content: Wrap(
             children: colorsList
                 .map((e) => GestureDetector(
@@ -316,13 +378,19 @@ class Setting extends StatelessWidget {
                 }
                 Navigator.pop(context);
               },
-              child: const Text("OK"),
+              child: const Text(
+                "نعم",
+                textDirection: TextDirection.rtl,
+              ),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text("Cansel"),
+              child: const Text(
+                "لا",
+                textDirection: TextDirection.rtl,
+              ),
             ),
           ],
         );

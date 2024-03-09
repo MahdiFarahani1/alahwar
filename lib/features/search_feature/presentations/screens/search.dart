@@ -69,7 +69,7 @@ class _SearchState extends State<Search> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBarCommon.appBar("البحث", context, isSearchPage: true),
-        backgroundColor: Colors.grey.shade900,
+        backgroundColor: Colors.white,
         body: SizedBox(
             width: double.infinity,
             height: double.infinity,

@@ -10,13 +10,15 @@ class AppTheme {
       required Color contentColor,
       required String fontFamily}) {
     return ThemeData(
+      fontFamily: "Arabic",
       sliderTheme: SliderThemeData(
           activeTrackColor: Colors.blue,
           inactiveTrackColor: const Color.fromRGBO(158, 158, 158, 1),
           thumbColor: ConstColor.objectColor,
           inactiveTickMarkColor: Colors.grey,
           activeTickMarkColor: Colors.black,
-          tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 4)),
+          trackHeight: 1,
+          tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 1)),
       popupMenuTheme: const PopupMenuThemeData(color: Colors.amber),
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
       appBarTheme: appBarTheme(),

@@ -34,7 +34,7 @@ class _FavoriteState extends State<Favorite> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: Colors.grey.shade900,
+        backgroundColor: Colors.white,
         appBar: AppBarCommon.appBar(" قایمة المفضلة", context),
         body: BlocBuilder<DatabaseListCubit, DatabaseListState>(
           builder: (context, state) {

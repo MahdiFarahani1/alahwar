@@ -36,7 +36,7 @@ class AboutUs extends StatelessWidget {
                   Text(
                     pageName,
                     style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
+                        fontSize: 17, fontWeight: FontWeight.bold),
                   ),
                   EsaySize.gap(20),
                   const Padding(
