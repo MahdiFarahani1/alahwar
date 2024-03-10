@@ -86,7 +86,11 @@ class Setting extends StatelessWidget {
                     value: switchTheme,
                     onChanged: (value) async {
                       switchTheme = value;
-
+                      value
+                          ? BlocProvider.of<ThemeCubit>(context)
+                              .changeThemeLight()
+                          : BlocProvider.of<ThemeCubit>(context)
+                              .changeThemeDark();
                       setState(
                         () {},
                       );

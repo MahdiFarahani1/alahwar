@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 
 class AppTheme {
-  ThemeData themeData(
-      {required BuildContext context,
-      required double titleFontsize,
+  ThemeData lightTheme(
+      {required double titleFontsize,
       required int fontSize,
       required Color titleColor,
       required Color contentColor,
@@ -38,6 +37,15 @@ class AppTheme {
         ),
       ),
     );
+  }
+
+  ThemeData darkTheme(
+      {required double titleFontsize,
+      required int fontSize,
+      required Color titleColor,
+      required Color contentColor,
+      required String fontFamily}) {
+    return ThemeData();
   }
 
   AppBarTheme appBarTheme() {

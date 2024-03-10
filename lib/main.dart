@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/config/app_theme.dart';
 import 'package:flutter_application_1/config/setupMain.dart';
 import 'package:flutter_application_1/features/favorite_feature/presentation/bloc/cubit/database_list_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/click_news_cubit.dart';
@@ -65,13 +64,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               initialRoute: "/",
               routes: RoutesApp.routes,
-              theme: AppTheme().themeData(
-                  context: context,
-                  titleFontsize: state.titleFontSize,
-                  fontSize: state.fontSize,
-                  fontFamily: state.fontFamily,
-                  titleColor: Color(state.titleColor),
-                  contentColor: Color(state.contentColor)),
+              theme: state.themeData,
               home: const SplashMain(),
             );
           },

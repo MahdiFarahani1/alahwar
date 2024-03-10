@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/common/appbar.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
+import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
-import 'package:flutter_application_1/features/home_feature/presentations/screens/home.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/screens/news_page.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/widgets/item_news.dart';
 import 'package:flutter_application_1/features/home_feature/repositories/format_date.dart';
 import 'package:flutter_application_1/features/search_feature/presentations/bloc/search_cubit/search_cubit.dart';
 import 'package:flutter_application_1/features/search_feature/presentations/bloc/search_cubit/status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:getwidget/getwidget.dart';
 
 class Search extends StatefulWidget {
   static String rn = "/Search";
@@ -79,7 +81,6 @@ class _SearchState extends State<Search> {
                   return Column(
                     children: [
                       dropDown(context),
-                      input(context),
                       Expanded(
                           child: Center(
                               child: CostumLoading.fadingCircle(context))),
@@ -90,7 +91,6 @@ class _SearchState extends State<Search> {
                   return Column(
                     children: [
                       dropDown(context),
-                      input(context),
                     ],
                   );
                 }
@@ -98,7 +98,6 @@ class _SearchState extends State<Search> {
                   return Column(
                     children: [
                       dropDown(context),
-                      input(context),
                       box(context, "There is a problem with your internet"),
                     ],
                   );
@@ -109,7 +108,6 @@ class _SearchState extends State<Search> {
                   return Column(
                     children: [
                       dropDown(context),
-                      input(context),
                       Expanded(
                         child: ListView.builder(
                           controller: controller,
@@ -167,10 +165,10 @@ class _SearchState extends State<Search> {
 
   Container input(BuildContext context) {
     return Container(
+      decoration: commonDecor(),
       margin: const EdgeInsets.all(3),
-      width: double.infinity,
+      width: EsaySize.width(context) * 0.95,
       height: EsaySize.height(context) / 15,
-      color: Colors.white,
       child: Row(children: [
         Expanded(
           child: Form(
@@ -197,94 +195,148 @@ class _SearchState extends State<Search> {
             onPressed: () {
               _validateForm();
             },
-            icon: const Icon(Icons.search)),
+            icon: const Icon(
+              FontAwesomeIcons.magnifyingGlass,
+              size: 20,
+            )),
       ]),
     );
   }
 
   Padding dropDown(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(3.0),
+      padding: const EdgeInsets.all(2.0),
       child: StatefulBuilder(builder: (context, setState) {
         return Container(
-          color: Colors.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          color: ConstColor.greyWithShade,
+          width: EsaySize.width(context),
+          height: EsaySize.height(context) * 0.18,
+          child: Column(
             children: [
-              Container(
-                  color: Colors.white,
-                  child: Row(
-                    children: [
-                      checkBox("النص", context, (val) {
-                        setState(
-                          () {
-                            contentBool = val!;
-                          },
-                        );
-                      }, contentBool),
-                      EsaySize.gap(3),
-                      checkBox("العنوان", context, (val) {
-                        setState(
-                          () {
-                            titleBool = val!;
-                          },
-                        );
-                      }, titleBool),
-                    ],
-                  )),
-              const Spacer(),
-              Container(
-                height: EsaySize.height(context) / 15,
-                color: Colors.white,
-                child: DropdownButton<int>(
-                  value: categoryID,
-                  items: [
-                    DropdownMenuItem(
-                      value: 18,
-                      child: Text(categotyMap[18]!),
+              EsaySize.safeGap(20),
+              Row(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(right: 8),
+                    height: 40,
+                    decoration: commonDecor(),
+                    child: Row(
+                      children: [
+                        checkBox("النص", context, (p0) {
+                          setState(
+                            () {
+                              contentBool = p0!;
+                            },
+                          );
+                        }, contentBool),
+                        checkBox("العنوان", context, (p0) {
+                          setState(
+                            () {
+                              titleBool = p0!;
+                            },
+                          );
+                        }, titleBool),
+                        EsaySize.gap(5),
+                      ],
                     ),
-                    DropdownMenuItem(
-                      value: 19,
-                      child: FittedBox(child: Text(categotyMap[19]!)),
-                    ),
-                    DropdownMenuItem(
-                      value: 20,
-                      child: Text(categotyMap[20]!),
-                    ),
-                    DropdownMenuItem(
-                      value: 23,
-                      child: Text(categotyMap[23]!),
-                    ),
-                    DropdownMenuItem(
-                      value: 25,
-                      child: Text(categotyMap[25]!),
-                    ),
-                    DropdownMenuItem(
-                      value: 26,
-                      child: Text(categotyMap[26]!),
-                    ),
-                    DropdownMenuItem(
-                      value: 27,
-                      child: Text(categotyMap[27]!),
-                    ),
-                    DropdownMenuItem(
-                      value: 0,
-                      child: Text(categotyMap[0]!),
-                    ),
-                  ],
-                  onChanged: (value) {
-                    categoryID = value!;
-                    setState(
-                      () {},
-                    );
-                  },
-                  dropdownColor: Colors.white,
-                  underline: Container(
-                    height: 1,
-                    color: Colors.white,
                   ),
-                ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: ConstColor.baseColor,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      height: 2,
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 8),
+                    height: 40,
+                    decoration: commonDecor(),
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            "التصنیف :",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 120,
+                          height: 40,
+                          child: GFDropdown(
+                            underline: null,
+                            border: BorderSide.none,
+                            isExpanded: true,
+                            dropdownButtonColor: Colors.transparent,
+                            iconDisabledColor: ConstColor.baseColor,
+                            iconEnabledColor: ConstColor.baseColor,
+                            elevation: 0,
+                            items: const [
+                              DropdownMenuItem(
+                                value: 0,
+                                child: Center(
+                                    child:
+                                        FittedBox(child: Text("جمیع الأخبار"))),
+                              ),
+                              DropdownMenuItem(
+                                value: 18,
+                                child: Center(
+                                    child: FittedBox(child: Text("رياضة"))),
+                              ),
+                              DropdownMenuItem(
+                                value: 19,
+                                child: Center(
+                                  child: FittedBox(
+                                      child: Text("منوعات محلية وعالمية")),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 20,
+                                child: Center(
+                                    child: FittedBox(
+                                        child: Text("العراق والعالم"))),
+                              ),
+                              DropdownMenuItem(
+                                value: 23,
+                                child: Center(
+                                    child: FittedBox(child: Text("ذي قار"))),
+                              ),
+                              DropdownMenuItem(
+                                value: 25,
+                                child: Center(
+                                    child: FittedBox(child: Text("اقتصاد"))),
+                              ),
+                              DropdownMenuItem(
+                                value: 26,
+                                child: Center(
+                                    child: FittedBox(child: Text("ثقافة وفن"))),
+                              ),
+                              DropdownMenuItem(
+                                value: 27,
+                                child: Center(
+                                    child: FittedBox(child: Text("محافظ"))),
+                              ),
+                            ],
+                            value: categoryID,
+                            onChanged: (value) {
+                              categoryID = value!;
+                              setState(
+                                () {},
+                              );
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
+              EsaySize.safeGap(20),
+              input(context),
             ],
           ),
         );
@@ -292,22 +344,38 @@ class _SearchState extends State<Search> {
     );
   }
 
-  Container checkBox(
+  BoxDecoration commonDecor() {
+    return BoxDecoration(
+        color: Colors.grey.shade300,
+        borderRadius: const BorderRadius.all(Radius.circular(6)));
+  }
+
+  Widget checkBox(
       String txt, BuildContext context, Function(bool?)? onChanged, bool val) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.5),
-      ),
+    return SizedBox(
       height: EsaySize.height(context) / 15,
       child: Row(children: [
         Padding(
-          padding: const EdgeInsets.only(right: 5),
-          child: Text(txt),
+          padding: const EdgeInsets.only(right: 6.0),
+          child: Text(
+            txt,
+            style: const TextStyle(fontSize: 12),
+          ),
         ),
-        EsaySize.gap(5),
-        Checkbox(
-          value: val,
-          onChanged: onChanged,
+        SizedBox(
+          width: 20,
+          height: 20,
+          child: Transform.scale(
+            scale: 0.75,
+            child: Checkbox(
+              side: BorderSide(color: ConstColor.baseColor),
+              value: val,
+              onChanged: onChanged,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+            ),
+          ),
         ),
       ]),
     );

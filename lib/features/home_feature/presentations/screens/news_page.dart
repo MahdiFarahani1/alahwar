@@ -114,7 +114,8 @@ class NewsMainPage extends StatelessWidget {
                                                     ConnectionState.done) {
                                                   return FittedBox(
                                                     child: Text(
-                                                      titleCategory!,
+                                                      titleCategory ??
+                                                          "البند الأخبار",
                                                       style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,

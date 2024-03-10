@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/app_theme.dart';
 import 'package:flutter_application_1/config/setupMain.dart';
 
 part 'theme_state.dart';
@@ -7,6 +8,12 @@ part 'theme_state.dart';
 class ThemeCubit extends Cubit<ThemeState> {
   ThemeCubit()
       : super(ThemeState(
+            themeData: AppTheme().lightTheme(
+                titleFontsize: 19,
+                fontSize: 21,
+                titleColor: Colors.black,
+                contentColor: Colors.black,
+                fontFamily: "Salamat"),
             fontSize: 21,
             titleColor: 50,
             contentColor: 50,
@@ -19,12 +26,27 @@ class ThemeCubit extends Cubit<ThemeState> {
         await saveBox.get("contentColor") ?? Colors.black.value;
     String fontfamily = await saveBox.get("fontfamily") ?? "Salamat";
     double fontSizeTitle = await saveBox.get("fontsizetitle") ?? 19;
+    bool switchTheme = saveBox.get("switchTheme") ?? true;
+    ThemeData theme = switchTheme
+        ? AppTheme().lightTheme(
+            titleFontsize: fontSizeTitle,
+            fontSize: savedFontSize,
+            titleColor: Color(savedTitleColor),
+            contentColor: Color(savedContentColor),
+            fontFamily: fontfamily)
+        : AppTheme().darkTheme(
+            titleFontsize: fontSizeTitle,
+            fontSize: savedFontSize,
+            titleColor: Color(savedTitleColor),
+            contentColor: Color(savedContentColor),
+            fontFamily: fontfamily);
     emit(state.copyWith(
         fontSize: savedFontSize,
         titleColor: savedTitleColor,
         contentColor: savedContentColor,
         fontFamily: fontfamily,
-        titleFontSize: fontSizeTitle));
+        titleFontSize: fontSizeTitle,
+        themeData: theme));
   }
 
   changeTitleColor(int color) {
@@ -55,5 +77,27 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   changeFontFamily(String font, double fontsize) {
     emit(state.copyWith(fontFamily: font, titleFontSize: fontsize));
+  }
+
+  changeThemeLight() {
+    emit(state.copyWith(
+        themeData: AppTheme().lightTheme(
+      contentColor: Color(state.contentColor),
+      fontFamily: state.fontFamily,
+      titleFontsize: state.titleFontSize,
+      fontSize: state.fontSize,
+      titleColor: Color(state.titleColor),
+    )));
+  }
+
+  changeThemeDark() {
+    emit(state.copyWith(
+        themeData: AppTheme().darkTheme(
+      contentColor: Color(state.contentColor),
+      fontFamily: state.fontFamily,
+      titleFontsize: state.titleFontSize,
+      fontSize: state.fontSize,
+      titleColor: Color(state.titleColor),
+    )));
   }
 }

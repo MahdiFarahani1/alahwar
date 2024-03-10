@@ -66,7 +66,17 @@ class ItemNews extends StatelessWidget {
                       right: EsaySize.width(context) / 11, top: 5),
                   child: isSearch
                       ? TextHighlight(
-                          textStyle: Theme.of(context).textTheme.titleMedium,
+                          textStyle: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(
+                                  fontSize: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium!
+                                              .fontFamily ==
+                                          "Salamat"
+                                      ? 18
+                                      : 15),
                           text: title.titleFormatter(),
                           textDirection: TextDirection.rtl,
                           words: {
