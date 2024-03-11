@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/app_theme.dart';
 import 'package:flutter_application_1/config/setupMain.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'theme_state.dart';
 
@@ -9,6 +10,7 @@ class ThemeCubit extends Cubit<ThemeState> {
   ThemeCubit()
       : super(ThemeState(
             themeData: AppTheme().lightTheme(
+                baseColor: Colors.grey.shade200,
                 titleFontsize: 19,
                 fontSize: 21,
                 titleColor: Colors.black,
@@ -21,20 +23,26 @@ class ThemeCubit extends Cubit<ThemeState> {
             titleFontSize: 19));
   Future<void> initialize() async {
     int savedFontSize = await saveBox.get("fontsize") ?? 21;
-    int savedTitleColor = await saveBox.get("titleColor") ?? Colors.black.value;
-    int savedContentColor =
-        await saveBox.get("contentColor") ?? Colors.black.value;
+
     String fontfamily = await saveBox.get("fontfamily") ?? "Salamat";
     double fontSizeTitle = await saveBox.get("fontsizetitle") ?? 19;
     bool switchTheme = saveBox.get("switchTheme") ?? true;
+    int savedTitleColor = await saveBox.get("titleColor") ?? switchTheme
+        ? Colors.black.value
+        : Colors.white.value;
+    int savedContentColor = await saveBox.get("contentColor") ?? switchTheme
+        ? Colors.black.value
+        : Colors.white.value;
     ThemeData theme = switchTheme
         ? AppTheme().lightTheme(
+            baseColor: Colors.grey.shade200,
             titleFontsize: fontSizeTitle,
             fontSize: savedFontSize,
             titleColor: Color(savedTitleColor),
             contentColor: Color(savedContentColor),
             fontFamily: fontfamily)
         : AppTheme().darkTheme(
+            baseColor: Colors.grey.shade900,
             titleFontsize: fontSizeTitle,
             fontSize: savedFontSize,
             titleColor: Color(savedTitleColor),
@@ -79,25 +87,45 @@ class ThemeCubit extends Cubit<ThemeState> {
     emit(state.copyWith(fontFamily: font, titleFontSize: fontsize));
   }
 
-  changeThemeLight() {
-    emit(state.copyWith(
+  changeThemeLight({
+    Color? contentColor,
+    String? fontFamily,
+    double? titleFontsize,
+    int? fontsize,
+    Color? titleColor,
+  }) {
+    emit(
+      state.copyWith(
         themeData: AppTheme().lightTheme(
-      contentColor: Color(state.contentColor),
-      fontFamily: state.fontFamily,
-      titleFontsize: state.titleFontSize,
-      fontSize: state.fontSize,
-      titleColor: Color(state.titleColor),
-    )));
+          baseColor: Colors.grey.shade200,
+          contentColor: contentColor ?? Color(state.contentColor),
+          fontFamily: fontFamily ?? state.fontFamily,
+          titleFontsize: titleFontsize ?? state.titleFontSize,
+          fontSize: fontsize ?? state.fontSize,
+          titleColor: titleColor ?? Color(state.titleColor),
+        ),
+      ),
+    );
   }
 
   changeThemeDark() {
     emit(state.copyWith(
-        themeData: AppTheme().darkTheme(
-      contentColor: Color(state.contentColor),
-      fontFamily: state.fontFamily,
-      titleFontsize: state.titleFontSize,
-      fontSize: state.fontSize,
-      titleColor: Color(state.titleColor),
-    )));
+      themeData: AppTheme().darkTheme(
+        baseColor: Colors.grey.shade900,
+        contentColor: Color(state.contentColor),
+        fontFamily: state.fontFamily,
+        titleFontsize: state.titleFontSize,
+        fontSize: state.fontSize,
+        titleColor: Color(state.titleColor),
+      ),
+    ));
+  }
+
+  updateTheme() {
+    if (saveBox.get("switchTheme")) {
+      changeThemeLight();
+    } else {
+      changeThemeDark();
+    }
   }
 }

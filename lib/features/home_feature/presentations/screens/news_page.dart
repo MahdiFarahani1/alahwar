@@ -40,7 +40,7 @@ class NewsMainPage extends StatelessWidget {
             builder: (context, state) {
               const String baseUrl =
                   "https://alahwar-tv.com/upload_list/medium/";
-
+              bool switchTheme = saveBox.get("switchTheme") ?? true;
               if (state.status.state == StateClickNews.complate) {
                 var view = state.status.data as List<NewsPost>;
 
@@ -75,7 +75,7 @@ class NewsMainPage extends StatelessWidget {
                         right: EsaySize.width(context) * 0.05,
                         child: Container(
                           decoration: BoxDecoration(
-                              color: ConstColor.greyWithShade,
+                              color: Theme.of(context).primaryColorLight,
                               borderRadius: BorderRadius.circular(8)),
                           margin: const EdgeInsets.only(top: 8),
                           width: EsaySize.width(context) * 0.9,
@@ -161,8 +161,9 @@ class NewsMainPage extends StatelessWidget {
                                   ),
                                   Container(
                                     height: 50,
-                                    color:
-                                        const Color.fromRGBO(217, 217, 217, 1),
+                                    color: switchTheme
+                                        ? Colors.grey.shade300
+                                        : Colors.grey.shade700,
                                     child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Row(
@@ -176,6 +177,7 @@ class NewsMainPage extends StatelessWidget {
                                                 ),
                                                 EsaySize.gap(8),
                                                 Btn.btncircle(
+                                                    context: context,
                                                     iconData:
                                                         FontAwesomeIcons.plus,
                                                     size: 10,
@@ -194,6 +196,7 @@ class NewsMainPage extends StatelessWidget {
                                                     }),
                                                 EsaySize.gap(5),
                                                 Btn.btncircle(
+                                                    context: context,
                                                     iconData:
                                                         FontAwesomeIcons.minus,
                                                     size: 10,
@@ -225,6 +228,7 @@ class NewsMainPage extends StatelessWidget {
                                                             defaultValue:
                                                                 false);
                                                         return Btn.btncircle(
+                                                          context: context,
                                                           iconData: isFavorite
                                                               ? Icons.star
                                                               : Icons
@@ -262,6 +266,7 @@ class NewsMainPage extends StatelessWidget {
                                                 ),
                                                 EsaySize.gap(5),
                                                 Btn.btncircle(
+                                                    context: context,
                                                     iconData: FontAwesomeIcons
                                                         .shareNodes,
                                                     size: 15,
@@ -285,21 +290,29 @@ class NewsMainPage extends StatelessWidget {
                                     child: Container(
                                       margin: const EdgeInsets.all(12),
                                       decoration: BoxDecoration(
-                                          gradient: CostumGradient.linearGrey(),
+                                          gradient: CostumGradient.linearGrey(
+                                              context),
                                           borderRadius:
                                               BorderRadius.circular(12)),
                                       child: Padding(
                                         padding: const EdgeInsets.all(11.0),
-                                        child: SingleChildScrollView(
-                                            child: Text(
+                                        child: SingleChildScrollView(child:
+                                            BlocBuilder<ThemeCubit, ThemeState>(
+                                          builder: (context, state) {
+                                            return Text(
                                                 textAlign: TextAlign.justify,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .bodyLarge,
+                                                    .bodyLarge!
+                                                    .copyWith(
+                                                        fontSize: state.fontSize
+                                                            .toDouble()),
                                                 textDirection:
                                                     TextDirection.rtl,
                                                 FormatHtml.parseHtmlString(
-                                                    view[0].content!))),
+                                                    view[0].content!));
+                                          },
+                                        )),
                                       ),
                                     ),
                                   ),

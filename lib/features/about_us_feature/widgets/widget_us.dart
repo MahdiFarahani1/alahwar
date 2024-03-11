@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
 import 'package:flutter_application_1/features/about_us_feature/repository/aboutus_repository.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,14 +21,18 @@ class Btn {
   static Widget btncircle(
       {required IconData iconData,
       required double size,
-      required VoidCallback onTap}) {
+      required VoidCallback onTap,
+      required BuildContext context}) {
     return GFIconButton(
       size: size,
       iconSize: size,
       onPressed: onTap,
       shape: GFIconButtonShape.square,
       alignment: Alignment.center,
-      icon: Icon(iconData),
+      icon: Icon(
+        iconData,
+        color: Theme.of(context).scaffoldBackgroundColor,
+      ),
       borderShape:
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
     );

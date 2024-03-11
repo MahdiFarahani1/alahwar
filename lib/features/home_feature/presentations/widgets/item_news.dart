@@ -30,7 +30,7 @@ class ItemNews extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(8)),
-          color: ConstColor.greyWithShade,
+          color: Theme.of(context).primaryColorLight,
         ),
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         width: EsaySize.width(context) - 50,

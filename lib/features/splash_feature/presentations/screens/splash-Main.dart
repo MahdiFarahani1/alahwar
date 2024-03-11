@@ -21,6 +21,7 @@ class _SplashMainState extends State<SplashMain> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: ConstColor.baseColor,
     ));
+    BlocProvider.of<ThemeCubit>(context).changeThemeLight();
     BlocProvider.of<ThemeCubit>(context).initialize();
     BlocProvider.of<AlertCubit>(context).initialize();
     Future.delayed(const Duration(seconds: 2), () async {

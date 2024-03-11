@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/setupMain.dart';
 import 'package:flutter_application_1/core/common/divider.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
@@ -72,7 +73,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: appbar(context),
         endDrawer: costumDrawer(),
         body: BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
@@ -112,8 +113,8 @@ class _HomeState extends State<Home> {
         child: Container(
           width: EsaySize.width(context) * 0.7,
           height: EsaySize.height(context),
-          decoration: const BoxDecoration(
-            color: Colors.white,
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
           ),
           child: Column(
             children: [
@@ -123,9 +124,10 @@ class _HomeState extends State<Home> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       FontAwesomeIcons.xmark,
                       size: 20,
+                      color: Theme.of(context).highlightColor,
                     )),
               ),
               EsaySize.gap(35),
@@ -137,7 +139,7 @@ class _HomeState extends State<Home> {
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.fitWidth,
-                    image: AssetImage("assets/images/logo-big.jpg"),
+                    image: AssetImage("assets/images/logo-big.png"),
                   ),
                 ),
               ),
@@ -364,7 +366,7 @@ class _HomeState extends State<Home> {
 
   AppBar appbar(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       centerTitle: true,
       leading: SearchFeature.add(context),
       title: GestureDetector(
@@ -383,7 +385,7 @@ class _HomeState extends State<Home> {
           return Container(
             margin: EdgeInsets.only(top: EsaySize.height(context) / 3.3),
             width: double.infinity,
-            color: ConstColor.greyWithShade,
+            color: Theme.of(context).primaryColorLight,
             height: 40,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -416,6 +418,7 @@ class _HomeState extends State<Home> {
 
 Widget categotyItem(int index, List<bool> isSelect, List<String> categoryList) {
   return BlocBuilder<NewsHomeCubit, NewsHomeState>(builder: (context, state) {
+    bool colorCategory = saveBox.get("switchTheme") ?? true;
     return GestureDetector(
       onTap: () {
         int categoryId = categotyMap.keys.toList()[index];
@@ -439,15 +442,20 @@ Widget categotyItem(int index, List<bool> isSelect, List<String> categoryList) {
         alignment: Alignment.center,
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6),
-          color: isSelect[index] ? ConstColor.baseColor : Colors.grey.shade300,
-        ),
+            borderRadius: BorderRadius.circular(6),
+            color: isSelect[index]
+                ? ConstColor.baseColor
+                : colorCategory
+                    ? Colors.grey.shade300
+                    : Colors.grey.shade700),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Text(
             categoryList[index],
             style: TextStyle(
-              color: isSelect[index] ? Colors.white : Colors.black,
+              color: isSelect[index]
+                  ? Theme.of(context).scaffoldBackgroundColor
+                  : Theme.of(context).highlightColor,
             ),
           ),
         ),

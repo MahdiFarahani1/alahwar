@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/setupMain.dart';
 import 'package:flutter_application_1/core/common/appbar.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
-import 'package:flutter_application_1/core/extensions/widget_ex.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
 import 'package:flutter_application_1/features/settings_feature/presentation/bloc/alert_cubit/alert_cubit_cubit.dart';
 import 'package:flutter_application_1/features/settings_feature/presentation/bloc/theme_cubit/theme_cubit.dart';
@@ -16,7 +15,7 @@ class Setting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool switchTheme = saveBox.get("switchTheme") ?? false;
+    bool switchTheme = saveBox.get("switchTheme") ?? true;
     List<int> colorsList = [
       Colors.red.value,
       Colors.black.value,
@@ -32,7 +31,8 @@ class Setting extends StatelessWidget {
       Colors.teal.value,
       Colors.lime.value,
       Colors.blueGrey.value,
-      Colors.lightBlue.shade200.value
+      Colors.lightBlue.shade200.value,
+      Colors.white.value
     ];
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -41,7 +41,7 @@ class Setting extends StatelessWidget {
         body: Container(
           width: EsaySize.width(context),
           height: EsaySize.height(context),
-          color: Colors.white,
+          color: Theme.of(context).scaffoldBackgroundColor,
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -63,7 +63,7 @@ class Setting extends StatelessWidget {
       height: EsaySize.height(context) / 6,
       margin: symmetricMargin(),
       width: EsaySize.width(context),
-      decoration: decorationBorder(),
+      decoration: decorationBorder(context),
       child: Column(
         children: [
           iconAvatar(FontAwesomeIcons.palette),
@@ -72,38 +72,57 @@ class Setting extends StatelessWidget {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("").withStyle(
-                      text: "مظلم",
-                      fontsize: 15,
-                      textDecoration: !switchTheme
-                          ? TextDecoration.underline
-                          : TextDecoration.none),
+                  Text("مظلم",
+                      style: TextStyle(
+                          decoration: !switchTheme
+                              ? TextDecoration.underline
+                              : TextDecoration.none,
+                          color: Theme.of(context).highlightColor,
+                          decorationColor: ConstColor.baseColor)),
                   EsaySize.gap(8),
-                  Switch(
-                    activeColor: ConstColor.baseColor,
-                    inactiveThumbColor: Colors.black,
-                    inactiveTrackColor: Colors.grey.shade700,
-                    value: switchTheme,
-                    onChanged: (value) async {
-                      switchTheme = value;
-                      value
-                          ? BlocProvider.of<ThemeCubit>(context)
-                              .changeThemeLight()
-                          : BlocProvider.of<ThemeCubit>(context)
-                              .changeThemeDark();
-                      setState(
-                        () {},
+                  BlocBuilder<ThemeCubit, ThemeState>(
+                    builder: (context, state) {
+                      return Switch(
+                        activeColor: ConstColor.baseColor,
+                        inactiveThumbColor: Colors.black,
+                        inactiveTrackColor: Colors.grey.shade700,
+                        value: switchTheme,
+                        onChanged: (value) async {
+                          switchTheme = value;
+                          value
+                              ? BlocProvider.of<ThemeCubit>(context)
+                                  .changeThemeLight()
+                              : BlocProvider.of<ThemeCubit>(context)
+                                  .changeThemeDark();
+                          setState(
+                            () {},
+                          );
+                          await saveBox.put("switchTheme", value);
+                          if (value) {
+                            BlocProvider.of<ThemeCubit>(context)
+                                .changeTitleColor(Colors.black.value);
+                            BlocProvider.of<ThemeCubit>(context)
+                                .changeContentColor(Colors.black.value);
+                            BlocProvider.of<ThemeCubit>(context).updateTheme();
+                          } else {
+                            BlocProvider.of<ThemeCubit>(context)
+                                .changeTitleColor(Colors.white.value);
+                            BlocProvider.of<ThemeCubit>(context)
+                                .changeContentColor(Colors.white.value);
+                            BlocProvider.of<ThemeCubit>(context).updateTheme();
+                          }
+                        },
                       );
-                      await saveBox.put("switchTheme", value);
                     },
                   ),
                   EsaySize.gap(8),
-                  const Text("").withStyle(
-                      text: "ساطع",
-                      fontsize: 15,
-                      textDecoration: switchTheme
-                          ? TextDecoration.underline
-                          : TextDecoration.none),
+                  Text("ساطع",
+                      style: TextStyle(
+                          decoration: switchTheme
+                              ? TextDecoration.underline
+                              : TextDecoration.none,
+                          color: Theme.of(context).highlightColor,
+                          decorationColor: ConstColor.baseColor)),
                 ],
               );
             }),
@@ -116,7 +135,7 @@ class Setting extends StatelessWidget {
   Container boxAlarm(BuildContext context) {
     return Container(
       margin: symmetricMargin(),
-      decoration: decorationBorder(),
+      decoration: decorationBorder(context),
       width: EsaySize.width(context),
       height: EsaySize.height(context) / 8,
       child: Column(
@@ -126,10 +145,13 @@ class Setting extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   "تفعیل الاشعارات فی التطبیق ؟",
                   textDirection: TextDirection.rtl,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelMedium!
+                      .copyWith(fontWeight: FontWeight.bold, fontSize: 14),
                 ),
                 BlocBuilder<AlertCubit, bool>(
                   builder: (context, state) {
@@ -159,7 +181,7 @@ class Setting extends StatelessWidget {
       margin: symmetricMargin(),
       width: EsaySize.width(context),
       height: EsaySize.height(context) / 6,
-      decoration: decorationBorder(),
+      decoration: decorationBorder(context),
       child: StatefulBuilder(
         builder: (context, setState) {
           return Column(
@@ -195,12 +217,16 @@ class Setting extends StatelessWidget {
                   await saveBox.put("fontvalue", valueSlider);
                   await saveBox.put("fontfamily", fontFamiliy);
                   await saveBox.put("fontsizetitle", fontSize);
+                  BlocProvider.of<ThemeCubit>(context).updateTheme();
                 },
               ),
               Expanded(
                 child: Text(
                   "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ",
-                  style: TextStyle(fontFamily: fontFamiliy, fontSize: fontSize),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelMedium!
+                      .copyWith(fontFamily: fontFamiliy, fontSize: fontSize),
                 ),
               )
             ],
@@ -215,7 +241,7 @@ class Setting extends StatelessWidget {
       margin: symmetricMargin(),
       width: EsaySize.width(context),
       height: EsaySize.height(context) / 6,
-      decoration: decorationBorder(),
+      decoration: decorationBorder(context),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -250,13 +276,19 @@ class Setting extends StatelessWidget {
               },
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(left: 35, right: 30),
+          Padding(
+            padding: const EdgeInsets.only(left: 35, right: 30),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("العنوان"),
-                Text("النص"),
+                Text(
+                  "العنوان",
+                  style: Theme.of(context).textTheme.labelMedium!,
+                ),
+                Text(
+                  "النص",
+                  style: Theme.of(context).textTheme.labelMedium!,
+                ),
               ],
             ),
           ),
@@ -271,7 +303,7 @@ class Setting extends StatelessWidget {
       margin: symmetricMargin(),
       width: EsaySize.width(context),
       height: EsaySize.height(context) / 8,
-      decoration: decorationBorder(),
+      decoration: decorationBorder(context),
       child: Column(
         children: [
           iconAvatar(Icons.text_fields),
@@ -305,6 +337,7 @@ class Setting extends StatelessWidget {
                             },
                           );
                           saveBox.put("fontsize", state.fontSize);
+                          BlocProvider.of<ThemeCubit>(context).updateTheme();
                         },
                       ),
                     ),
@@ -330,11 +363,11 @@ class Setting extends StatelessWidget {
   EdgeInsets symmetricMargin() =>
       const EdgeInsets.symmetric(horizontal: 15, vertical: 15);
 
-  BoxDecoration decorationBorder() {
+  BoxDecoration decorationBorder(BuildContext context) {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(12),
       border: Border.all(color: ConstColor.objectColor, width: 1),
-      color: ConstColor.greyWithShade,
+      color: Theme.of(context).primaryColorLight,
     );
   }
 
@@ -374,10 +407,12 @@ class Setting extends StatelessWidget {
                   if (isTitleMode) {
                     BlocProvider.of<ThemeCubit>(context).changeTitleColor(col!);
                     saveBox.put('titleColor', col!);
+                    BlocProvider.of<ThemeCubit>(context).updateTheme();
                   } else {
                     BlocProvider.of<ThemeCubit>(context)
                         .changeContentColor(col!);
                     saveBox.put('contentColor', col!);
+                    BlocProvider.of<ThemeCubit>(context).updateTheme();
                   }
                 }
                 Navigator.pop(context);

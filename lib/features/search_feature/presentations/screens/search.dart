@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/setupMain.dart';
 import 'package:flutter_application_1/core/common/appbar.dart';
 import 'package:flutter_application_1/core/common/loading.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
@@ -71,7 +72,7 @@ class _SearchState extends State<Search> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBarCommon.appBar("البحث", context, isSearchPage: true),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SizedBox(
             width: double.infinity,
             height: double.infinity,
@@ -184,8 +185,13 @@ class _SearchState extends State<Search> {
                 _validateForm();
               },
               controller: textEditingController,
-              decoration: const InputDecoration(
-                contentPadding: EdgeInsets.all(10),
+              decoration: InputDecoration(
+                hintText: "البحث...",
+                hintStyle: Theme.of(context)
+                    .textTheme
+                    .labelMedium!
+                    .copyWith(fontSize: 15),
+                contentPadding: const EdgeInsets.all(10),
                 border: InputBorder.none,
               ),
             ),
@@ -195,8 +201,9 @@ class _SearchState extends State<Search> {
             onPressed: () {
               _validateForm();
             },
-            icon: const Icon(
+            icon: Icon(
               FontAwesomeIcons.magnifyingGlass,
+              color: Theme.of(context).highlightColor,
               size: 20,
             )),
       ]),
@@ -208,7 +215,7 @@ class _SearchState extends State<Search> {
       padding: const EdgeInsets.all(2.0),
       child: StatefulBuilder(builder: (context, setState) {
         return Container(
-          color: ConstColor.greyWithShade,
+          color: Theme.of(context).primaryColorLight,
           width: EsaySize.width(context),
           height: EsaySize.height(context) * 0.18,
           child: Column(
@@ -257,17 +264,22 @@ class _SearchState extends State<Search> {
                     decoration: commonDecor(),
                     child: Row(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: Text(
                             "التصنیف :",
-                            style: TextStyle(fontSize: 12),
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(fontSize: 16),
                           ),
                         ),
                         SizedBox(
                           width: 120,
                           height: 40,
                           child: GFDropdown(
+                            dropdownColor:
+                                Theme.of(context).scaffoldBackgroundColor,
                             underline: null,
                             border: BorderSide.none,
                             isExpanded: true,
@@ -275,50 +287,63 @@ class _SearchState extends State<Search> {
                             iconDisabledColor: ConstColor.baseColor,
                             iconEnabledColor: ConstColor.baseColor,
                             elevation: 0,
-                            items: const [
+                            items: [
                               DropdownMenuItem(
                                 value: 0,
                                 child: Center(
-                                    child:
-                                        FittedBox(child: Text("جمیع الأخبار"))),
+                                    child: FittedBox(
+                                        child: Text("جمیع الأخبار",
+                                            style: commonStyle(context)))),
                               ),
                               DropdownMenuItem(
                                 value: 18,
                                 child: Center(
-                                    child: FittedBox(child: Text("رياضة"))),
+                                    child: FittedBox(
+                                        child: Text("رياضة",
+                                            style: commonStyle(context)))),
                               ),
                               DropdownMenuItem(
                                 value: 19,
                                 child: Center(
                                   child: FittedBox(
-                                      child: Text("منوعات محلية وعالمية")),
+                                      child: Text("منوعات محلية وعالمية",
+                                          style: commonStyle(context))),
                                 ),
                               ),
                               DropdownMenuItem(
                                 value: 20,
                                 child: Center(
                                     child: FittedBox(
-                                        child: Text("العراق والعالم"))),
+                                        child: Text("العراق والعالم",
+                                            style: commonStyle(context)))),
                               ),
                               DropdownMenuItem(
                                 value: 23,
                                 child: Center(
-                                    child: FittedBox(child: Text("ذي قار"))),
+                                    child: FittedBox(
+                                        child: Text("ذي قار",
+                                            style: commonStyle(context)))),
                               ),
                               DropdownMenuItem(
                                 value: 25,
                                 child: Center(
-                                    child: FittedBox(child: Text("اقتصاد"))),
+                                    child: FittedBox(
+                                        child: Text("اقتصاد",
+                                            style: commonStyle(context)))),
                               ),
                               DropdownMenuItem(
                                 value: 26,
                                 child: Center(
-                                    child: FittedBox(child: Text("ثقافة وفن"))),
+                                    child: FittedBox(
+                                        child: Text("ثقافة وفن",
+                                            style: commonStyle(context)))),
                               ),
                               DropdownMenuItem(
                                 value: 27,
                                 child: Center(
-                                    child: FittedBox(child: Text("محافظ"))),
+                                    child: FittedBox(
+                                        child: Text("محافظ",
+                                            style: commonStyle(context)))),
                               ),
                             ],
                             value: categoryID,
@@ -345,8 +370,9 @@ class _SearchState extends State<Search> {
   }
 
   BoxDecoration commonDecor() {
+    bool checkTheme = saveBox.get("switchTheme") ?? true;
     return BoxDecoration(
-        color: Colors.grey.shade300,
+        color: checkTheme ? Colors.grey.shade300 : Colors.grey.shade700,
         borderRadius: const BorderRadius.all(Radius.circular(6)));
   }
 
@@ -359,7 +385,8 @@ class _SearchState extends State<Search> {
           padding: const EdgeInsets.only(right: 6.0),
           child: Text(
             txt,
-            style: const TextStyle(fontSize: 12),
+            style:
+                Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 12),
           ),
         ),
         SizedBox(
@@ -379,5 +406,9 @@ class _SearchState extends State<Search> {
         ),
       ]),
     );
+  }
+
+  TextStyle commonStyle(BuildContext context) {
+    return Theme.of(context).textTheme.labelMedium!;
   }
 }

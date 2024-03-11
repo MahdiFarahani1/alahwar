@@ -26,7 +26,7 @@ class DrawerWidgets {
             decoration: BoxDecoration(
                 color: state.selectedIndex == index
                     ? ConstColor.baseColor
-                    : ConstColor.greyWithShade,
+                    : Theme.of(context).primaryColorLight,
                 borderRadius: BorderRadius.circular(8)),
             height: 40,
             child: Row(
@@ -40,8 +40,8 @@ class DrawerWidgets {
                     text,
                     style: TextStyle(
                       color: state.selectedIndex == index
-                          ? Colors.white
-                          : Colors.black,
+                          ? Theme.of(context).scaffoldBackgroundColor
+                          : Theme.of(context).highlightColor,
                       fontSize: 16,
                     ),
                   ),
@@ -50,8 +50,8 @@ class DrawerWidgets {
                 Icon(
                   iconData,
                   color: state.selectedIndex == index
-                      ? Colors.white
-                      : Colors.black,
+                      ? Theme.of(context).scaffoldBackgroundColor
+                      : Theme.of(context).highlightColor,
                 ),
                 EsaySize.safeGap(10),
               ],

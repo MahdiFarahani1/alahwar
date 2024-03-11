@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/common/divider.dart';
-import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/core/utils/esay_size.dart';
 import 'package:flutter_application_1/features/about_us_feature/widgets/widget_us.dart';
 
@@ -24,7 +23,7 @@ class AboutUs extends StatelessWidget {
               width: EsaySize.width(context) * 0.9,
               height: EsaySize.height(context) * 0.75,
               decoration: BoxDecoration(
-                  color: ConstColor.greyWithShade,
+                  color: Theme.of(context).primaryColorLight,
                   borderRadius: const BorderRadius.all(Radius.circular(10))),
               child: Column(
                 children: [
@@ -35,18 +34,20 @@ class AboutUs extends StatelessWidget {
                   EsaySize.gap(20),
                   Text(
                     pageName,
-                    style: const TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.bold),
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(fontSize: 17, fontWeight: FontWeight.bold),
                   ),
                   EsaySize.gap(20),
-                  const Padding(
-                    padding: EdgeInsets.all(12.0),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
                     child: Text(
                       textAlign: TextAlign.justify,
                       "اذاعة وتلفزيون الاهوار - مؤسسة اعلامية عراقية هادفة تبث برامجها من جنوب العراق - ذي قار , اذاعة وتلفزيون الاهوار - مؤسسة اعلامية عراقية هادفة تبث برامجها من جنوب العراق - ذي قاراذاعة وتلفزيون الاهوار - مؤسسة اعلامية عراقية هادفة تبث برامجها من جنوب العراق - ذي قاراذاعة وتلفزيون الاهوار - مؤسسة اعلامية عراقية هادفة تبث برامجها من جنوب العراق - ذي قاراذاعة وتلفزيون الاهوار - مؤسسة اعلامية عراقية هادفة تبث برامجها من جنوب العراق - ذي قار",
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                            fontSize: 15,
+                          ),
                     ),
                   ),
                 ],

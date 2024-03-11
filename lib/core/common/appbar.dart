@@ -12,7 +12,7 @@ class AppBarCommon {
         !isSearchPage ? SearchFeature.add(context) : const SizedBox.shrink()
       ],
       centerTitle: true,
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       title: GestureDetector(
         onTap: () {
           Navigator.pushNamed(context, Home.rn);
