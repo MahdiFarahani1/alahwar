@@ -15,10 +15,12 @@ import 'package:flutter_application_1/features/home_feature/data/model/click_new
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/click_news_cubit.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/bloc/click_news_cubit/status_click_news.dart';
 import 'package:flutter_application_1/features/home_feature/repositories/format_html.dart';
+import 'package:flutter_application_1/features/search_feature/repository/light_content.dart';
 import 'package:flutter_application_1/features/settings_feature/presentation/bloc/theme_cubit/theme_cubit.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:highlight_text/highlight_text.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../about_us_feature/widgets/widget_us.dart';
@@ -30,7 +32,7 @@ class NewsMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var arg = ModalRoute.of(context)?.settings.arguments! as int;
+    var arg = ModalRoute.of(context)!.settings.arguments as int;
     BlocProvider.of<ClickNewsCubit>(context).fetchData(arg);
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -299,18 +301,49 @@ class NewsMainPage extends StatelessWidget {
                                         child: SingleChildScrollView(child:
                                             BlocBuilder<ThemeCubit, ThemeState>(
                                           builder: (context, state) {
-                                            return Text(
+                                            if (view[0].content!.contains(
+                                                    LightContent.swContent) &&
+                                                LightContent
+                                                    .swContent.isNotEmpty) {
+                                              return TextHighlight(
                                                 textAlign: TextAlign.justify,
-                                                style: Theme.of(context)
+                                                textStyle: Theme.of(context)
                                                     .textTheme
                                                     .bodyLarge!
                                                     .copyWith(
                                                         fontSize: state.fontSize
                                                             .toDouble()),
+                                                text:
+                                                    FormatHtml.parseHtmlString(
+                                                        view[0].content!),
                                                 textDirection:
                                                     TextDirection.rtl,
-                                                FormatHtml.parseHtmlString(
-                                                    view[0].content!));
+                                                words: {
+                                                  LightContent.swContent:
+                                                      HighlightedWord(
+                                                          textStyle: TextStyle(
+                                                              color: ConstColor
+                                                                  .objectColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold))
+                                                },
+                                              );
+                                            } else {
+                                              return Text(
+                                                  textAlign: TextAlign.justify,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyLarge!
+                                                      .copyWith(
+                                                          fontSize: state
+                                                              .fontSize
+                                                              .toDouble()),
+                                                  textDirection:
+                                                      TextDirection.rtl,
+                                                  FormatHtml.parseHtmlString(
+                                                      view[0].content!));
+                                            }
                                           },
                                         )),
                                       ),

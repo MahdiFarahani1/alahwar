@@ -9,7 +9,7 @@ import 'package:flutter_application_1/features/splash_feature/presentations/scre
 
 class RoutesApp {
   static Map<String, Widget Function(BuildContext)> routes = {
-    Home.rn: (p0) => const Home(),
+    Home.rn: (p0) => Home(),
     SplashFailed.rn: (p0) => const SplashFailed(),
     AboutUs.rn: (p0) => const AboutUs(),
     Favorite.rn: (p0) => const Favorite(),

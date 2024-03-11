@@ -9,6 +9,7 @@ import 'package:flutter_application_1/features/home_feature/presentations/widget
 import 'package:flutter_application_1/features/home_feature/repositories/format_date.dart';
 import 'package:flutter_application_1/features/search_feature/presentations/bloc/search_cubit/search_cubit.dart';
 import 'package:flutter_application_1/features/search_feature/presentations/bloc/search_cubit/status.dart';
+import 'package:flutter_application_1/features/search_feature/repository/light_content.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
@@ -32,6 +33,7 @@ class _SearchState extends State<Search> {
   @override
   void dispose() {
     controller.dispose();
+    LightContent.swContent = "";
     super.dispose();
   }
 
@@ -124,8 +126,14 @@ class _SearchState extends State<Search> {
                               title: view[index].title!,
                               pathImages: "$baseUrl${view[index].img!}",
                               onTap: () {
-                                Navigator.pushNamed(context, NewsMainPage.rn,
-                                    arguments: view[index].id);
+                                LightContent.swContent =
+                                    textEditingController.text;
+
+                                Navigator.pushNamed(
+                                  context,
+                                  NewsMainPage.rn,
+                                  arguments: view[index].id,
+                                );
                               },
                             );
                           },

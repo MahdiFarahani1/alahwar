@@ -1,24 +1,19 @@
-// import 'package:firebase_messaging/firebase_messaging.dart';
-// import 'package:flutter/foundation.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 
-// class FirebaseApi {
-//   Future<void> initNotifications() async {
-//     final token = await FirebaseMessaging.instance.getToken();
+Future<void> handleBackgroundMessage(RemoteMessage message) async {
+  debugPrint("title :${message.notification?.title}");
+  debugPrint("body :${message.notification?.body}");
+  debugPrint("payload :${message.data}");
+}
 
-//     if (kDebugMode) {
-//       print("Token: $token");
-//     }
+class FirebaseApi {
+  final _firebaseMessaging = FirebaseMessaging.instance;
+  Future<void> inintNotifications() async {
+    await _firebaseMessaging.requestPermission();
 
-//     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-//       if (kDebugMode) {
-//         print("message recieved");
-//       }
-//     });
-
-//     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-//       if (kDebugMode) {
-//         print("message clicked");
-//       }
-//     });
-//   }
-// }
+    final fCMToken = await _firebaseMessaging.getToken();
+    debugPrint("TOKEN :$fCMToken");
+    FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+  }
+}

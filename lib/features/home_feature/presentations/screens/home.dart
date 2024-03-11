@@ -52,11 +52,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  ScrollController _scrollController = ScrollController();
   late ScrollController controller;
   @override
   void initState() {
     BlocProvider.of<NewsHomeCubit>(context).fetchDataFristTime(0, 0);
     controller = ScrollController()..addListener(_scrollListener);
+    _scrollController.animateTo(
+      100,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
     super.initState();
   }
 
@@ -389,17 +395,20 @@ class _HomeState extends State<Home> {
             height: 40,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: categotyMap.length,
-                itemBuilder: (context, index) {
-                  return categotyItem(
-                    index,
-                    isSelect,
-                    categotyMap.values.toList(),
-                  );
-                },
+              child: Directionality(
+                textDirection: TextDirection.ltr,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: categotyMap.length,
+                  itemBuilder: (context, index) {
+                    return categotyItem(
+                      index,
+                      isSelect,
+                      categotyMap.values.toList(),
+                    );
+                  },
+                ),
               ),
             ),
           );

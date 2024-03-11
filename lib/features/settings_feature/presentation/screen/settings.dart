@@ -104,12 +104,16 @@ class Setting extends StatelessWidget {
                             BlocProvider.of<ThemeCubit>(context)
                                 .changeContentColor(Colors.black.value);
                             BlocProvider.of<ThemeCubit>(context).updateTheme();
+                            saveBox.put("titleColor", Colors.black.value);
+                            saveBox.put("contentColor", Colors.black.value);
                           } else {
                             BlocProvider.of<ThemeCubit>(context)
                                 .changeTitleColor(Colors.white.value);
                             BlocProvider.of<ThemeCubit>(context)
                                 .changeContentColor(Colors.white.value);
                             BlocProvider.of<ThemeCubit>(context).updateTheme();
+                            saveBox.put("titleColor", Colors.white.value);
+                            saveBox.put("contentColor", Colors.white.value);
                           }
                         },
                       );
@@ -175,7 +179,7 @@ class Setting extends StatelessWidget {
 
   Container boxFontFamily(BuildContext context) {
     double valueSlider = saveBox.get("fontvalue") ?? 0;
-    String fontFamiliy = saveBox.get("fontfamily") ?? "Salamat";
+    String fontFamiliy = saveBox.get("fontfamily") ?? "Arabic";
     double fontSize = saveBox.get("fontsizetitle") ?? 19;
     return Container(
       margin: symmetricMargin(),
@@ -197,13 +201,13 @@ class Setting extends StatelessWidget {
                     valueSlider = value;
                     switch (valueSlider) {
                       case 0.0:
-                        fontFamiliy = "Salamat";
-                        fontSize = 23;
+                        fontFamiliy = "Arabic";
+                        fontSize = 18;
 
                         break;
                       case 1.0:
-                        fontFamiliy = "Arabic";
-                        fontSize = 18;
+                        fontFamiliy = "Salamat";
+                        fontSize = 23;
                         break;
                       case 2.0:
                         fontFamiliy = "Vazir";

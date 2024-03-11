@@ -11,28 +11,25 @@ class ThemeCubit extends Cubit<ThemeState> {
       : super(ThemeState(
             themeData: AppTheme().lightTheme(
                 baseColor: Colors.grey.shade200,
-                titleFontsize: 19,
+                titleFontsize: 18,
                 fontSize: 21,
                 titleColor: Colors.black,
                 contentColor: Colors.black,
-                fontFamily: "Salamat"),
+                fontFamily: "Arabic"),
             fontSize: 21,
             titleColor: 50,
             contentColor: 50,
-            fontFamily: "Salamat",
-            titleFontSize: 19));
+            fontFamily: "Arabic",
+            titleFontSize: 18));
   Future<void> initialize() async {
-    int savedFontSize = await saveBox.get("fontsize") ?? 21;
+    int savedFontSize = await saveBox.get("fontsize") ?? 18;
 
-    String fontfamily = await saveBox.get("fontfamily") ?? "Salamat";
+    String fontfamily = await saveBox.get("fontfamily") ?? "Arabic";
     double fontSizeTitle = await saveBox.get("fontsizetitle") ?? 19;
     bool switchTheme = saveBox.get("switchTheme") ?? true;
-    int savedTitleColor = await saveBox.get("titleColor") ?? switchTheme
-        ? Colors.black.value
-        : Colors.white.value;
-    int savedContentColor = await saveBox.get("contentColor") ?? switchTheme
-        ? Colors.black.value
-        : Colors.white.value;
+    int savedTitleColor = await saveBox.get("titleColor") ?? Colors.black.value;
+    int savedContentColor =
+        await saveBox.get("contentColor") ?? Colors.black.value;
     ThemeData theme = switchTheme
         ? AppTheme().lightTheme(
             baseColor: Colors.grey.shade200,
