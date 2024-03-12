@@ -26,19 +26,19 @@ import '../bloc/news_cubit/status_news.dart';
 import '../utils/drawer_onpress.dart';
 
 Map<int, String> categotyMap = {
-  18: "رياضة",
+  0: "جميع الأخبار",
   19: "منوعات محلية وعالمية",
   20: "العراق والعالم",
   23: "ذي قار",
   25: "اقتصاد",
   26: "ثقافة وفن",
   27: "محافظ",
-  0: "جميع الأخبار"
+  18: "رياضة",
 };
 
 final isSelect = List.generate(
   categotyMap.length,
-  (index) => index == 7 ? true : false,
+  (index) => index == 0 ? true : false,
 );
 int categoryID = 0;
 
@@ -52,17 +52,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  ScrollController _scrollController = ScrollController();
   late ScrollController controller;
   @override
   void initState() {
     BlocProvider.of<NewsHomeCubit>(context).fetchDataFristTime(0, 0);
     controller = ScrollController()..addListener(_scrollListener);
-    _scrollController.animateTo(
-      100,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-    );
+
     super.initState();
   }
 
@@ -396,9 +391,8 @@ class _HomeState extends State<Home> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Directionality(
-                textDirection: TextDirection.ltr,
+                textDirection: TextDirection.rtl,
                 child: ListView.builder(
-                  controller: _scrollController,
                   scrollDirection: Axis.horizontal,
                   itemCount: categotyMap.length,
                   itemBuilder: (context, index) {

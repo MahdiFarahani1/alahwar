@@ -178,7 +178,7 @@ class Setting extends StatelessWidget {
   }
 
   Container boxFontFamily(BuildContext context) {
-    double valueSlider = saveBox.get("fontvalue") ?? 0;
+    double valueSlider = saveBox.get("fontvalue") ?? 0.0;
     String fontFamiliy = saveBox.get("fontfamily") ?? "Arabic";
     double fontSize = saveBox.get("fontsizetitle") ?? 19;
     return Container(

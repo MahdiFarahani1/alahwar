@@ -12,11 +12,11 @@ class ThemeCubit extends Cubit<ThemeState> {
             themeData: AppTheme().lightTheme(
                 baseColor: Colors.grey.shade200,
                 titleFontsize: 18,
-                fontSize: 21,
+                fontSize: 18,
                 titleColor: Colors.black,
                 contentColor: Colors.black,
                 fontFamily: "Arabic"),
-            fontSize: 21,
+            fontSize: 18,
             titleColor: 50,
             contentColor: 50,
             fontFamily: "Arabic",
@@ -26,7 +26,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
     String fontfamily = await saveBox.get("fontfamily") ?? "Arabic";
     double fontSizeTitle = await saveBox.get("fontsizetitle") ?? 19;
-    bool switchTheme = saveBox.get("switchTheme") ?? true;
+    bool switchTheme = await saveBox.get("switchTheme") ?? true;
     int savedTitleColor = await saveBox.get("titleColor") ?? Colors.black.value;
     int savedContentColor =
         await saveBox.get("contentColor") ?? Colors.black.value;
@@ -118,8 +118,8 @@ class ThemeCubit extends Cubit<ThemeState> {
     ));
   }
 
-  updateTheme() {
-    if (saveBox.get("switchTheme")) {
+  updateTheme() async {
+    if (await saveBox.get("switchTheme") ?? true) {
       changeThemeLight();
     } else {
       changeThemeDark();
