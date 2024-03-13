@@ -15,7 +15,9 @@ class Setting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool switchTheme = saveBox.get("switchTheme") ?? true;
+    bool switchTheme = saveBox.get("switchTheme") ??
+        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+
     List<int> colorsList = [
       Colors.red.value,
       Colors.black.value,

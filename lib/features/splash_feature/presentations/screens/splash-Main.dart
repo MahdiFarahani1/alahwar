@@ -22,7 +22,7 @@ class _SplashMainState extends State<SplashMain> {
       systemNavigationBarColor: ConstColor.baseColor,
     ));
     BlocProvider.of<ThemeCubit>(context).changeThemeLight();
-    BlocProvider.of<ThemeCubit>(context).initialize();
+    BlocProvider.of<ThemeCubit>(context).initialize(context);
     BlocProvider.of<AlertCubit>(context).initialize();
     Future.delayed(const Duration(seconds: 2), () async {
       if (await SplashRepository().isConnect()) {

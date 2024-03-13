@@ -42,7 +42,8 @@ class NewsMainPage extends StatelessWidget {
             builder: (context, state) {
               const String baseUrl =
                   "https://alahwar-tv.com/upload_list/medium/";
-              bool switchTheme = saveBox.get("switchTheme") ?? true;
+              bool switchTheme = saveBox.get("switchTheme") ??
+                  MediaQuery.platformBrightnessOf(context) == Brightness.light;
               if (state.status.state == StateClickNews.complate) {
                 var view = state.status.data as List<NewsPost>;
 

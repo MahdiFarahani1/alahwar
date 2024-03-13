@@ -15,7 +15,8 @@ class CostumGradient {
   }
 
   static linearGrey(BuildContext context) {
-    bool colorCategory = saveBox.get("switchTheme") ?? true;
+    bool colorCategory = saveBox.get("switchTheme") ??
+        MediaQuery.platformBrightnessOf(context) == Brightness.light;
     return LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,

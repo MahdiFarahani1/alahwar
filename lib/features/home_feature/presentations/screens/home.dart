@@ -421,7 +421,8 @@ class _HomeState extends State<Home> {
 
 Widget categotyItem(int index, List<bool> isSelect, List<String> categoryList) {
   return BlocBuilder<NewsHomeCubit, NewsHomeState>(builder: (context, state) {
-    bool colorCategory = saveBox.get("switchTheme") ?? true;
+    bool colorCategory = saveBox.get("switchTheme") ??
+        MediaQuery.platformBrightnessOf(context) == Brightness.light;
     return GestureDetector(
       onTap: () {
         int categoryId = categotyMap.keys.toList()[index];

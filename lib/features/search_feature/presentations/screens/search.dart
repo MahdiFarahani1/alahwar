@@ -378,7 +378,8 @@ class _SearchState extends State<Search> {
   }
 
   BoxDecoration commonDecor() {
-    bool checkTheme = saveBox.get("switchTheme") ?? true;
+    bool checkTheme = saveBox.get("switchTheme") ??
+        MediaQuery.platformBrightnessOf(context) == Brightness.light;
     return BoxDecoration(
         color: checkTheme ? Colors.grey.shade300 : Colors.grey.shade700,
         borderRadius: const BorderRadius.all(Radius.circular(6)));

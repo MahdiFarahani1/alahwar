@@ -2,9 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/firebase_api.dart';
-//import 'package:flutter_application_1/config/firebase_api.dart';
 import 'package:flutter_application_1/features/favorite_feature/date/local/database.dart';
 
 import 'package:hive_flutter/adapters.dart';
@@ -13,8 +11,6 @@ late Box box;
 late Box saveBox;
 
 Future<void> setUp() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
   await Hive.initFlutter();
   saveBox = await Hive.openBox("saveFinlalyList");
   Hive.registerAdapter(ObjectDataBaseAdapter());

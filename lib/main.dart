@@ -15,7 +15,10 @@ import 'features/home_feature/presentations/bloc/home_drawer_cubit/home_drawer_c
 import 'features/home_feature/presentations/bloc/news_cubit/news_home_cubit.dart';
 import 'features/splash_feature/presentations/screens/splash-Main.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await setUp();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
@@ -61,6 +64,7 @@ class MyApp extends StatelessWidget {
         child: BlocBuilder<ThemeCubit, ThemeState>(
           builder: (context, state) {
             return MaterialApp(
+              navigatorKey: navigatorKey,
               debugShowCheckedModeBanner: false,
               initialRoute: "/",
               routes: RoutesApp.routes,
