@@ -15,6 +15,9 @@ Future<void> setUp() async {
   saveBox = await Hive.openBox("saveFinlalyList");
   Hive.registerAdapter(ObjectDataBaseAdapter());
   box = await Hive.openBox("news");
+}
+
+Future<void> setUpFirebase() async {
   bool alertCheck = saveBox.get("alert", defaultValue: true);
   if (alertCheck) {
     if (Platform.isAndroid) {
@@ -28,6 +31,8 @@ Future<void> setUp() async {
       );
       await FirebaseMessaging.instance.subscribeToTopic("general");
     }
+  } else {
+    await FirebaseMessaging.instance.unsubscribeFromTopic("general");
   }
 
   await FirebaseApi().inintNotifications();

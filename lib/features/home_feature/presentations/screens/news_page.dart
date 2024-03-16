@@ -28,7 +28,9 @@ import '../../../about_us_feature/widgets/widget_us.dart';
 class NewsMainPage extends StatelessWidget {
   static String rn = "/NewsMainPage";
 
-  const NewsMainPage({super.key});
+  const NewsMainPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

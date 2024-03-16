@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/config/helper_firebase.dart';
+import 'package:flutter_application_1/config/setupMain.dart';
 import 'package:flutter_application_1/core/constans/const_colors.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/screens/home.dart';
 import 'package:flutter_application_1/features/settings_feature/presentation/bloc/alert_cubit/alert_cubit_cubit.dart';
@@ -9,6 +11,7 @@ import 'package:flutter_application_1/features/splash_feature/repositories/splas
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SplashMain extends StatefulWidget {
+  static String rn = "/splashmain";
   const SplashMain({super.key});
 
   @override
@@ -21,13 +24,15 @@ class _SplashMainState extends State<SplashMain> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: ConstColor.baseColor,
     ));
+
     BlocProvider.of<ThemeCubit>(context).changeThemeLight();
     BlocProvider.of<ThemeCubit>(context).initialize(context);
     BlocProvider.of<AlertCubit>(context).initialize();
+
     Future.delayed(const Duration(seconds: 2), () async {
       if (await SplashRepository().isConnect()) {
-        //   ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, Home.rn);
+        setUpFirebase();
       } else {
         //  ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, SplashFailed.rn);

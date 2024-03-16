@@ -57,7 +57,6 @@ class _HomeState extends State<Home> {
   void initState() {
     BlocProvider.of<NewsHomeCubit>(context).fetchDataFristTime(0, 0);
     controller = ScrollController()..addListener(_scrollListener);
-
     super.initState();
   }
 

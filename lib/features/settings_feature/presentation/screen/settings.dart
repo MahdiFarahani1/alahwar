@@ -74,7 +74,7 @@ class Setting extends StatelessWidget {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("مظلم",
+                  Text("داکن",
                       style: TextStyle(
                           decoration: !switchTheme
                               ? TextDecoration.underline
@@ -122,7 +122,7 @@ class Setting extends StatelessWidget {
                     },
                   ),
                   EsaySize.gap(8),
-                  Text("ساطع",
+                  Text("فاتح",
                       style: TextStyle(
                           decoration: switchTheme
                               ? TextDecoration.underline

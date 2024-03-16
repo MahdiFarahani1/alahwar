@@ -5,6 +5,7 @@ import 'package:flutter_application_1/features/home_feature/presentations/screen
 import 'package:flutter_application_1/features/home_feature/presentations/screens/news_page.dart';
 import 'package:flutter_application_1/features/search_feature/presentations/screens/search.dart';
 import 'package:flutter_application_1/features/settings_feature/presentation/screen/settings.dart';
+import 'package:flutter_application_1/features/splash_feature/presentations/screens/splash-Main.dart';
 import 'package:flutter_application_1/features/splash_feature/presentations/screens/splash_failed.dart';
 
 class RoutesApp {
@@ -17,5 +18,6 @@ class RoutesApp {
     Search.rn: (p0) => const Search(),
     NewsMainPage.rn: (p0) => const NewsMainPage(),
     Setting.rn: (p0) => const Setting(),
+    SplashMain.rn: (p0) => const SplashMain(),
   };
 }
