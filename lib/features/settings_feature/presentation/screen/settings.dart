@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_application_1/config/setupMain.dart';
@@ -163,10 +164,19 @@ class Setting extends StatelessWidget {
                   builder: (context, state) {
                     return Checkbox(
                       value: state,
-                      onChanged: (value) {
+                      onChanged: (value) async {
                         BlocProvider.of<AlertCubit>(context)
                             .changeAlertState(value!);
                         saveBox.put("alert", value);
+                        if (!value) {
+                          await FirebaseMessaging.instance
+                              .unsubscribeFromTopic("general");
+                          print('Notifications disabled');
+                        } else {
+                          await FirebaseMessaging.instance
+                              .subscribeToTopic("general");
+                          print('Notifications enabled');
+                        }
                       },
                     );
                   },

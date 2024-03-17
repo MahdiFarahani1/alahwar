@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.1+1
 
 environment:
   sdk: ">=3.2.6 <4.0.0"
@@ -58,9 +58,7 @@ dependencies:
   firebase_core: ^2.25.5
   firebase_messaging: ^14.7.17
   get_storage: ^2.1.1
-  
-  
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -103,8 +101,8 @@ flutter:
     - family: Salamat
       fonts:
         - asset: assets/fonts/Salamat.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+    #       - asset: fonts/Schyler-Italic.ttf
+    #         style: italic
     - family: Arabic
       fonts:
         - asset: assets/fonts/Al-Jazeera-Arabic-Regular.ttf
@@ -116,7 +114,7 @@ flutter:
         - asset: assets/fonts/Vazir.ttf
         - asset: assets/fonts/Vazir-Bold.ttf
           weight: 600
-          
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

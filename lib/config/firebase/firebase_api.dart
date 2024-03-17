@@ -1,9 +1,8 @@
 import 'dart:core';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_application_1/config/helper_firebase.dart';
+import 'package:flutter_application_1/config/firebase/helper_firebase.dart';
 import 'package:flutter_application_1/features/home_feature/presentations/screens/news_page.dart';
-import 'package:flutter_application_1/features/settings_feature/repository/check_notif.dart';
 import 'package:flutter_application_1/main.dart';
 
 class FirebaseApi {
@@ -12,14 +11,13 @@ class FirebaseApi {
     await _firebaseMessaging.requestPermission();
     _firebaseMessaging.getInitialMessage();
 
-    if (CheckNotif.receiveNotifications) {
-      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-        int id = int.parse(message.data["id"]);
-        if (id != 0) {
-          navigatorKey.currentState!.pushNamed(NewsMainPage.rn, arguments: id);
-        }
-      });
-    }
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      int id = int.parse(message.data["id"]);
+      if (id != 0) {
+        navigatorKey.currentState!.pushNamed(NewsMainPage.rn, arguments: id);
+      }
+    });
+
     _firebaseMessaging
         .getInitialMessage()
         .then((RemoteMessage? initialMessage) {
