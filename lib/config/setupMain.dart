@@ -27,7 +27,7 @@ Future<void> setUpFirebase() async {
         projectId: "alahwartv-cfc28",
       ),
     );
-    await saveBox.get("alert")
+    await saveBox.get("alert",defaultValue: true)
         ? await FirebaseMessaging.instance.subscribeToTopic("general")
         : await FirebaseMessaging.instance.unsubscribeFromTopic("general");
     await FirebaseApi().inintNotifications();

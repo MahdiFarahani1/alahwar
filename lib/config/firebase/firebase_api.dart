@@ -9,6 +9,7 @@ class FirebaseApi {
   final _firebaseMessaging = FirebaseMessaging.instance;
   Future<void> inintNotifications() async {
     await _firebaseMessaging.requestPermission();
+    
     _firebaseMessaging.getInitialMessage();
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
