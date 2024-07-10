@@ -13,6 +13,7 @@ late Box saveBox;
 Future<void> setUp() async {
   await Hive.initFlutter();
   saveBox = await Hive.openBox("saveFinlalyList");
+  
   Hive.registerAdapter(ObjectDataBaseAdapter());
   box = await Hive.openBox("news");
 }

@@ -237,20 +237,8 @@ class _SearchState extends State<Search> {
                     decoration: commonDecor(),
                     child: Row(
                       children: [
-                        checkBox("النص", context, (p0) {
-                          setState(
-                            () {
-                              contentBool = p0!;
-                            },
-                          );
-                        }, contentBool),
-                        checkBox("العنوان", context, (p0) {
-                          setState(
-                            () {
-                              titleBool = p0!;
-                            },
-                          );
-                        }, titleBool),
+                        checkBox("النص", contentBool),
+                        checkBox("العنوان", titleBool),
                         EsaySize.gap(5),
                       ],
                     ),
@@ -385,8 +373,7 @@ class _SearchState extends State<Search> {
         borderRadius: const BorderRadius.all(Radius.circular(6)));
   }
 
-  Widget checkBox(
-      String txt, BuildContext context, Function(bool?)? onChanged, bool val) {
+  Widget checkBox(String txt, bool val) {
     return SizedBox(
       height: EsaySize.height(context) / 15,
       child: Row(children: [
@@ -406,7 +393,11 @@ class _SearchState extends State<Search> {
             child: Checkbox(
               side: BorderSide(color: ConstColor.baseColor),
               value: val,
-              onChanged: onChanged,
+              onChanged: (value) {
+                setState(() {
+                  val = value!;
+                });
+              },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4.0),
               ),

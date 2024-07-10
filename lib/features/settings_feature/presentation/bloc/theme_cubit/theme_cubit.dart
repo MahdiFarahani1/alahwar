@@ -29,12 +29,11 @@ class ThemeCubit extends Cubit<ThemeState> {
 
     bool switchTheme = await saveBox.get("switchTheme") ??
         MediaQuery.platformBrightnessOf(context) == Brightness.light;
-    int savedTitleColor = await saveBox.get("titleColor") ?? switchTheme
-        ? Colors.black.value
-        : Colors.white.value;
-    int savedContentColor = await saveBox.get("contentColor") ?? switchTheme
-        ? Colors.black.value
-        : Colors.white.value;
+    int savedTitleColor = await saveBox.get("titleColor") ??
+        (switchTheme ? Colors.black.value : Colors.white.value);
+
+    int savedContentColor = await saveBox.get("contentColor") ??
+        (switchTheme ? Colors.black.value : Colors.white.value);
     ThemeData theme = switchTheme
         ? AppTheme().lightTheme(
             baseColor: Colors.grey.shade200,

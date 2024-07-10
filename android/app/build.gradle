@@ -51,9 +51,9 @@ android {
         applicationId "com.dijlah.alahwartv"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
+        minSdkVersion 22
+        targetSdkVersion 33
+        versionCode 3
         versionName flutterVersionName
     }
 
@@ -77,5 +77,6 @@ flutter {
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:32.7.3')
+   implementation platform('com.google.firebase:firebase-bom:32.8.1')
+   implementation 'com.google.firebase:firebase-analytics'
 }
